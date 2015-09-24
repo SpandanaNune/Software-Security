@@ -34,11 +34,11 @@ public class HomeController {
 	@RequestMapping("/")
 	public String showhome(Model model) {
 
-		 List<User> users = userService.getCurrent();
+		// List<User> users = userService.getCurrent();
 		// User user = new User(29,"dsndjs", "smadhaxncxcnv2@gmail.com","c");
 		// userService.testSave(user);
 		
-		 model.addAttribute("offers", users);
+	//	 model.addAttribute("offers", users);
 		return "home";
 	}
 
