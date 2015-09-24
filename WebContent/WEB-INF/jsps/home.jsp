@@ -52,7 +52,31 @@
 </head>
 <body>
 
-
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+ 
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+ 
+      <!-- Be sure to leave the brand out there if you want it shown -->
+      <a class="brand" href="#">Project name</a>
+  <a class="brand" href="#">Project name1</a>
+   <a class="brand" href="#">Project name2</a>
+    <a class="brand" href="#">Project name3</a>
+     <a class="brand" href="#">Project name4</a>
+      <!-- Everything you want hidden at 940px or less, place within here -->
+      <div class="nav-collapse collapse">
+        <!-- .nav, .navbar-search, .navbar-form, etc -->
+      </div>
+ 
+    </div>
+  </div>
+</div>
 	<!-- Hi there! -->
 	<c:out value="${name}"></c:out>
 

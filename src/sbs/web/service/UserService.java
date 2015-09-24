@@ -18,10 +18,10 @@ private UsersDao usersDao;
 		this.usersDao = usersDao;
 	}
 
-	public List<User> getCurrent() {
+	public List<User> getAllUsers() {
 		return usersDao.getAllUsers();
 	}
-	public void testSave(User user){
+	public void createUser(User user){
 		usersDao.createUser(user);
 	}
 }

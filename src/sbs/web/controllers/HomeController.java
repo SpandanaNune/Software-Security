@@ -2,16 +2,12 @@ package sbs.web.controllers;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
 import sbs.web.dao.User;
 import sbs.web.service.UserService;
 
@@ -24,13 +20,6 @@ public class HomeController {
 		this.userService = userService;
 	}
 
-	// @RequestMapping("/")
-	// public ModelAndView showhome(HttpSession session){
-	// ModelAndView mv = new ModelAndView("home");
-	// Map<String, Object> model = mv.getModel();
-	// model.put("name", "River");
-	// return mv;
-	// }
 	@RequestMapping("/")
 	public String showhome(Model model) {
 
@@ -39,56 +28,80 @@ public class HomeController {
 		// userService.testSave(user);
 		
 	//	 model.addAttribute("offers", users);
-		return "home";
+		return "homepage";
 	}
+	
+	@RequestMapping("/viewuser")
+	public String showViewUser(Model model) {
 
-	@RequestMapping("/one")
-	public String one(Model model) {
-		 List<User> users = userService.getCurrent();
-			// User user = new User(29,"dsndjs", "smadhaxncxcnv2@gmail.com","c");
-			// userService.testSave(user);
-			
-			 model.addAttribute("offers", users);
-		return "one";
+		List<User> users = userService.getAllUsers();
+		model.addAttribute("users", users);
+		return "viewuser";
 	}
+	
+	@RequestMapping(value="/registeruser")
+	public String showRegisterUser(Model model) {	
 
-	@RequestMapping("/two")
-	public String two(Model model) {
-
-		return "two";
+		model.addAttribute("user", new User());
+		return "registeruser";
 	}
-
-	@RequestMapping("/three")
-	public String three(Model model) {
-
-		return "three";
+	@RequestMapping(value="/docreate",method=RequestMethod.POST)
+	public String RegisterUser(Model model, User user) {	
+		
+		userService.createUser(user);
+		return "homepage";
 	}
+	
 
-	@RequestMapping("/captcha")
-	public String captcha(Model model) {
-
-		return "Captcha";
-	}
-   @RequestMapping(value = "/validate")
-   public String validateCaptcha(ModelMap model,
-           HttpServletRequest request)
-   {
-       
-       ReCaptchaImpl captcha = new ReCaptchaImpl();
-       captcha.setPrivateKey("6LeeTusSAAAAAJ-XXXXXXXXXXXXXXXXXXXXXX");
-       
-       String challenge = request.getParameter("recaptcha_challenge_field");
-       String uresponse = request.getParameter("recaptcha_response_field");
-       ReCaptchaResponse reCaptchaResponse =
-               captcha.checkAnswer(request.getRemoteAddr(),
-               challenge, uresponse
-           );
-
-       if (reCaptchaResponse.isValid()) {
-           model.addAttribute("message", "Captcha Validated");
-       } else {
-           model.addAttribute("message", "Captcha Validated failed.");
-       }
-       return "result";
-   }
 }
+
+//	@RequestMapping("/one")
+//	public String one(Model model) {
+//		 List<User> users = userService.getCurrent();
+//			// User user = new User(29,"dsndjs", "smadhaxncxcnv2@gmail.com","c");
+//			// userService.testSave(user);
+//			
+//			 model.addAttribute("offers", users);
+//		return "one";
+//	}
+//
+//	@RequestMapping("/two")
+//	public String two(Model model) {
+//
+//		return "two";
+//	}
+//
+//	@RequestMapping("/three")
+//	public String three(Model model) {
+//
+//		return "three";
+//	}
+//
+//	@RequestMapping("/captcha")
+//	public String captcha(Model model) {
+//
+//		return "Captcha";
+//	}
+//   @RequestMapping(value = "/validate")
+//   public String validateCaptcha(ModelMap model,
+//           HttpServletRequest request)
+//   {
+//       
+//       ReCaptchaImpl captcha = new ReCaptchaImpl();
+//       captcha.setPrivateKey("6LeeTusSAAAAAJ-XXXXXXXXXXXXXXXXXXXXXX");
+//       
+//       String challenge = request.getParameter("recaptcha_challenge_field");
+//       String uresponse = request.getParameter("recaptcha_response_field");
+//       ReCaptchaResponse reCaptchaResponse =
+//               captcha.checkAnswer(request.getRemoteAddr(),
+//               challenge, uresponse
+//           );
+//
+//       if (reCaptchaResponse.isValid()) {
+//           model.addAttribute("message", "Captcha Validated");
+//       } else {
+//           model.addAttribute("message", "Captcha Validated failed.");
+//       }
+//       return "result";
+//   }
+//}
