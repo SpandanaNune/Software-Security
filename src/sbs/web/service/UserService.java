@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sbs.web.dao.User;
 import sbs.web.dao.UsersDao;
+import sbs.web.models.User;
 
 
 @Service("userService")
@@ -23,5 +23,10 @@ private UsersDao usersDao;
 	}
 	public void createUser(User user){
 		usersDao.createUser(user);
+	}
+
+	public User validateUser(User user) {
+		User validatedUser = (User)usersDao.validateUser(user);
+		return validatedUser;
 	}
 }

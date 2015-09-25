@@ -1,4 +1,4 @@
-package sbs.web.dao;
+package sbs.web.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +22,16 @@ public class User {
 	//@Column(name = "password")
 	private String password;
 	
+	private String enabled;
+	
+	public String getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(String enabled) {
+		this.enabled = enabled;
+	}
+
 	
 	public User() {
 		

@@ -27,6 +27,7 @@
 	<property name="packagesToScan">
 		<list>
 			<value>sbs.web.dao</value>
+			<value>sbs.web.models</value>
 		</list>
 	</property>
 	</bean>

@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import sbs.web.dao.User;
+import sbs.web.models.User;
 import sbs.web.service.UserService;
 
 @Controller
@@ -22,86 +22,58 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public String showhome(Model model) {
-
-		// List<User> users = userService.getCurrent();
-		// User user = new User(29,"dsndjs", "smadhaxncxcnv2@gmail.com","c");
-		// userService.testSave(user);
-		
-	//	 model.addAttribute("offers", users);
+		System.out.println("showhome");
 		return "homepage";
 	}
 	
 	@RequestMapping("/viewuser")
 	public String showViewUser(Model model) {
-
+		System.out.println("showViewUser");
 		List<User> users = userService.getAllUsers();
-		model.addAttribute("users", users);
+		model.addAttribute("user", users);
 		return "viewuser";
 	}
 	
 	@RequestMapping(value="/registeruser")
 	public String showRegisterUser(Model model) {	
-
+		System.out.println("showRegisterUser");
 		model.addAttribute("user", new User());
 		return "registeruser";
 	}
+	@RequestMapping(value="/logout")
+	public String logoutUser(Model model) {	
+		
+		return "homepage";
+	}
+	
+	@RequestMapping(value="/mylogin")
+	public String loginUser(Model model) {	
+		System.out.println("loginUser");
+		model.addAttribute("userlogin", new User());
+		return "mylogin";
+	}
+
+	@RequestMapping(value="/loginbtn")
+	public String loginbtn(Model model,User user) {
+		System.out.println("loginbtn");
+		User validatedUser = userService.validateUser(user);
+		System.out.println("validatedUser " +validatedUser);
+		if(validatedUser != null){
+			model.addAttribute("loggeduser", user);
+			return "viewuser";
+			}
+		else
+			return "mylogin";
+			
+	}
+
+	
 	@RequestMapping(value="/docreate",method=RequestMethod.POST)
 	public String RegisterUser(Model model, User user) {	
-		
+		System.out.println("RegisterUser");
 		userService.createUser(user);
 		return "homepage";
 	}
 	
 
 }
-
-//	@RequestMapping("/one")
-//	public String one(Model model) {
-//		 List<User> users = userService.getCurrent();
-//			// User user = new User(29,"dsndjs", "smadhaxncxcnv2@gmail.com","c");
-//			// userService.testSave(user);
-//			
-//			 model.addAttribute("offers", users);
-//		return "one";
-//	}
-//
-//	@RequestMapping("/two")
-//	public String two(Model model) {
-//
-//		return "two";
-//	}
-//
-//	@RequestMapping("/three")
-//	public String three(Model model) {
-//
-//		return "three";
-//	}
-//
-//	@RequestMapping("/captcha")
-//	public String captcha(Model model) {
-//
-//		return "Captcha";
-//	}
-//   @RequestMapping(value = "/validate")
-//   public String validateCaptcha(ModelMap model,
-//           HttpServletRequest request)
-//   {
-//       
-//       ReCaptchaImpl captcha = new ReCaptchaImpl();
-//       captcha.setPrivateKey("6LeeTusSAAAAAJ-XXXXXXXXXXXXXXXXXXXXXX");
-//       
-//       String challenge = request.getParameter("recaptcha_challenge_field");
-//       String uresponse = request.getParameter("recaptcha_response_field");
-//       ReCaptchaResponse reCaptchaResponse =
-//               captcha.checkAnswer(request.getRemoteAddr(),
-//               challenge, uresponse
-//           );
-//
-//       if (reCaptchaResponse.isValid()) {
-//           model.addAttribute("message", "Captcha Validated");
-//       } else {
-//           model.addAttribute("message", "Captcha Validated failed.");
-//       }
-//       return "result";
-//   }
-//}

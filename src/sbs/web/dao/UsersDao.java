@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import sbs.web.models.User;
+
 @Transactional
 @Component("usersDao")
 public class UsersDao {
@@ -25,5 +27,9 @@ public class UsersDao {
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers(){
 		return session().createQuery("from User").list();
+	}
+	public Object validateUser(User user) {
+		org.hibernate.Query query = session().createQuery("from User where username = '"+user.getUsername()+"' and password ='"+user.getPassword()+"'");
+		return query.uniqueResult();
 	}
 }

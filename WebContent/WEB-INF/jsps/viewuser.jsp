@@ -8,8 +8,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
-<body>Welcome to Page 2
-
-<c:out value="${users}"></c:out>
+<body>You are logged in
+<c:out value="${loggeduser.getUsername()}"></c:out>
+<br>
+<br>
+<br>
+<br>
+<a href = "${pageContext.request.contextPath}/logout">Logout</a>
 </body>
 </html>
