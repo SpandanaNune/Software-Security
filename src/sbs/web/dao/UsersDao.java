@@ -22,6 +22,7 @@ public class UsersDao {
 	}
 	@Transactional
 	public void createUser(User user){
+		user.setEnabled(true);
 		session().save(user);
 	}
 	@SuppressWarnings("unchecked")
