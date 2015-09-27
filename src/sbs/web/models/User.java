@@ -22,13 +22,13 @@ public class User {
 	//@Column(name = "password")
 	private String password;
 	
-	private String enabled;
+	private boolean enabled;
 	
-	public String getEnabled() {
+	public boolean getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(String enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 

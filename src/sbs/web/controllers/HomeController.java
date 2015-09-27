@@ -1,5 +1,8 @@
 package sbs.web.controllers;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import sbs.web.models.User;
 import sbs.web.service.UserService;
+import sbs.web.utils.Utilities;
 
 @Controller
 public class HomeController {
@@ -57,23 +61,41 @@ public class HomeController {
 	public String loginbtn(Model model,User user) {
 		System.out.println("loginbtn");
 		User validatedUser = userService.validateUser(user);
+		
+		if(validatedUser != null)
+		
+		{
+		String[] splits = validatedUser.getPassword().split(",");
+		String storedHash = splits[0];
+		String salt = splits[1];
+		
+		String hashedPwd = Utilities.hash_SHA(user.getPassword()+salt);
+		
 		System.out.println("validatedUser " +validatedUser);
-		if(validatedUser != null){
+		if(hashedPwd.equalsIgnoreCase(storedHash))
+		{
+			System.out.println("Validated");
 			model.addAttribute("loggeduser", user);
 			return "viewuser";
 			}
-		else
-			return "mylogin";
-			
+		}		
+		model.addAttribute("userlogin",new User());	
+		return "mylogin";	
 	}
 
 	
 	@RequestMapping(value="/docreate",method=RequestMethod.POST)
 	public String RegisterUser(Model model, User user) {	
 		System.out.println("RegisterUser");
+		
+		String salt = Utilities.generateRandomAlphaNumeric();
+		String hashedPwd = Utilities.hash_SHA(user.getPassword()+salt);
+		String newPassword = hashedPwd+","+salt;
+		user.setPassword(newPassword);
 		userService.createUser(user);
 		return "homepage";
 	}
+	
 	
 
 }
