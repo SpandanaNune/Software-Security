@@ -30,7 +30,7 @@ public class UsersDao {
 		return session().createQuery("from User").list();
 	}
 	public Object validateUser(User user) {
-		org.hibernate.Query query = session().createQuery("from User where username = '"+user.getUsername()+"' and password ='"+user.getPassword()+"'");
+		org.hibernate.Query query = session().createQuery("from User where username = '"+user.getUsername()+"'");
 		return query.uniqueResult();
 	}
 }
