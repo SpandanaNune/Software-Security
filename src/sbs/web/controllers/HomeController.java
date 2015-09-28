@@ -40,6 +40,13 @@ public class HomeController {
 		model.addAttribute("user", new User());
 		return "registeruser";
 	}
+	
+	@RequestMapping(value="/signup")
+	public String showRegister(Model model) {	
+		model.addAttribute("externaluser", new User());
+		return "signup";
+	}
+	
 	@RequestMapping(value="/logout")
 	public String logoutUser(Model model) {	
 		

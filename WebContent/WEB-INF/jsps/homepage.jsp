@@ -20,28 +20,29 @@
 </head>
 <body>
 
- 	<div class="row-fluid">
+	<div class="row-fluid">
 		<div class="span4"></div>
 		<div class="span4">
 			<div class="hero-unit">
 				<h1>Hi There</h1>
 
 				<p>
-						 <a class="btn btn-primary btn-large"
+					<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/registeruser">Register
-						here</a>
-						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a>
+						here</a> <a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a> <a
+						class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
 				</p>
-				
+
 			</div>
 		</div>
 		<div class="span4"></div>
-	</div> 
- 
- 
-	
-<%-- <a href = "${pageContext.request.contextPath}/viewuser">Click Here to Login</a>
+	</div>
+
+
+
+	<%-- <a href = "${pageContext.request.contextPath}/viewuser">Click Here to Login</a>
  --%>
 
 </body>
