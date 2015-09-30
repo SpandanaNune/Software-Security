@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import sbs.web.dao.UsersDao;
 import sbs.web.models.User;
+import sbs.web.models.Users;
 
 
 @Service("userService")
@@ -28,5 +29,10 @@ private UsersDao usersDao;
 	public User validateUser(User user) {
 		User validatedUser = (User)usersDao.validateUser(user);
 		return validatedUser;
+	}
+	
+	public Users getUser(String username){
+		Users getuser = (Users) usersDao.getUser(username);
+		return getuser;
 	}
 }

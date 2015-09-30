@@ -33,4 +33,10 @@ public class UsersDao {
 		org.hibernate.Query query = session().createQuery("from User where username = '"+user.getUsername()+"'");
 		return query.uniqueResult();
 	}
+	
+	public Object getUser(String username) {
+		org.hibernate.Query query = session().createQuery("from Users where username = '"
+				+ username+"'");
+		return query.uniqueResult();
+	}
 }

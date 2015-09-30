@@ -1,8 +1,5 @@
 package sbs.web.controllers;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import sbs.web.models.User;
+import sbs.web.models.Users;
 import sbs.web.service.UserService;
 import sbs.web.utils.Utilities;
 
@@ -28,6 +26,24 @@ public class HomeController {
 	public String showhome(Model model) {
 		System.out.println("showhome");
 		return "homepage";
+	}
+	
+	@RequestMapping("/random")
+	public String showRandom() {
+		System.out.println("random page");
+		return "random";
+	}
+	@RequestMapping("/forgotpassword")
+	public String showForgotPassword() {
+		System.out.println("forgotpassword page");
+		Users user = userService.getUser("Arpit");
+		System.out.println(user);
+		return "forgotpassword";
+	}
+	@RequestMapping("/login")
+	public String showLogin() {
+		System.out.println("login page");
+		return "login";
 	}
 	
 	@RequestMapping("/viewuser")

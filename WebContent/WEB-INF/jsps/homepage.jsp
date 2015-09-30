@@ -30,9 +30,9 @@
 					<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/registeruser">Register
 						here</a> <a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a> <a
-						class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
+						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a> 
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/random">Random </a>
 				</p>
 
 			</div>
