@@ -41,6 +41,10 @@
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
 
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/random">Random </a>
+						<a href ="<c:url value ='/logout'/>">Log out</a>
+						
 				</p>
 
 			</div>

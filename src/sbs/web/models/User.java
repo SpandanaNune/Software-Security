@@ -4,48 +4,32 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "user")
 public class User {
-	
+
 	@Id
 	@Column(name = "userid")
 	private int userid;
-	
-	//@Column(name = "username")
+
+	// @Column(name = "username")
+	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
+	@NotNull
 	private String username;
-	
-	//@Column(name = "email")
+
+	// @Column(name = "email")
+	@NotNull
+	@Size(min = 5, max = 45, message = "Invalid Email Address")
 	private String email;
-	
-	//@Column(name = "password")
-	private String password;
-	
-	private boolean enabled;
-	
-	public boolean getEnabled() {
-		return enabled;
-	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	
-	public User() {
-		
-	}
-
-	public User(int userid, String username, String email, String password) {
-		this.userid = userid;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		
-	}
-
-	
+	// @Column(name = "password")
+	@Size(min = 5, max = 45, message = "firstname must be atleast 5 characters")
+	private String firstname;
+	@Size(min = 5, max = 45, message = "lastname must be atleast 5 characters")
+	private String lastname;
 	public int getUserid() {
 		return userid;
 	}
@@ -64,17 +48,22 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPassword() {
-		return password;
+	public String getFirstname() {
+		return firstname;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-	
+	public String getLastname() {
+		return lastname;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
 	@Override
 	public String toString() {
-		return "[userid=" + userid + ", username=" + username + ", email=" + email + ", password=" + password
-				+ "]";
+		return "User [userid=" + userid + ", username=" + username + ", email=" + email + ", firstname=" + firstname
+				+ ", lastname=" + lastname + "]";
 	}
-	
+
 }
