@@ -16,7 +16,7 @@
 
 <sf:form method="post"
 		action="${pageContext.request.contextPath}/docreate"
-		commandName="user">
+		commandName="externaluser">
 
 		<table class="formtable">
 			<tr>
@@ -24,6 +24,7 @@
 				<td><sf:input class="control" path="username" name="name"
 						type="text" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
 			</tr>
+		
 			<tr>
 				<td class="label">Password:</td>
 				<td><sf:input class="control" path="password" name="password"
