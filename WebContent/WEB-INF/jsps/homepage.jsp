@@ -32,6 +32,10 @@
 						here</a>
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a>
+							 <a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/sendOTP">Send OTP</a>
+							 <a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/verifyOTP">Verify OTP</a>
 				</p>
 				
 			</div>

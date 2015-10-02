@@ -40,9 +40,9 @@ public class HomeController {
 		model.addAttribute("user", new User());
 		return "registeruser";
 	}
+	
 	@RequestMapping(value="/logout")
 	public String logoutUser(Model model) {	
-		
 		return "homepage";
 	}
 	
