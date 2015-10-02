@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 
@@ -14,12 +13,12 @@
 	rel="stylesheet" type="text/css" />
 </head>
 <body>
-	User Registration page
+	Forgot Password page
 	<br />
 
 	<sf:form method="post"
-		action="${pageContext.request.contextPath}/registerbtn"
-		commandName="user">
+		action="${pageContext.request.contextPath}/resetpasswordbtn"
+		commandName="users">
 
 		<table class="formtable">
 			<tr>
@@ -29,19 +28,14 @@
 			</tr>
 
 			<tr>
-				<td class="label">FirstName:</td>
-				<td><sf:input class="control" path="firstname" name="firstname"
-						type="text" /><br /> <sf:errors path="firstname" Class="error"></sf:errors></td>
+				<td class="label">New Password:</td>
+				<td><sf:input class="control" path="password" name="password"
+						type="text" /><br /> <sf:errors path="password" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
-				<td class="label">LastName:</td>
-				<td><sf:input class="control" path="lastname" name="lastname"
-						type="text" /><br /> <sf:errors path="lastname" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td class="label">Email:</td>
-				<td><sf:input class="control" path="email" name="email"
-						type="text" /><br /> <sf:errors path="email" Class="error"></sf:errors></td>
+				<td class="label">Confirm Password:</td>
+				<td><input class="control"  name="confirmpassword"
+						type="text" /><br /></td>
 			</tr>
 			<tr>
 				<td class="label"></td>

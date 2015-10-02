@@ -22,7 +22,7 @@ public class UsersDao {
 	}
 	@Transactional
 	public void createUser(User user){
-		user.setEnabled(true);
+		//user.setEnabled(true);
 		session().save(user);
 	}
 	@SuppressWarnings("unchecked")
@@ -34,8 +34,13 @@ public class UsersDao {
 		return query.uniqueResult();
 	}
 	
-	public Object getUser(String username) {
+	public Object getUserbyUsername(String username) {
 		org.hibernate.Query query = session().createQuery("from Users where username = '"
+				+ username+"'");
+		return query.uniqueResult();
+	}
+	public Object getUserregisterbyUsername(String username) {
+		org.hibernate.Query query = session().createQuery("from User where username = '"
 				+ username+"'");
 		return query.uniqueResult();
 	}

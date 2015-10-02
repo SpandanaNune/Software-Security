@@ -31,8 +31,13 @@ private UsersDao usersDao;
 		return validatedUser;
 	}
 	
-	public Users getUser(String username){
-		Users getuser = (Users) usersDao.getUser(username);
+	public Users getUserbyUsername(String username){
+		Users getuser = (Users) usersDao.getUserbyUsername(username);
+		return getuser;
+	}
+	
+	public User getUserregisterbyUsername(String username){
+		User getuser = (User) usersDao.getUserregisterbyUsername(username);
 		return getuser;
 	}
 }
