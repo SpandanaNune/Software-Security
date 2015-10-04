@@ -32,11 +32,11 @@ public class PDFUtils {
 		      Font.BOLD);
 		  private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
 		      Font.BOLD);
-		  public static void generatePDF(ArrayList<Transaction> transactions) throws FileNotFoundException, DocumentException
+		  public static void generatePDF(ArrayList<Transaction> transactions,String filePath) throws FileNotFoundException, DocumentException
 		  {
-			  String fileName ="swetha";
-			  String home = System.getProperty("user.home");
-			  FILE = home+"\\Downloads\\" + fileName + ".pdf"; 
+			 
+			  FILE = filePath +".pdf";
+			 
 			  
 			  System.out.println(FILE);
 				String USER_PASS = "abc"; 	 

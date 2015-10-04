@@ -51,9 +51,13 @@ function showAlert()
 		</c:forEach>
 
 	</TABLE>
-	 <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">Download</button>
+	<!--  <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">Download</button>
+	 	 <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">E-Mail</button> -->
+	 
 	 </sf:form>
-	<%-- <a class="btn btn-primary btn-large"
-		href="${pageContext.request.contextPath}/downloadTransactions?transactions=	${transactions}" type="submi"> Download</a> --%>
+	  <a class="btn btn-primary btn-large"
+		href="${pageContext.request.contextPath}/downloadTransactions" type="submit"> Download</a> 
+		  <a class="btn btn-primary btn-large"
+		href="${pageContext.request.contextPath}/emailTransactions" type="submit"> Email </a> 
 </body>
 </html>
