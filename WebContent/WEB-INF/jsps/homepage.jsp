@@ -40,6 +40,9 @@
 
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/transactionhistory">Show transactions</a>
 
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/random">Random </a>

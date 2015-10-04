@@ -9,20 +9,12 @@
 <title>Login Page</title>
 <link href="${pageContext.request.contextPath}/static/css/main.css"
 	rel="stylesheet" type="text/css" />
-
-
-
-
 </head>
 <body onload='document.f.j_username.focus();'>
 	<h3>Login with Username and Password</h3>
-
 	<c:if test="${param.error != null}">
-
-
 		<p class = "error">Login failed. Check your Login credentials.</p>
 	</c:if>
-
 	<form name='f' action="${pageContext.request.contextPath}/login"
 		method="POST">
 

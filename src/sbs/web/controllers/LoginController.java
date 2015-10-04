@@ -33,11 +33,11 @@ public class LoginController {
 		return "login";
 	}
 	
-	@RequestMapping("/logout")
-	public String showLoggedOut() {
-		System.out.println("login page");
-		return "loggedout";
-	}
+//	@RequestMapping("/logout")
+//	public String showLoggedOut() {
+//		System.out.println("login page");
+//		return "loggedout";
+//	}
 	
 	@RequestMapping("/forgotpassword")
 	public String showForgotPassword(Model model) {
