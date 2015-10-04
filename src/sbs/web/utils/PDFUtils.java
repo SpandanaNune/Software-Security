@@ -35,8 +35,7 @@ public class PDFUtils {
 		  public static void generatePDF(ArrayList<Transaction> transactions,String filePath) throws FileNotFoundException, DocumentException
 		  {
 			 
-			  FILE = filePath +".pdf";
-			 
+			  FILE = filePath;
 			  
 			  System.out.println(FILE);
 				String USER_PASS = "abc"; 	 

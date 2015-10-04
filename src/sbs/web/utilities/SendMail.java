@@ -70,7 +70,7 @@ public class SendMail {
 	        
 			 MimeBodyPart attachPart = new MimeBodyPart();
              try {
-                 attachPart.attachFile(filePath+".pdf");
+                 attachPart.attachFile(filePath);
              } catch (IOException ex) {
                  ex.printStackTrace();
              }

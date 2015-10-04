@@ -1,5 +1,6 @@
 package sbs.web.controllers;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class TransactionController {
 			user.setLastname("swaminathan");
 			user.setUsername("sswetha2809");
 			  String home = System.getProperty("user.home");
-			  String filePath = home+"\\Downloads\\" + user.getFirstname(); 
+			  String filePath = home+"\\Downloads\\" + user.getFirstname()+".pdf"; 
 			PDFUtils.generatePDF(transactions,filePath);
 
 		} catch (FileNotFoundException | DocumentException e) {
@@ -59,7 +60,6 @@ public class TransactionController {
 		}
 		
 		model.addAttribute("transactions", transactions);
-
 
 		return "transactionhistory";
 	}
@@ -76,11 +76,20 @@ public class TransactionController {
 				user.setFirstname("swetha");
 				user.setLastname("swaminathan");
 				user.setUsername("sswetha2809");
-				String path = context.getRealPath("/WEB-INF/temp")+"//"+user.getFirstname();
-				 System.out.println(path);
+				// saving the generated pdf to a temp folder for e-mailing
+				String path = context.getRealPath("/WEB-INF/temp")+"//"+user.getFirstname()+".pdf";
 				PDFUtils.generatePDF(transactions,path);
 
 				SendMail.sendStatement(user,path);
+				
+				// delete the temp file after sending e-mail
+				
+				File file = new File(path);
+				if(file.delete()){
+	    			System.out.println(file.getName() + " is deleted!");
+	    		}else{
+	    			System.out.println("Delete operation is failed.");
+	    		}
 
 		} catch (FileNotFoundException | DocumentException e) {
 			e.printStackTrace();
