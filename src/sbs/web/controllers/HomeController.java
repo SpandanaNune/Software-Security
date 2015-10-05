@@ -102,26 +102,17 @@ public class HomeController {
 		return "registeruser";
 	}
 
+	// @RequestMapping(value="/logout")
+	// public String logoutUser(Model model) {
+	// return "homepage";
+	// }
 
-	@RequestMapping(value="/signup")
-	public String showRegister(Model model) {	
-		model.addAttribute("externaluser", new User());
-		return "signup";
-	}
-	
-
-	@RequestMapping(value="/logout")
-	public String logoutUser(Model model) {	
-		return "homepage";
-	}
-	
-	@RequestMapping(value="/mylogin")
-	public String loginUser(Model model) {	
+	@RequestMapping(value = "/mylogin")
+	public String loginUser(Model model) {
 		System.out.println("loginUser");
 		model.addAttribute("userlogin", new User());
 		return "mylogin";
 	}
-
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 	public String RegisterUser(@Valid User user, BindingResult result) {
@@ -135,20 +126,20 @@ public class HomeController {
 		if (uniqueUser == null) {
 			userService.createUser(user);
 			return "homepage";
-		}else{
+		} else {
 			System.out.println("Caught duplicate Username");
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			return "registeruser";
 		}
-		
-
-		// String salt = Utilities.generateRandomAlphaNumeric();
-		// String hashedPwd = Utilities.hash_SHA(user.getPassword()+salt);
-		// String newPassword = hashedPwd+","+salt;
-		// user.setPassword(newPassword);
-		// userService.createUser(user);
 
 	}
+
+	
+	// String salt = Utilities.generateRandomAlphaNumeric();
+	// String hashedPwd = Utilities.hash_SHA(user.getPassword()+salt);
+	// String newPassword = hashedPwd+","+salt;
+	// user.setPassword(newPassword);
+	// userService.createUser(user);
 
 	// @RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
 	// public String resetPassword(Model model, @Valid Users users,

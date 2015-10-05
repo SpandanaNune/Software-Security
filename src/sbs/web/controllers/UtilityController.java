@@ -37,8 +37,8 @@ public class UtilityController {
 	public String verifyUserMailID(User user, Model model) {
 		System.out.println("showViewUser");
 //		String mail=user.getEmail();
-		String mail="mallikarjunbpbp@gmail.com";
-		String firstName="Mallikarjun";
+		String mail="khanjan.ce@gmail.com";
+		String firstName="Khanjan";
 		//generate otp
 		String otp=generatePassword();
 		System.out.println("otp "+otp);
@@ -65,8 +65,8 @@ public class UtilityController {
 	public String verifyUserOTP(User user, Model model) {
 		System.out.println("showViewUser");
 //		String mail=user.getEmail();
-		String mail="mallikarjunbpbp@gmail.com";
-		String firstName="Mallikarjun";
+		String mail="khanjan.ce@gmail.com";
+		String firstName="Khanjan";
 		String otp="CIZ0R11V";
 		OTP otpObj = new OTP();
 		otpObj.setFirstName(firstName);

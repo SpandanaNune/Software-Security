@@ -35,7 +35,6 @@ public class UtilityDao {
 		query.setParameter("attempts", otpObj.getAttempts());
 		query.setParameter("mailID", otpObj.getMailID());
 		query.executeUpdate();
-
 	}
 	public void deleteOTP(OTP otpObj) {
 		System.out.println("Too many attempts. Deleting the OTP");

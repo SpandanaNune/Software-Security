@@ -71,11 +71,11 @@
 	rel="stylesheet" type="text/css" />
 </head>
 <body>
-	User Registration page
+	Edit User Details
 	<br />
 
 	<sf:form method="post"
-		action="${pageContext.request.contextPath}/registerbtn"
+		action="${pageContext.request.contextPath}/updatebtn"
 		commandName="user">
 
 		<table class="formtable">
@@ -95,7 +95,7 @@
 				<td><sf:input class="control" path="lastname" name="lastname"
 						type="text" /><br /> <sf:errors path="lastname" Class="error"></sf:errors></td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<td class="label">Email:</td>
 				<td><sf:input class="control" path="email" name="email"
 						type="text" /><br /> <sf:errors path="email" Class="error"></sf:errors></td>
@@ -103,7 +103,7 @@
 			<tr>
 				<td class="label"></td>
 				<td><input class="control" value="Verify" type="button" /></td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<td class="label">Phone:</td>
 				<td><sf:input class="control" path="phone" name="phone"
@@ -114,11 +114,11 @@
 				<td><sf:input class="control" path="SSN" name="SSN" type="text" /><br />
 					<sf:errors path="SSN" Class="error"></sf:errors></td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<td class="label">Date of Birth (mm/dd/yyyy):</td>
 				<td><sf:input class="control" path="dob" name="dob" type="text" /><br />
 					<sf:errors path="dob" Class="error"></sf:errors></td>
-			</tr>
+			</tr> --%>
 
 			<tr>
 				<td class="label">Address Line 1:</td>
@@ -150,7 +150,7 @@
 			</tr>
 			<tr>
 				<td class="label"></td>
-				<td><input class="control" value="Register" type="submit" /></td>
+				<td><input class="control" value="Update" type="submit" /></td>
 			</tr>
 		</table>
 		<input type="hidden" name="${_csrf.parameterName}"
