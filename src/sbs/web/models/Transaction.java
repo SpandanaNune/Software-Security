@@ -20,6 +20,8 @@ public class Transaction {
 	private double amount;
 	@Column(name = "status")
 	private String status;
+	@Column(name = "isCritical")
+	private boolean isCritical;
 	
 	public Transaction_CompositeKey getPrimaryKey() {
 		return primaryKey;
