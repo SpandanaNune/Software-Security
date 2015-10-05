@@ -110,10 +110,10 @@ public class HomeController {
 	}
 	
 
-	@RequestMapping(value="/logout")
-	public String logoutUser(Model model) {	
-		return "homepage";
-	}
+//	@RequestMapping(value="/logout")
+//	public String logoutUser(Model model) {	
+//		return "homepage";
+//	}
 	
 	@RequestMapping(value="/mylogin")
 	public String loginUser(Model model) {	
