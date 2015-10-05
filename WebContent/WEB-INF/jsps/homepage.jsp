@@ -19,10 +19,10 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-<!-- 
+
 	<div class="row-fluid">
 		<div class="span4"></div>
-		<div class="span4"> -->
+		<div class="span4">
 			<div class="hero-unit">
 				<h1>Hi There</h1>
 
@@ -40,17 +40,20 @@
 
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/transactionhistory">Show transactions</a>
 
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/random">Random </a>
-						<%-- <a href ="<c:url value ='/logout'/>">Log out</a> --%>
+						<a href ="<c:url value ='/logout'/>">Log out</a>
 						
 				</p>
 
 			</div>
-		<!-- </div>
+		</div>
 		<div class="span4"></div>
-	</div> -->
+	</div>
 
 
 
