@@ -9,11 +9,10 @@ import sbs.web.dao.UsersDao;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 
-
 @Service("userService")
 public class UserService {
-private UsersDao usersDao;
-	
+	private UsersDao usersDao;
+
 	@Autowired
 	public void setUserDao(UsersDao usersDao) {
 		this.usersDao = usersDao;
@@ -22,22 +21,35 @@ private UsersDao usersDao;
 	public List<User> getAllUsers() {
 		return usersDao.getAllUsers();
 	}
-	public void createUser(User user){
+
+	public void createUser(User user) {
 		usersDao.createUser(user);
 	}
 
 	public User validateUser(User user) {
-		User validatedUser = (User)usersDao.validateUser(user);
+		User validatedUser = (User) usersDao.validateUser(user);
 		return validatedUser;
 	}
-	
-	public Users getUserbyUsername(String username){
+
+	public Users getUserbyUsername(String username) {
 		Users getuser = (Users) usersDao.getUserbyUsername(username);
 		return getuser;
 	}
-	
-	public User getUserregisterbyUsername(String username){
+
+	public User getUserregisterbyUsername(String username) {
 		User getuser = (User) usersDao.getUserregisterbyUsername(username);
 		return getuser;
+	}
+
+	public List<User> getAllNewUsers() {
+		return usersDao.getAllNewUsers();
+	}
+
+	public void deleteUserRequest(String username) {
+		usersDao.deleteUserRequest(username);
+	}
+	
+	public void userActivation(Users users){
+		usersDao.userActivation(users);
 	}
 }

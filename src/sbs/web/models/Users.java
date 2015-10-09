@@ -26,6 +26,7 @@ public class Users {
 		this.username = username;
 	}
 
+	
 	public String getPassword() {
 		return password;
 	}
@@ -73,5 +74,5 @@ public class Users {
 				+ ", credentialsNonExpired=" + credentialsNonExpired + "]";
 	}
 
-	
+
 }

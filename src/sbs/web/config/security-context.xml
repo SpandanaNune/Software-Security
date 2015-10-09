@@ -22,8 +22,8 @@
 			access="hasRole('ROLE_USER')" />
 		<security:intercept-url pattern="/systemadmin"
 			access="hasRole('ROLE_ADMIN')" />
-		<security:intercept-url pattern="/manager"
-			access="hasRole('ROLE_MANAGER')" />
+		<!-- <security:intercept-url pattern="/manager"
+			access="hasRole('ROLE_MANAGER')" /> -->
 		<security:intercept-url pattern="/mylogin"
 			access="permitAll" />
 		<security:intercept-url pattern="/" access="permitAll" />
@@ -41,5 +41,6 @@
 			password-parameter="j_password" username-parameter="j_username" />
 		<security:logout logout-success-url="/loggedout"
 			logout-url="/logout" invalidate-session="true" />
+		<security:session-management></security:session-management>
 	</security:http>
 </beans>
