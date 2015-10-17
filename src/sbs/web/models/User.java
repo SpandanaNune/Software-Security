@@ -150,7 +150,6 @@
 //	
 //}
 
-
 package sbs.web.models;
 
 import java.lang.annotation.Documented;
@@ -172,11 +171,8 @@ import org.hibernate.validator.constraints.Email;
 @Entity
 @Table(name = "userregister")
 public class User {
-
+	
 	@Id
-	@Column(name = "userid")
-	private int userid;
-
 	// @Column(name = "username")
 	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
 	@NotNull
@@ -226,6 +222,7 @@ public class User {
 	@NotNull
 	@Pattern(regexp="^[0-9]{5}$", message="Incorrect Zip Code")
 	private String Zip;
+	
 	private boolean canlogin;
 	private boolean isnewuser;
 	
@@ -241,12 +238,7 @@ public class User {
 	public void setIsnewuser(boolean isnewuser) {
 		this.isnewuser = isnewuser;
 	}
-	public int getUserid() {
-		return userid;
-	}
-	public void setUserid(int userid) {
-		this.userid = userid;
-	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -321,14 +313,9 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [userid=" + userid + ", username=" + username + ", email=" + email + ", firstname=" + firstname
+		return "User [username=" + username + ", email=" + email + ", firstname=" + firstname
 				+ ", lastname=" + lastname + ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone + ", Addr1=" + Addr1
 				+ ", Addr2=" + Addr2 + ", City=" + City + ", State=" + State + ", Zip=" + Zip + ", canlogin=" + canlogin
 				+ ", isnewuser=" + isnewuser + "]";
 	}
-	
-
-	
-	
-
 }

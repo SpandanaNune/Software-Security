@@ -14,29 +14,28 @@
 <title>Insert title here</title>
 </head>
 <body>
-View/Edit User details.
+	User SignUp Requests
+
 	<table class="offers">
 		<tr>
-			<td>UserName</td>
-			<td>FirstName</td>
-			<td>LastName</td>
-			<td>Email</td>
+			<td>Account Number</td>
+			<td>Transaction Type</td>
+			<td>Amount</td>
 			<td>Action</td>
 		</tr>
 
-		<c:forEach var="user" items="${user}">
+		<c:forEach var="transaction" items="${transaction}">
 			<tr>
 
-				<td><c:out value="${user.getUsername()}"></c:out></td>
+				<td><c:out value="${transaction.getPrimaryKey()}"></c:out></td>
 
-				<td><c:out value="${user.getFirstname()}"></c:out></td>
+				<td><c:out value="${transaction.getTransactionType()}"></c:out></td>
 
-				<td><c:out value="${user.getLastname()}"></c:out></td>
+				<td><c:out value="${transaction.getAmount()}"></c:out></td>
 
-				<td><c:out value="${user.getEmail()}"></c:out></td>
 				<td><form method="post"
 						action="${pageContext.request.contextPath}/editbtn">
-						<input type="hidden" name="View/Edit" value="${user.getUsername()}" />
+						<input type="hidden" name="Approve" value="ok" />
 						<input class="control" value="View/Edit" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />

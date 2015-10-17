@@ -3,6 +3,7 @@ package sbs.web.controllers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -99,5 +100,12 @@ public class TransactionController {
 
 
 		return "transactionhistory";
+	}
+	
+	@RequestMapping(value = "/approvetransaction")
+	public String ApproveTransaction(Model model){
+		List<Transaction> transction = transactionService.getAllCriticalTransaction();
+		model.addAttribute("transaction", transction);
+		return "approvetransaction";
 	}
 }

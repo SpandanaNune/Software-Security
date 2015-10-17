@@ -95,12 +95,7 @@ public class HomeController {
 	// return "mylogin";
 	// }
 
-	@RequestMapping(value = "/registeruser")
-	public String showRegisterUser(Model model) {
-		System.out.println("showRegisterUser");
-		model.addAttribute("user", new User());
-		return "registeruser";
-	}
+	
 
 	// @RequestMapping(value="/logout")
 	// public String logoutUser(Model model) {
@@ -113,17 +108,26 @@ public class HomeController {
 		model.addAttribute("userlogin", new User());
 		return "mylogin";
 	}
+	@RequestMapping(value = "/registeruser")
+	public String showRegisterUser(Model model) {
+		System.out.println("showRegisterUser");
+		model.addAttribute("user", new User());
+		return "registeruser";
+	}
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-	public String RegisterUser(@Valid User user, BindingResult result) {
+	public String RegisterUser(@Valid User user, BindingResult result,Model model) {
 
 		if (result.hasErrors()) {
-			// model.addAttribute("user", user);
 			return "registeruser";
 		}
 
 		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
 		if (uniqueUser == null) {
+			System.out.println(user);
+			user.setIsnewuser(true);
+			user.setCanlogin(false);
+			
 			userService.createUser(user);
 			return "homepage";
 		} else {
@@ -131,22 +135,5 @@ public class HomeController {
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			return "registeruser";
 		}
-
 	}
-
-	
-	// String salt = Utilities.generateRandomAlphaNumeric();
-	// String hashedPwd = Utilities.hash_SHA(user.getPassword()+salt);
-	// String newPassword = hashedPwd+","+salt;
-	// user.setPassword(newPassword);
-	// userService.createUser(user);
-
-	// @RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
-	// public String resetPassword(Model model, @Valid Users users,
-	// BindingResult result) {
-	// Users user = userService.getUserbyUsername(users.getUsername());
-	// System.out.println(user);
-	// return "homepage";
-	// }
-
 }

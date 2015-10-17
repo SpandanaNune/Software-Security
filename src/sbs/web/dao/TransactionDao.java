@@ -31,4 +31,8 @@ public class TransactionDao {
 	public List<Transaction> getAllTransactions(int accountNo){
 		return session().createQuery("from Transaction where accountNo="+accountNo).list();
 	}
+	
+	public List<Transaction> getAllCriticalTransaction(){
+		return session().createQuery("from Transaction where isCritical = 1").list();
+	}
 }

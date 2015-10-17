@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 
@@ -25,12 +26,15 @@ public class UsersDao {
 
 	@Transactional
 	public void createUser(User user) {
-		// user.setEnabled(true);
-		session().save(user);
+		session().saveOrUpdate(user);
+	}
+	
+	public void setAuthority(Authorities auth){
+		session().save(auth);
 	}
 	
 	public void userActivation(Users users) {
-		session().save(users);
+		session().saveOrUpdate(users);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,12 +62,26 @@ public class UsersDao {
 	}
 
 	public void deleteUserRequest(String username) {
-		String hql = "UPDATE User set isnewuser = :isnewuser_ " + "WHERE username = :username_";
-		Query query = session().createQuery(hql);
-		query.setParameter("isnewuser_", false);
-		query.setParameter("username_", username);
-		int result = query.executeUpdate();
-		System.out.println("Rows affected: " + result);
+		
+		User user = (User)getUserregisterbyUsername(username);
+			session().delete(user);
+		
+//		String hql = "UPDATE User set isnewuser = :isnewuser_ " + "WHERE username = :username_";
+//		Query query = session().createQuery(hql);
+//		query.setParameter("isnewuser_", false);
+//		query.setParameter("username_", username);
+//		int result = query.executeUpdate();
+//		System.out.println("Rows affected: " + result);
 	}
+	
+	public List<User> getAllActiveUsers(){
+		return session().createQuery("from User where canlogin = 1").list();	
+	}
+	
+	
+//	public List<User> getAllActiveUsers(){
+//		String hql = "from User ur, Users us where ur.username = us.username and us.enabled = 1";
+//		return session().createQuery(hql).list();	
+//	}
 
 }

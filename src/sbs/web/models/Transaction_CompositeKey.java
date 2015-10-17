@@ -23,6 +23,8 @@ public class Transaction_CompositeKey implements Serializable{
 	public void setAccountNo(int accountNo) {
 		this.accountNo = accountNo;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "[transactionId=" + transactionId + ", accountNo=" + accountNo + "]";
+	}
 }

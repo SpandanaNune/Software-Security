@@ -20,6 +20,8 @@
 </head>
 <body>
 
+	<c:out value="${user.getUsername()}"></c:out>
+
 	<div class="row-fluid">
 		<div class="span4"></div>
 		<div class="span4">
