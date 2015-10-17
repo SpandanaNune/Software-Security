@@ -22,6 +22,10 @@ public class TransactionService {
 	public List<Transaction> getAllTransactions(int accountNo){
 		return transactionDao.getAllTransactions(accountNo);
 	}
+	
+	public List<Transaction> getAllCriticalTransaction(){
+		return transactionDao.getAllCriticalTransaction();
+	}
 
 	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
 		transactionDao.addTransactions(fromTransaction, toTransaction);

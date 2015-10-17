@@ -30,6 +30,11 @@ public class TransactionDao {
 	public List<Transaction> getAllTransactions(int accountNo){
 		return session().createQuery("from Transaction where accountNo="+accountNo).list();
 	}
+	
+	public List<Transaction> getAllCriticalTransaction(){
+		return session().createQuery("from Transaction where isCritical = 1").list();
+	}
+
 	//check if we need to add transactional
 	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
 		session().save(fromTransaction);
