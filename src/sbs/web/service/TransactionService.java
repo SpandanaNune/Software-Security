@@ -31,6 +31,5 @@ public class TransactionService {
 		transactionDao.addTransactions(fromTransaction, toTransaction);
 		
 	}
-	
 
 }
