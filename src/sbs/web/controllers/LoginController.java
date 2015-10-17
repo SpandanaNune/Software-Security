@@ -106,7 +106,7 @@ public class LoginController {
 
 		Authorities auth = new Authorities();
 		auth.setUsername(username);
-		auth.setAuthority("ROLE_USER");
+		auth.setAuthority("ROLE_NEW");
 		
 		userService.userActivation(users);
 		userService.setAuthority(auth);

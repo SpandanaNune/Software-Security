@@ -47,6 +47,13 @@
 						href="${pageContext.request.contextPath}/transactionhistory">Show transactions</a>
 						
 						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/welcome">welcome</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/userconfirm">UserConfirmation</a>
+						
+						
+						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/createTransaction">Make transactions</a>
 						
 						<a class="btn btn-primary btn-large"

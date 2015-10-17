@@ -30,7 +30,7 @@ public class UsersDao {
 	}
 	
 	public void setAuthority(Authorities auth){
-		session().save(auth);
+		session().saveOrUpdate(auth);
 	}
 	
 	public void userActivation(Users users) {

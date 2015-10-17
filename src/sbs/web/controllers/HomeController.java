@@ -1,5 +1,6 @@
 package sbs.web.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,7 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import sbs.web.models.Authorities;
 import sbs.web.models.User;
+import sbs.web.models.Users;
 import sbs.web.service.UserService;
 
 @Controller
@@ -123,6 +126,41 @@ public class HomeController {
 		System.out.println("showRegisterUser");
 		model.addAttribute("user", new User());
 		return "registeruser";
+	}
+	
+	@RequestMapping(value = "/userconfirm")
+	public String showUserConfirmation(Model model) {
+		System.out.println("User Confirmation");
+		model.addAttribute("users", new Users());
+		return "userconfirm";
+	}
+	@RequestMapping(value = "/welcome")
+	public String showWelcome() {
+		System.out.println("SHOW WELCOME");
+		return "welcome";
+	}
+	
+	@RequestMapping(value = "/activateuser", method = RequestMethod.POST)
+	public String ActivateUser(@Valid Users users, BindingResult result,  Principal principal) {
+		String uname=principal.getName();
+		System.out.println(uname);
+//		if (result.hasErrors()) {
+//			// model.addAttribute("user", user);
+//			return "userconfirmation";
+//		}
+		users.setUsername(uname);
+		users.setAccountNonExpired(true);
+		users.setAccountNonLocked(true);
+		users.setEnabled(true);
+		users.setCredentialsNonExpired(true);
+		
+		Authorities auth = new Authorities();
+		auth.setUsername(uname);
+		auth.setAuthority("ROLE_USER");
+		userService.setAuthority(auth);
+
+		userService.userActivation(users);
+		return "homepage";
 	}
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
