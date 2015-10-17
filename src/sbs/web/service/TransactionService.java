@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sbs.web.dao.TransactionDao;
-import sbs.web.dao.UsersDao;
+import sbs.web.models.Accounts;
 import sbs.web.models.Transaction;
 
 @Service("transactionService")
@@ -26,4 +26,11 @@ public class TransactionService {
 	public List<Transaction> getAllCriticalTransaction(){
 		return transactionDao.getAllCriticalTransaction();
 	}
+
+	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
+		transactionDao.addTransactions(fromTransaction, toTransaction);
+		
+	}
+	
+
 }

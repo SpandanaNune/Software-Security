@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import sbs.web.models.Transaction;
-import sbs.web.models.User;
 
 @Transactional
 @Component("transactionDao")
@@ -35,4 +34,13 @@ public class TransactionDao {
 	public List<Transaction> getAllCriticalTransaction(){
 		return session().createQuery("from Transaction where isCritical = 1").list();
 	}
+
+	//check if we need to add transactional
+	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
+		session().save(fromTransaction);
+		System.out.println(fromTransaction.getPrimaryKey().getTransactionID());
+		System.out.println(toTransaction.getPrimaryKey().getTransactionID());
+		session().save(toTransaction);
+	}
+	
 }

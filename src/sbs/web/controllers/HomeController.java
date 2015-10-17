@@ -97,10 +97,20 @@ public class HomeController {
 
 	
 
-	// @RequestMapping(value="/logout")
-	// public String logoutUser(Model model) {
-	// return "homepage";
-	// }
+
+
+	@RequestMapping(value="/signup")
+	public String showRegister(Model model) {	
+		model.addAttribute("externaluser", new User());
+		return "signup";
+	}
+	
+
+//	@RequestMapping(value="/logout")
+//	public String logoutUser(Model model) {	
+//		return "homepage";
+//	}
+	
 
 	@RequestMapping(value = "/mylogin")
 	public String loginUser(Model model) {

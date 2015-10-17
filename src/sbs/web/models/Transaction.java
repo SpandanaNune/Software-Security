@@ -47,6 +47,11 @@ public class Transaction {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+	public boolean isCritical() {
+		return isCritical;
+	}
+	public void setCritical(boolean isCritical) {
+		this.isCritical = isCritical;
+	}
 }
 

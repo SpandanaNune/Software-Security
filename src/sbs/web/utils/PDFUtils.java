@@ -101,7 +101,7 @@ public class PDFUtils {
 			    
 			    for(Transaction t: transactions)
 			    {
-			    	table.addCell(String.valueOf(t.getPrimaryKey().getTransactionId()));
+			    	table.addCell(String.valueOf(t.getPrimaryKey().getTransactionID()));
 			    	table.addCell(t.getTransactionType());
 			    	table.addCell(String.valueOf(t.getAmount()));
 			    	table.addCell(t.getStatus());

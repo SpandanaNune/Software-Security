@@ -7,15 +7,18 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Transaction_CompositeKey implements Serializable{ 
+	
 	@Column(name = "transactionId")
-	private int transactionId;
+	 int transactionID=1000;
+	
 	@Column(name = "accountNo")
 	private int accountNo;
-	public int getTransactionId() {
-		return transactionId;
+	
+	public int getTransactionID() {
+		return transactionID;
 	}
-	public void setTransactionId(int transactionId) {
-		this.transactionId = transactionId;
+	public void setTransactionID(int transactionID) {
+		this.transactionID = transactionID;
 	}
 	public int getAccountNo() {
 		return accountNo;
@@ -25,6 +28,6 @@ public class Transaction_CompositeKey implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "[transactionId=" + transactionId + ", accountNo=" + accountNo + "]";
+		return "[transactionId=" + transactionID + ", accountNo=" + accountNo + "]";
 	}
 }

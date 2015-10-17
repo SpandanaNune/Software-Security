@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itextpdf.text.DocumentException;
 
+import sbs.web.models.Accounts;
 import sbs.web.models.Transaction;
+import sbs.web.models.Transaction_CompositeKey;
 import sbs.web.models.User;
 import sbs.web.service.TransactionService;
 import sbs.web.utilities.SendMail;
@@ -24,7 +26,7 @@ import sbs.web.utils.PDFUtils;
 @Controller
 public class TransactionController {
 	
-	
+	static int transactionIDCounter=1000;
 	TransactionService transactionService;
 	
 	@Autowired
@@ -32,6 +34,54 @@ public class TransactionController {
 		this.transactionService = transactionService;
 	}
 
+	
+	@RequestMapping(value="/createTransaction")
+	public String createTransactions(Model model) {	
+		
+		String fromUserAccount ="1000";
+		String toUserAccount ="2000";
+		String amount="233.45";
+		//add everything to transaction class and insert into db
+		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
+		fromCompositeKey.setAccountNo(Integer.parseInt(fromUserAccount));
+		fromCompositeKey.setTransactionID(++transactionIDCounter);
+		
+		//populate Transaction data
+		Transaction fromTransaction = new Transaction();
+		fromTransaction.setPrimaryKey(fromCompositeKey);
+		fromTransaction.setAmount(Double.parseDouble(amount));
+		fromTransaction.setTransactionType("Debit");
+		fromTransaction.setCritical(false);
+		//set status
+		if(Double.parseDouble(amount) >1000){
+			fromTransaction.setCritical(true);
+		}
+		
+		
+		//set same transaction ID for to account
+		Transaction_CompositeKey toCompositeKey = new Transaction_CompositeKey();
+		toCompositeKey.setAccountNo(Integer.parseInt(toUserAccount));
+		toCompositeKey.setTransactionID(transactionIDCounter);
+		Transaction toTransaction = new Transaction();
+		toTransaction.setPrimaryKey(toCompositeKey);
+		toTransaction.setAmount(Double.parseDouble(amount));
+		toTransaction.setTransactionType("Credit");
+		toTransaction.setCritical(false);
+		//set status
+		if(Double.parseDouble(amount) >1000){
+			toTransaction.setCritical(true);
+		}
+		try{
+			transactionService.addTransactions(fromTransaction, toTransaction);
+	//		model.addAttribute("transactions", transactions);
+		}
+		catch ( Exception e) {
+			e.printStackTrace();
+		}
+		return "homepage";
+	
+	}
+	
 	@RequestMapping(value="/transactionhistory")
 	public String showTransactions(Model model) {	
 		model.addAttribute("name","swetha");
