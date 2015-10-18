@@ -40,12 +40,15 @@ public class UserService {
 		Users getuser = (Users) usersDao.getUserbyUsername(username);
 		return getuser;
 	}
-
+	public Users getUserbyField(String field, String value)
+	{
+		Users getuser = (Users) usersDao.getUserbyField(field, value);
+		return getuser;
+	}
 	public User getUserregisterbyUsername(String username) {
 		User getuser = (User) usersDao.getUserregisterbyUsername(username);
 		return getuser;
 	}
-
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}

@@ -21,8 +21,6 @@ public class MTBCPKIUtility {
 			random = new SecureRandom();
 			publicPrivateKey.initialize(keySize, random);
 			KeyPair publicPrivateKeyPair = publicPrivateKey.generateKeyPair();
-			System.out.println("Public key1: " + publicPrivateKeyPair.getPublic());
-			System.out.println("Private key2: " + publicPrivateKeyPair.getPrivate());
 			return publicPrivateKeyPair;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -52,33 +50,6 @@ public class MTBCPKIUtility {
 		}
 	}
 
-	/**
-	 * Returns true if the specified text is encrypted, false otherwise
-	 */
-	public static boolean isEncrypted(String text) {
-		// If the string does not have any separators then it is not
-		// encrypted
-		if (text.indexOf('-') == -1) {
-			/// System.out.println( "text is not encrypted: no dashes" );
-			return false;
-		}
-
-		StringTokenizer st = new StringTokenizer(text, "-", false);
-		while (st.hasMoreTokens()) {
-			String token = st.nextToken();
-			if (token.length() > 3) {
-				return false;
-			}
-			for (int i = 0; i < token.length(); i++) {
-				if (!Character.isDigit(token.charAt(i))) {
-					return false;
-				}
-			}
-		}
-		// System.out.println( "text is encrypted" );
-		return true;
-	}
-
 	public String SaveKeyPair(KeyPair keyPair, String userID) throws IOException {
 		PrivateKey privateKey = keyPair.getPrivate();
 		PublicKey publicKey = keyPair.getPublic();
@@ -99,7 +70,15 @@ public class MTBCPKIUtility {
 		
 		return keyPath;
 	}
-
+	
+	public boolean deletePrivateKey(String keyPath)
+	{
+		File filePrivateKey = new File(keyPath + "private.key");
+		if (filePrivateKey.delete()){
+			return true; 
+		}
+		return false;
+	}
 	public KeyPair LoadKeyPair(String userID) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 		// Read Public Key.
 		String keyPath = defaultPath + userID;
