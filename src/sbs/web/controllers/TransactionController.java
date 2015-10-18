@@ -9,18 +9,22 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itextpdf.text.DocumentException;
 
 import sbs.web.models.Accounts;
 import sbs.web.models.Transaction;
+import sbs.web.models.TransactionLog;
 import sbs.web.models.Transaction_CompositeKey;
 import sbs.web.models.User;
+import sbs.web.service.AccountsService;
 import sbs.web.service.TransactionService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utils.PDFUtils;
@@ -30,13 +34,20 @@ public class TransactionController {
 	
 	static int transactionIDCounter=1000;
 	TransactionService transactionService;
-	
+	AccountsService accountService;
 	@Autowired
 	public void setTransactionService(TransactionService transactionService) {
 		this.transactionService = transactionService;
 	}
-
 	
+	@Autowired
+	public void setAccountService(AccountsService accountService) {
+		this.accountService = accountService;
+	}
+
+
+
+
 	@RequestMapping(value="/createTransaction")
 	public String createTransactions(Model model) {	
 		
@@ -85,7 +96,36 @@ public class TransactionController {
 	}
 	
 	@RequestMapping(value="/transactionlog")
-	public String retrieveTransactionsLog(Model model) {	
+	public String retrieveTransactionsLog(@Valid TransactionLog transactionLog,BindingResult result,Model model) {	
+		System.out.println(transactionLog.getLogFilter());
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		if(transactionLog!=null && transactionLog.getLogFilter()!=null)
+		{
+		if(transactionLog.getLogFilter().equals("date"))
+		{
+			transactions.addAll(transactionService.getAllTransactions(transactionLog.getDate()));
+			System.out.println(transactionLog.getDate());
+
+		}else if(transactionLog.getLogFilter().equals("account"))
+		{
+			transactions.addAll(transactionService.getAllTransactions(transactionLog.getAccountNo()));
+			System.out.println(transactionLog.getAccountNo());
+
+		}
+		else if(transactionLog.getLogFilter().equals("name"))
+		{
+			List<Accounts> accounts =accountService.getAccountDetails(transactionLog.getName());
+			for(Accounts acct:accounts)
+			{
+				transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
+			}
+			System.out.println(transactionLog.getName());
+
+		}
+		}
+		model.addAttribute("transactions", transactions);
+
+
 		return "transactionlog";
 	}
 	

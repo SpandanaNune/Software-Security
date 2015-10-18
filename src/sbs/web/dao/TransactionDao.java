@@ -27,8 +27,12 @@ public class TransactionDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Transaction> getAllTransactions(int accountNo){
+	public List<Transaction> getAllTransactions(long accountNo){
 		return session().createQuery("from Transaction where accountNo="+accountNo).list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Transaction> getAllTransactions(String date){
+		return session().createQuery("from Transaction where DATE(createdDate)="+date).list();
 	}
 	
 	public List<Transaction> getAllCriticalTransaction(){

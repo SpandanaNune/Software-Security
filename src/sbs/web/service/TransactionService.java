@@ -19,9 +19,13 @@ public class TransactionService {
 		this.transactionDao = transactionDao;
 	}
 	
-	public List<Transaction> getAllTransactions(int accountNo){
+	public List<Transaction> getAllTransactions(long accountNo){
 		return transactionDao.getAllTransactions(accountNo);
 	}
+	public List<Transaction> getAllTransactions(String date){
+		return transactionDao.getAllTransactions(date);
+	}
+	
 	
 	public List<Transaction> getAllCriticalTransaction(){
 		return transactionDao.getAllCriticalTransaction();
