@@ -1,9 +1,14 @@
 package sbs.web.controllers;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +21,12 @@ import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utilities.SendMail;
+import sbs.web.utilities.VerifyCaptcha;
 
 @Controller
 public class LoginController {
+	private static final Logger logger = Logger.getLogger(LoginController.class);
 	private UserService userService;
 
 	@Autowired
@@ -28,7 +36,7 @@ public class LoginController {
 
 	@RequestMapping("/login")
 	public String showLogin() {
-		System.out.println("login page");
+		logger.info("In the login controller");
 		return "login";
 	}
 
@@ -38,20 +46,64 @@ public class LoginController {
 		return "loggedout";
 	}
 
-	@RequestMapping("/forgotpassword")
-	public String showForgotPassword(Model model) {
-		System.out.println("forgotpassword page");
-		Users user = userService.getUserbyUsername("Arpit");
-		model.addAttribute("users", new Users());
+	@RequestMapping("/resetpassword")
+	public String showForgotPassword(Model model, HttpServletRequest request) {
+		logger.debug("resetpassword page");
+		String token = request
+                .getParameter("token");
+		if (token == null || "".equals(token))
+		{
+			return "login";
+		}
+		//Users user = userService.getUserbyField("username", token);
+		Users user = userService.getUserbyUsername("arpit");
+		//User user = userService.getUserregisterbyUsername("kardanitin");
+		model.addAttribute("users", user);
 		System.out.println(user);
-		return "forgotpassword";
+		return "resetpassword";
 	}
 
+	@RequestMapping("/forgotpass")
+	public String showForgotPass(Model model, HttpServletRequest request) {
+		return "forgotpass";
+	}	
+	
+	@RequestMapping("/forgotPassEmailSuccess")
+	public String forgotPassEmailSuccess( HttpServletRequest request) throws IOException
+	{
+		String email = request
+                .getParameter("email");
+		String gCaptchaResponse = request
+                .getParameter("g-recaptcha-response");
+		//Users user = userService.getUserbyField("username", email);
+		
+		boolean verify = false;
+		verify = VerifyCaptcha.verify(gCaptchaResponse);
+        if (verify){
+        	User user = userService.getUserregisterbyUsername(email);
+    		System.out.println(user);
+    		if (user != null){
+    			SecureRandom random = new SecureRandom();
+    			String token = new BigInteger(130, random).toString(32);
+    			String url = request.getScheme() + "://"+ request.getServerName() + request.getContextPath() + "/resetpassword?token=" + token;
+    			SendMail mail = new SendMail();
+    			mail.resetPasswordLink("Nitin","kardanitin@gmail.com", url);
+    			return "forgotPassEmailSuccess";
+    		}
+        }
+        return "forgotpass";
+	}
 	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
-	public String resetPassword(Model model, @Valid Users users, BindingResult result) {
+	public String resetPassword(Model model, @Valid Users users, BindingResult result, HttpServletRequest request) throws IOException {
 		Users user = userService.getUserbyUsername(users.getUsername());
 		System.out.println(user);
-		return "homepage";
+		boolean verify = false;
+        if (verify){
+        	return "homepage";
+        }
+        else{
+        	return null;
+        }
 	}
 
 	@RequestMapping("/systemadmin")

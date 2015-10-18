@@ -99,7 +99,7 @@ public class Users {
 	public String toString() {
 		return "Users [username=" + username + ", password=" + password + ", enabled=" + enabled
 				+ ", accountNonExpired=" + accountNonExpired + ", accountNonLocked=" + accountNonLocked
-				+ ", credentialsNonExpired=" + credentialsNonExpired + ",";
+				+ ", credentialsNonExpired=" + credentialsNonExpired + "]";
 					//	+ " q1=" + q1 + ", q2=" + q2 + ", q3=" + q3 + "]";
 	}
 
