@@ -226,6 +226,14 @@ public class User {
 	private boolean canlogin;
 	private boolean isnewuser;
 	
+	private String role;
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	public boolean isCanlogin() {
 		return canlogin;
 	}
@@ -316,6 +324,6 @@ public class User {
 		return "User [username=" + username + ", email=" + email + ", firstname=" + firstname
 				+ ", lastname=" + lastname + ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone + ", Addr1=" + Addr1
 				+ ", Addr2=" + Addr2 + ", City=" + City + ", State=" + State + ", Zip=" + Zip + ", canlogin=" + canlogin
-				+ ", isnewuser=" + isnewuser + "]";
+				+ ", isnewuser=" + isnewuser + ",role=" +role+"]";
 	}
 }
