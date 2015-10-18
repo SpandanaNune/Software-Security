@@ -2,6 +2,8 @@ package sbs.web.controllers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class TransactionController {
 		//add everything to transaction class and insert into db
 		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
 		fromCompositeKey.setAccountNo(Integer.parseInt(fromUserAccount));
-		fromCompositeKey.setTransactionID(++transactionIDCounter);
+		fromCompositeKey.setTransactionId(++transactionIDCounter);
 		
 		//populate Transaction data
 		Transaction fromTransaction = new Transaction();
@@ -61,7 +63,7 @@ public class TransactionController {
 		//set same transaction ID for to account
 		Transaction_CompositeKey toCompositeKey = new Transaction_CompositeKey();
 		toCompositeKey.setAccountNo(Integer.parseInt(toUserAccount));
-		toCompositeKey.setTransactionID(transactionIDCounter);
+		toCompositeKey.setTransactionId(transactionIDCounter);
 		Transaction toTransaction = new Transaction();
 		toTransaction.setPrimaryKey(toCompositeKey);
 		toTransaction.setAmount(Double.parseDouble(amount));
@@ -80,6 +82,11 @@ public class TransactionController {
 		}
 		return "homepage";
 	
+	}
+	
+	@RequestMapping(value="/transactionlog")
+	public String retrieveTransactionsLog(Model model) {	
+		return "transactionlog";
 	}
 	
 	@RequestMapping(value="/transactionhistory")
@@ -108,6 +115,12 @@ public class TransactionController {
 
 		} catch (FileNotFoundException | DocumentException e) {
 			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		model.addAttribute("transactions", transactions);
@@ -128,7 +141,7 @@ public class TransactionController {
 				user.setLastname("swaminathan");
 				user.setUsername("sswetha2809");
 				// saving the generated pdf to a temp folder for e-mailing
-				String path = context.getRealPath("/WEB-INF/temp")+"//"+user.getFirstname()+".pdf";
+				String path = context.getRealPath("/WEB-INF/temp")+"\\"+user.getFirstname()+".pdf";
 				PDFUtils.generatePDF(transactions,path);
 
 				SendMail.sendStatement(user,path);
@@ -143,6 +156,12 @@ public class TransactionController {
 	    		}
 
 		} catch (FileNotFoundException | DocumentException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

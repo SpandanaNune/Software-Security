@@ -87,6 +87,37 @@ public class LoginController {
 		return "usersignuprequest";
 		
 	}	
+	@RequestMapping("/accountactivation")
+	public String activateAccount(@Valid Users eUser,BindingResult result,Model model)
+	{
+		if(eUser!=null && eUser.getUsername()!=null)
+		{
+		User user = userService.getUserregisterbyUsername(eUser.getUsername());
+		user.setCanlogin(true);
+		user.setIsnewuser(false);
+		userService.createUser(user);
+		System.out.println("hello"+user);
+		Users users = new Users();
+		users.setUsername(eUser.getUsername());
+		users.setPassword(eUser.getPassword());
+		users.setEnabled(true);
+		users.setAccountNonExpired(true);
+		users.setAccountNonLocked(true);
+		users.setCredentialsNonExpired(true);
+
+		Authorities auth = new Authorities();
+		auth.setUsername(eUser.getUsername());
+		auth.setAuthority(user.getRole());
+		
+		userService.userActivation(users);
+		userService.setAuthority(auth);
+		}
+		else
+		{
+			model.addAttribute("users", new Users());
+		}
+		return "accountactivation";
+	}
 	@RequestMapping("/acceptbtn")
 	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
 	 

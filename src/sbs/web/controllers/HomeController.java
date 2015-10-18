@@ -1,6 +1,7 @@
 package sbs.web.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -162,6 +163,41 @@ public class HomeController {
 		userService.userActivation(users);
 		return "homepage";
 	}
+	
+	@RequestMapping(value = "/adminhome")
+	public String adminHome(Model model) {
+		
+		System.out.println("Admin Home");
+		return "adminhome";
+	}
+
+	@RequestMapping(value = "/employeecreation")
+	public String createEmployee(@Valid User user,BindingResult result,Model model) {
+		if(user!=null && user.getUsername() != null)
+		{	
+			System.out.println(user);
+			User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+			if (uniqueUser == null) {
+				System.out.println(user);
+				user.setIsnewuser(true);
+				user.setCanlogin(false);
+				
+				userService.createUser(user);
+				return "employeecreation";
+			} else {
+				System.out.println("Caught duplicate Username");
+				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+				return "employeecreation";
+			}	
+		}
+		List<String> authorities = new ArrayList<>();
+		authorities.add("ROLE_USER");
+		authorities.add("ROLE_MANAGER");
+		model.addAttribute("roles", authorities);
+		model.addAttribute("user", new User());
+		return "employeecreation";
+	}
+
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 	public String RegisterUser(@Valid User user, BindingResult result,Model model) {

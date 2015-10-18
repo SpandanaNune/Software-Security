@@ -38,8 +38,8 @@ public class TransactionDao {
 	//check if we need to add transactional
 	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
 		session().save(fromTransaction);
-		System.out.println(fromTransaction.getPrimaryKey().getTransactionID());
-		System.out.println(toTransaction.getPrimaryKey().getTransactionID());
+		System.out.println(fromTransaction.getPrimaryKey().getTransactionId());
+		System.out.println(toTransaction.getPrimaryKey().getTransactionId());
 		session().save(toTransaction);
 	}
 	
