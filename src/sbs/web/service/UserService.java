@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import sbs.web.dao.UsersDao;
 
-import sbs.web.models.UserProfile;
+import sbs.web.models.User;
 
 import sbs.web.models.Authorities;
 
@@ -22,20 +22,20 @@ public class UserService {
 		this.usersDao = usersDao;
 	}
 
-	public List<UserProfile> getAllUsers() {
+	public List<User> getAllUsers() {
 		return usersDao.getAllUsers();
 	}
 
-	public void createUser(UserProfile user) {
+	public void createUser(User user) {
 		usersDao.createUser(user);
 	}
-	
-	public void setAuthority(Authorities auth){
+
+	public void setAuthority(Authorities auth) {
 		usersDao.setAuthority(auth);
 	}
 
-	public UserProfile validateUser(UserProfile user) {
-		UserProfile validatedUser = (UserProfile) usersDao.validateUser(user);
+	public User validateUser(User user) {
+		User validatedUser = (User) usersDao.validateUser(user);
 		return validatedUser;
 	}
 
@@ -44,31 +44,30 @@ public class UserService {
 		return getuser;
 	}
 
-	public UserProfile getUserregisterbyUsername(String username) {
-		UserProfile getuser = (UserProfile) usersDao.getUserregisterbyUsername(username);
+	public User getUserregisterbyUsername(String username) {
+		User getuser = (User) usersDao.getUserregisterbyUsername(username);
 
 		return getuser;
 	}
-public Users getUserbyField(String field, String value)
-{
-	Users getuser = (Users) usersDao.getUserbyField(field, value);
-	return getuser;
-}
 
+	public Users getUserbyField(String field, String value) {
+		Users getuser = (Users) usersDao.getUserbyField(field, value);
+		return getuser;
+	}
 
-	public List<UserProfile> getAllNewUsers() {
+	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}
-	
-	public List<UserProfile> getAllActiveUsers() {
+
+	public List<User> getAllActiveUsers() {
 		return usersDao.getAllActiveUsers();
 	}
 
 	public void deleteUserRequest(String username) {
 		usersDao.deleteUserRequest(username);
 	}
-	
-	public void userActivation(Users users){
+
+	public void userActivation(Users users) {
 		usersDao.userActivation(users);
 	}
 }

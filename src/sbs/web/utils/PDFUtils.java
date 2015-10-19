@@ -20,7 +20,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import sbs.web.models.Transaction;
-import sbs.web.models.UserProfile;
+import sbs.web.models.User;
 
 public class PDFUtils {
 	private static String FILE;
@@ -133,11 +133,11 @@ public class PDFUtils {
 			//	(ArrayList<Transaction>)transactionService.getAllTransactions(1234);
 		try {
 
-			UserProfile user = new UserProfile();
+			User user = new User();
 				user.setEmail("sswetha2809@gmail.com");
 				user.setFirstname("swetha");
 				user.setLastname("swaminathan");
-				user.setUsername("sswetha2809");
+//				user.setUsername("sswetha2809");
 				// saving the generated pdf to a temp folder for e-mailing
 				PDFUtils.generatePDF(transactions,"C:\\temp\\swetha.pdf");
 

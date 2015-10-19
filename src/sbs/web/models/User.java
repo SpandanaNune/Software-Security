@@ -153,62 +153,46 @@
 
 package sbs.web.models;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name = "user_profile")
-public class UserProfile {
-
+public class User {
+	
 	@Id
-	@Column(name = "userid")
-	private int userid;
-
-	// @Column(name = "username")
 	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
 	@NotNull
 	private String username;
 
-	// @Column(name = "email")
-	@NotNull
-	@Pattern(regexp=".+@.+\\..+", message="Email Address incorrect")
-	private String email;
-
-	// @Column(name = "password")
+	
 	@Size(min = 2, max = 45, message = "firstname must be atleast 2 characters and less than 45 characters")
 	private String firstname;
+	
 	@Size(min = 2, max = 45, message = "lastname must be atleast 2 characters and less than 45 characters")
 	private String lastname;
 	
-	//@Column(name = "dob")
 	@NotNull
-	@Pattern(regexp="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$", message="Incorrect Date of Birth")
+	@Size(min = 2, max = 45, message = "lastname must be atleast 2 characters and less than 45 characters")
+	private String email;
+	
+	@NotNull
+	//@Pattern(regexp="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$", message="Incorrect Date of Birth")
 	private String dob;
 	
-	//@Column(name = "ssn")
 	@NotNull
 	@Pattern(regexp="^[0-9]{9}$", message="Incorrect SSN")
 	private String SSN;
 	
-	//@Column(name = "phone")
 	@NotNull
 	@Pattern(regexp="^[0-9]{10}$", message="Incorrect Phone Number")
 	private String phone;
 	
-    //@Column(name = "addr1")
 	@NotNull
 	@Size(min = 5, max = 45, message = "Address must be atleast 5 characters")
 	private String Addr1;
@@ -226,33 +210,31 @@ public class UserProfile {
 	@NotNull
 	@Pattern(regexp="^[0-9]{5}$", message="Incorrect Zip Code")
 	private String Zip;
-	private boolean canlogin;
+
 	private boolean isnewuser;
 	
-	public boolean isCanlogin() {
-		return canlogin;
-	}
-	public void setCanlogin(boolean canlogin) {
-		this.canlogin = canlogin;
-	}
-	public boolean isIsnewuser() {
-		return isnewuser;
-	}
-	public void setIsnewuser(boolean isnewuser) {
-		this.isnewuser = isnewuser;
-	}
-	public int getUserid() {
-		return userid;
-	}
-	public void setUserid(int userid) {
-		this.userid = userid;
-	}
+//	private boolean canlogin;	
+//	public boolean isCanlogin() {
+//		return canlogin;
+//	}
+//	public void setCanlogin(boolean canlogin) {
+//		this.canlogin = canlogin;
+//	}
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	public boolean isIsnewuser() {
+		return isnewuser;
+	}
+	public void setIsnewuser(boolean isnewuser) {
+		this.isnewuser = isnewuser;
+	}
+
+	
 	public String getEmail() {
 		return email;
 	}
@@ -321,14 +303,11 @@ public class UserProfile {
 	}
 	@Override
 	public String toString() {
-		return "User [userid=" + userid + ", username=" + username + ", email=" + email + ", firstname=" + firstname
-				+ ", lastname=" + lastname + ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone + ", Addr1=" + Addr1
-				+ ", Addr2=" + Addr2 + ", City=" + City + ", State=" + State + ", Zip=" + Zip + ", canlogin=" + canlogin
+		return "UserProfile [ username=" + username + ", email=" + email + ", firstname="
+				+ firstname + ", lastname=" + lastname + ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone
+				+ ", Addr1=" + Addr1 + ", Addr2=" + Addr2 + ", City=" + City + ", State=" + State + ", Zip=" + Zip
 				+ ", isnewuser=" + isnewuser + "]";
 	}
-	
-
-	
 	
 
 }

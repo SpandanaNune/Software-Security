@@ -10,8 +10,6 @@ public class Users {
 	
 	
 	@Id
-	private int user_id;
-	
 	private String username;
 	private String password;
 	
@@ -24,14 +22,6 @@ public class Users {
 	private String q1;
 	private String q2;
 	private String q3;
-
-	public int getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
-	}
-
 
 	public String getQ1() {
 		return q1;
@@ -107,7 +97,7 @@ public class Users {
 	}
 	@Override
 	public String toString() {
-		return "Users [user_id=" + user_id + ", username=" + username + ", password=" + password + ", email=" + email
+		return "Users [ username=" + username + ", password=" + password + ", email=" + email
 				+ ", siteKeyID=" + siteKeyID + ", enabled=" + enabled + ", accountNonExpired=" + accountNonExpired
 				+ ", accountNonLocked=" + accountNonLocked + ", credentialsNonExpired=" + credentialsNonExpired + "]";
 

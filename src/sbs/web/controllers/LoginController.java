@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.xml.registry.infomodel.User;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-import sbs.web.models.UserProfile;
 import sbs.web.models.Authorities;
-
 import sbs.web.models.Users;
+import sbs.web.models.User;
 import sbs.web.service.UserService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utilities.VerifyCaptcha;
@@ -83,7 +80,7 @@ public class LoginController {
 		boolean verify = false;
 		verify = VerifyCaptcha.verify(gCaptchaResponse);
         if (verify){
-        	UserProfile user = userService.getUserregisterbyUsername(email);
+        	User user = userService.getUserregisterbyUsername(email);
     		System.out.println(user);
     		if (user != null){
     			SecureRandom random = new SecureRandom();
@@ -125,7 +122,7 @@ public class LoginController {
     
     @RequestMapping("/usersignuprequest")
     public String showUserSignUpRequest(Model model) {
-        List<UserProfile> user = userService.getAllNewUsers();
+        List<User> user = userService.getAllNewUsers();
         model.addAttribute("user", user);
         return "usersignuprequest";
     }
@@ -136,7 +133,7 @@ public class LoginController {
         System.out.println(username);
         
         userService.deleteUserRequest(username);
-        List<UserProfile> updateduser = userService.getAllNewUsers();
+        List<User> updateduser = userService.getAllNewUsers();
         
         model.addAttribute("user", updateduser);
         return "usersignuprequest";
@@ -145,8 +142,8 @@ public class LoginController {
     @RequestMapping("/acceptbtn")
     public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
      
-    	UserProfile user = userService.getUserregisterbyUsername(username);
-        user.setCanlogin(true);
+    	User user = userService.getUserregisterbyUsername(username);
+//        user.setCanlogin(true);
         user.setIsnewuser(false);
         userService.createUser(user);
         System.out.println("hello"+user);
@@ -166,7 +163,7 @@ public class LoginController {
         userService.userActivation(users);
         userService.setAuthority(auth);
         
-        List<UserProfile> updateduser = userService.getAllNewUsers();
+        List<User> updateduser = userService.getAllNewUsers();
         model.addAttribute("user", updateduser);
         return "usersignuprequest";
         
@@ -174,7 +171,7 @@ public class LoginController {
 
     @RequestMapping("/viewedituserdetails")
     public String viewEditUserDetails(Model model) {
-        List<UserProfile> userlist = userService.getAllActiveUsers();
+        List<User> userlist = userService.getAllActiveUsers();
         model.addAttribute("user", userlist);
         return "viewedituserdetails";
     }
@@ -182,24 +179,24 @@ public class LoginController {
     @RequestMapping("/editbtn")
     public String editButton(Model model, @RequestParam("View/Edit") String username) {
         System.out.println("Edit Button Operation");
-        UserProfile user = userService.getUserregisterbyUsername(username);
+        User user = userService.getUserregisterbyUsername(username);
         System.out.println(user);
         model.addAttribute("user", user);
         return "edituser";
     }
 
     @RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
-    public String UpdaterUser(@Valid UserProfile user, BindingResult result, Model model) {
+    public String UpdaterUser(@Valid User user, BindingResult result, Model model) {
 //        System.out.println(result.getErrorCount());
 //        System.out.println(result.toString());
 //        System.out.println(user);
-        user.setCanlogin(true);
+//        user.setCanlogin(true);
         
         if (result.getErrorCount() > 2)
             return "edituser";
         else {
             userService.createUser(user);    
-            List<UserProfile> updateduser = userService.getAllActiveUsers();
+            List<User> updateduser = userService.getAllActiveUsers();
             model.addAttribute("user", updateduser);
             return "viewedituserdetails";
         }

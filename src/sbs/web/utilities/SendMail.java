@@ -18,13 +18,13 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import sbs.web.models.OTP;
-import sbs.web.models.UserProfile;
+import sbs.web.models.User;
 
 public class SendMail {
 	
 	private static final Logger logger = Logger.getLogger(SendMail.class);
 
-	public static void sendStatement(UserProfile user,String filePath) {
+	public static void sendStatement(User user,String filePath) {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = user.getEmail();
@@ -62,8 +62,8 @@ public class SendMail {
 			message.setFrom(new InternetAddress(randomMail));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject("EStatement from Money Tree Banking Corporation");
-			String msg = "Dear " + user.getUsername() + ","
-					+ "\n\n Your  Money Tree Banking Corporation account e-statement is now being sent to you as a pdf document.\n To open this file, you need Adobe Acrobat Reader. If you do not have Adobe Acrobat Reader, please visit the following link to download it: www.adobe.com/products/acrobat/readstep2.html. \nSincerely,\nMoney Tree Banking Corporation ";
+			String msg = "Dear ";// + user.getUsername() + ","
+//					+ "\n\n Your  Money Tree Banking Corporation account e-statement is now being sent to you as a pdf document.\n To open this file, you need Adobe Acrobat Reader. If you do not have Adobe Acrobat Reader, please visit the following link to download it: www.adobe.com/products/acrobat/readstep2.html. \nSincerely,\nMoney Tree Banking Corporation ";
 			   // creates message part
 	        MimeBodyPart messageBodyPart = new MimeBodyPart();
 	        messageBodyPart.setContent(msg, "text/html");

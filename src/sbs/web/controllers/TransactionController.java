@@ -24,7 +24,7 @@ import sbs.web.models.Transaction;
 import sbs.web.models.TransactionLog;
 import sbs.web.models.Transaction_CompositeKey;
 
-import sbs.web.models.UserProfile;
+import sbs.web.models.User;
 
 import sbs.web.service.AccountsService;
 
@@ -147,11 +147,11 @@ public class TransactionController {
 		System.out.println("Download Transaction History");
 		ArrayList<Transaction> transactions = (ArrayList<Transaction>)transactionService.getAllTransactions(1234);
 		try {
-			UserProfile user = new UserProfile();
+			User user = new User();
 			user.setEmail("sswetha2809@gmail.com");
 			user.setFirstname("swetha");
 			user.setLastname("swaminathan");
-			user.setUsername("sswetha2809");
+//			user.setUsername("sswetha2809");
 			  String home = System.getProperty("user.home");
 			  String filePath = home+"\\Downloads\\" + user.getFirstname()+".pdf"; 
 			PDFUtils.generatePDF(transactions,filePath);
@@ -178,11 +178,11 @@ public class TransactionController {
 		try {
 			ServletContext context = request.getSession().getServletContext();
 
-				UserProfile user = new UserProfile();
+				User user = new User();
 				user.setEmail("sswetha2809@gmail.com");
 				user.setFirstname("swetha");
 				user.setLastname("swaminathan");
-				user.setUsername("sswetha2809");
+//				user.setUsername("sswetha2809");
 				// saving the generated pdf to a temp folder for e-mailing
 				String path = context.getRealPath("/WEB-INF/temp")+"\\"+user.getFirstname()+".pdf";
 				PDFUtils.generatePDF(transactions,path);

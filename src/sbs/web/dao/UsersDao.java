@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import sbs.web.models.UserProfile;
+import sbs.web.models.User;
 
 import sbs.web.models.Authorities;
 
@@ -29,7 +29,7 @@ public class UsersDao {
 
 	@Transactional
 
-	public void createUser(UserProfile user) {
+	public void createUser(User user) {
 		session().saveOrUpdate(user);
 	}
 	
@@ -42,13 +42,14 @@ public class UsersDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<UserProfile> getAllUsers() {
+	public List<User> getAllUsers() {
 		return session().createQuery("from User").list();
 	}
 
-	public Object validateUser(UserProfile user) {
-		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
-		return query.uniqueResult();
+	public Object validateUser(User user) {
+//		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
+//		return query.uniqueResult();
+		return null;
 	}
 
 	public Object getUserbyUsername(String username) {
@@ -66,13 +67,14 @@ public class UsersDao {
 		return query.uniqueResult();
 	}
 
-	public List<UserProfile> getAllNewUsers() {
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewUsers() {
 		return session().createQuery("from User where isnewuser = 1").list();
 	}
 
 	public void deleteUserRequest(String username) {
 		
-		UserProfile user = (UserProfile)getUserregisterbyUsername(username);
+		User user = (User)getUserregisterbyUsername(username);
 			session().delete(user);
 		
 //		String hql = "UPDATE User set isnewuser = :isnewuser_ " + "WHERE username = :username_";
@@ -83,7 +85,7 @@ public class UsersDao {
 //		System.out.println("Rows affected: " + result);
 	}
 	
-	public List<UserProfile> getAllActiveUsers(){
+	public List<User> getAllActiveUsers(){
 		return session().createQuery("from User where canlogin = 1").list();	
 	}
 	
