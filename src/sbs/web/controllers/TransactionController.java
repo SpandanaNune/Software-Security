@@ -17,7 +17,7 @@ import com.itextpdf.text.DocumentException;
 import sbs.web.models.Accounts;
 import sbs.web.models.Transaction;
 import sbs.web.models.Transaction_CompositeKey;
-import sbs.web.models.User;
+import sbs.web.models.UserProfile;
 import sbs.web.service.TransactionService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utils.PDFUtils;
@@ -96,7 +96,7 @@ public class TransactionController {
 		System.out.println("Download Transaction History");
 		ArrayList<Transaction> transactions = (ArrayList<Transaction>)transactionService.getAllTransactions(1234);
 		try {
-			User user = new User();
+			UserProfile user = new UserProfile();
 			user.setEmail("sswetha2809@gmail.com");
 			user.setFirstname("swetha");
 			user.setLastname("swaminathan");
@@ -121,7 +121,7 @@ public class TransactionController {
 		try {
 			ServletContext context = request.getSession().getServletContext();
 
-				User user = new User();
+				UserProfile user = new UserProfile();
 				user.setEmail("sswetha2809@gmail.com");
 				user.setFirstname("swetha");
 				user.setLastname("swaminathan");

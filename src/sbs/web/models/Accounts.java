@@ -13,7 +13,7 @@ public class Accounts {
 	String username;
 	@Id
 	@Column(name = "accountNo")
-	String accountNo;
+	int accountNo;
 	String balance;
 	public String getUsername() {
 		return username;
@@ -21,10 +21,10 @@ public class Accounts {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getAccountNo() {
+	public int getAccountNo() {
 		return accountNo;
 	}
-	public void setAccountNo(String accountNo) {
+	public void setAccountNo(int accountNo) {
 		this.accountNo = accountNo;
 	}
 	public String getBalance() {

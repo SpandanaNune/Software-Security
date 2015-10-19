@@ -16,11 +16,11 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import sbs.web.models.OTP;
-import sbs.web.models.User;
+import sbs.web.models.UserProfile;
 
 public class SendMail {
 
-	public static void sendStatement(User user,String filePath) {
+	public static void sendStatement(UserProfile user,String filePath) {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = user.getEmail();

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import sbs.web.models.User;
+import sbs.web.models.UserProfile;
 import sbs.web.models.Users;
 
 @Transactional
@@ -24,7 +24,7 @@ public class UsersDao {
 	}
 
 	@Transactional
-	public void createUser(User user) {
+	public void createUser(UserProfile user) {
 		// user.setEnabled(true);
 		session().save(user);
 	}
@@ -34,11 +34,11 @@ public class UsersDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> getAllUsers() {
+	public List<UserProfile> getAllUsers() {
 		return session().createQuery("from User").list();
 	}
 
-	public Object validateUser(User user) {
+	public Object validateUser(UserProfile user) {
 		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
 		return query.uniqueResult();
 	}
@@ -53,7 +53,7 @@ public class UsersDao {
 		return query.uniqueResult();
 	}
 
-	public List<User> getAllNewUsers() {
+	public List<UserProfile> getAllNewUsers() {
 		return session().createQuery("from User where isnewuser = 1").list();
 	}
 

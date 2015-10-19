@@ -20,8 +20,6 @@ public class AccountsDao {
 	public Session session(){
 		return sessionFactory.getCurrentSession();
 	}
-	
-	
 		@SuppressWarnings("unchecked")
 		public List<Accounts> getAccountDetails(String username) {
 //			return session().createQuery("from Accounts").list();

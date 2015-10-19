@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import sbs.web.models.OTP;
-import sbs.web.models.User;
+import sbs.web.models.UserProfile;
 import sbs.web.service.UtilityService;
 import sbs.web.utilities.SendMail;
 
@@ -34,7 +34,7 @@ public class UtilityController {
     }
 	
 	@RequestMapping("/sendOTP")
-	public String verifyUserMailID(User user, Model model) {
+	public String verifyUserMailID(UserProfile user, Model model) {
 		System.out.println("showViewUser");
 //		String mail=user.getEmail();
 		String mail="khanjan.ce@gmail.com";
@@ -62,7 +62,7 @@ public class UtilityController {
 	}
 	
 	@RequestMapping("/verifyOTP")
-	public String verifyUserOTP(User user, Model model) {
+	public String verifyUserOTP(UserProfile user, Model model) {
 		System.out.println("showViewUser");
 //		String mail=user.getEmail();
 		String mail="khanjan.ce@gmail.com";

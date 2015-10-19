@@ -170,8 +170,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 
 @Entity
-@Table(name = "userregister")
-public class User {
+@Table(name = "user_profile")
+public class UserProfile {
 
 	@Id
 	@Column(name = "userid")

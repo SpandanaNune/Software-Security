@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import sbs.web.models.User;
+import sbs.web.models.UserProfile;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
 
@@ -69,13 +69,13 @@ public class LoginController {
 	
 	@RequestMapping("/usersignuprequest")
 	public String showUserSignUpRequest(Model model) {
-		List<User> user = userService.getAllNewUsers();
+		List<UserProfile> user = userService.getAllNewUsers();
 		model.addAttribute("user", user);
 		return "usersignuprequest";
 	}
 	@RequestMapping("/viewedituserdetails")
 	public String viewEditUserDetails(Model model) {
-		List<User> user = userService.getAllNewUsers();
+		List<UserProfile> user = userService.getAllNewUsers();
 		model.addAttribute("user", user);
 		return "viewedituserdetails";
 	}
@@ -87,7 +87,7 @@ public class LoginController {
 		System.out.println(username);
 		userService.deleteUserRequest(username);
 		System.out.println("Delete Button Operation");
-		List<User> updateduser = userService.getAllNewUsers();
+		List<UserProfile> updateduser = userService.getAllNewUsers();
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
 		
@@ -104,7 +104,7 @@ public class LoginController {
 		userService.userActivation(user);
 		//		userService.deleteUserRequest(username);
 		System.out.println("Delete Button Operation");
-		List<User> updateduser = userService.getAllNewUsers();
+		List<UserProfile> updateduser = userService.getAllNewUsers();
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
 		
@@ -113,21 +113,21 @@ public class LoginController {
 	@RequestMapping("/editbtn")
 	public String editButton(Model model, @RequestParam("View/Edit") String username) {
 		System.out.println("Edit Button Operation");
-		User user = userService.getUserregisterbyUsername(username);
+		UserProfile user = userService.getUserregisterbyUsername(username);
 		model.addAttribute("user", user);
 		System.out.println(user);
 		return "edituser";
 	}
 
 	@RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
-	public String UpdaterUser(@Valid User user, BindingResult result, Model model) {
+	public String UpdaterUser(@Valid UserProfile user, BindingResult result, Model model) {
 		System.out.println(result.getErrorCount());
 		System.out.println(result.toString());
 		
 		if (result.getErrorCount() > 2)
 			return "edituser";
 		else {
-			List<User> updateduser = userService.getAllUsers();
+			List<UserProfile> updateduser = userService.getAllUsers();
 			model.addAttribute("user", updateduser);
 			return "usersignuprequest";
 		}

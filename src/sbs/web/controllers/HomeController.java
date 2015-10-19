@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import sbs.web.models.User;
+import sbs.web.models.UserProfile;
 import sbs.web.service.UserService;
 
 @Controller
@@ -58,7 +58,7 @@ public class HomeController {
 	@RequestMapping("/viewuser")
 	public String showViewUser(Model model) {
 		System.out.println("showViewUser");
-		List<User> users = userService.getAllUsers();
+		List<UserProfile> users = userService.getAllUsers();
 		model.addAttribute("user", users);
 		return "viewuser";
 	}
@@ -98,7 +98,7 @@ public class HomeController {
 	@RequestMapping(value = "/registeruser")
 	public String showRegisterUser(Model model) {
 		System.out.println("showRegisterUser");
-		model.addAttribute("user", new User());
+		model.addAttribute("user", new UserProfile());
 		return "registeruser";
 	}
 
@@ -106,7 +106,7 @@ public class HomeController {
 
 	@RequestMapping(value="/signup")
 	public String showRegister(Model model) {	
-		model.addAttribute("externaluser", new User());
+		model.addAttribute("externaluser", new UserProfile());
 		return "signup";
 	}
 	
@@ -120,19 +120,19 @@ public class HomeController {
 	@RequestMapping(value = "/mylogin")
 	public String loginUser(Model model) {
 		System.out.println("loginUser");
-		model.addAttribute("userlogin", new User());
+		model.addAttribute("userlogin", new UserProfile());
 		return "mylogin";
 	}
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-	public String RegisterUser(@Valid User user, BindingResult result) {
+	public String RegisterUser(@Valid UserProfile user, BindingResult result) {
 
 		if (result.hasErrors()) {
 			// model.addAttribute("user", user);
 			return "registeruser";
 		}
 
-		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+		UserProfile uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
 		if (uniqueUser == null) {
 			userService.createUser(user);
 			return "homepage";

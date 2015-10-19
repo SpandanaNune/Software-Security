@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sbs.web.dao.UsersDao;
-import sbs.web.models.User;
+import sbs.web.models.UserProfile;
 import sbs.web.models.Users;
 
 @Service("userService")
@@ -18,16 +18,16 @@ public class UserService {
 		this.usersDao = usersDao;
 	}
 
-	public List<User> getAllUsers() {
+	public List<UserProfile> getAllUsers() {
 		return usersDao.getAllUsers();
 	}
 
-	public void createUser(User user) {
+	public void createUser(UserProfile user) {
 		usersDao.createUser(user);
 	}
 
-	public User validateUser(User user) {
-		User validatedUser = (User) usersDao.validateUser(user);
+	public UserProfile validateUser(UserProfile user) {
+		UserProfile validatedUser = (UserProfile) usersDao.validateUser(user);
 		return validatedUser;
 	}
 
@@ -36,12 +36,12 @@ public class UserService {
 		return getuser;
 	}
 
-	public User getUserregisterbyUsername(String username) {
-		User getuser = (User) usersDao.getUserregisterbyUsername(username);
+	public UserProfile getUserregisterbyUsername(String username) {
+		UserProfile getuser = (UserProfile) usersDao.getUserregisterbyUsername(username);
 		return getuser;
 	}
 
-	public List<User> getAllNewUsers() {
+	public List<UserProfile> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}
 
