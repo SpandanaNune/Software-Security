@@ -37,7 +37,7 @@
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
 	</form>
-	<a href="${pageContext.request.contextPath}/forgotpassword">Forgot
+	<a href="${pageContext.request.contextPath}/forgotpass">Forgot
 		Password</a>
 </body>
 </html>

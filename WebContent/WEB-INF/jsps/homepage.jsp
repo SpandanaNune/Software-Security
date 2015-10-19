@@ -20,6 +20,8 @@
 </head>
 <body>
 
+	<c:out value="${user.getUsername()}"></c:out>
+
 	<div class="row-fluid">
 		<div class="span4"></div>
 		<div class="span4">
@@ -45,6 +47,13 @@
 						href="${pageContext.request.contextPath}/transactionhistory">Show transactions</a>
 						
 						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/welcome">welcome</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/userconfirm">UserConfirmation</a>
+						
+						
+						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/createTransaction">Make transactions</a>
 						
 						<a class="btn btn-primary btn-large"
@@ -52,6 +61,8 @@
 						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/random">Random </a>
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/accountactivation">Verify Account</a>
 						<a href ="<c:url value ='/logout'/>">Log out</a>
 				</p>
 				

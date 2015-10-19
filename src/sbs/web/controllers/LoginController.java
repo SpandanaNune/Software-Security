@@ -1,9 +1,15 @@
 package sbs.web.controllers;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.xml.registry.infomodel.User;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,12 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import sbs.web.models.UserProfile;
+import sbs.web.models.Authorities;
+
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utilities.SendMail;
+import sbs.web.utilities.VerifyCaptcha;
 
 @Controller
 public class LoginController {
+	private static final Logger logger = Logger.getLogger(LoginController.class);
 	private UserService userService;
 
 	@Autowired
@@ -27,7 +39,7 @@ public class LoginController {
 
 	@RequestMapping("/login")
 	public String showLogin() {
-		System.out.println("login page");
+		logger.info("In the login controller");
 		return "login";
 	}
 
@@ -37,20 +49,64 @@ public class LoginController {
 		return "loggedout";
 	}
 
-	@RequestMapping("/forgotpassword")
-	public String showForgotPassword(Model model) {
-		System.out.println("forgotpassword page");
-		Users user = userService.getUserbyUsername("Arpit");
-		model.addAttribute("users", new Users());
+	@RequestMapping("/resetpassword")
+	public String showForgotPassword(Model model, HttpServletRequest request) {
+		logger.debug("resetpassword page");
+		String token = request
+                .getParameter("token");
+		if (token == null || "".equals(token))
+		{
+			return "login";
+		}
+		//Users user = userService.getUserbyField("username", token);
+		Users user = userService.getUserbyUsername("arpit");
+		//User user = userService.getUserregisterbyUsername("kardanitin");
+		model.addAttribute("users", user);
 		System.out.println(user);
-		return "forgotpassword";
+		return "resetpassword";
 	}
 
+	@RequestMapping("/forgotpass")
+	public String showForgotPass(Model model, HttpServletRequest request) {
+		return "forgotpass";
+	}	
+	
+	@RequestMapping("/forgotPassEmailSuccess")
+	public String forgotPassEmailSuccess( HttpServletRequest request) throws IOException
+	{
+		String email = request
+                .getParameter("email");
+		String gCaptchaResponse = request
+                .getParameter("g-recaptcha-response");
+		//Users user = userService.getUserbyField("username", email);
+		
+		boolean verify = false;
+		verify = VerifyCaptcha.verify(gCaptchaResponse);
+        if (verify){
+        	UserProfile user = userService.getUserregisterbyUsername(email);
+    		System.out.println(user);
+    		if (user != null){
+    			SecureRandom random = new SecureRandom();
+    			String token = new BigInteger(130, random).toString(32);
+    			String url = request.getScheme() + "://"+ request.getServerName() + request.getContextPath() + "/resetpassword?token=" + token;
+    			SendMail mail = new SendMail();
+    			mail.resetPasswordLink("Nitin","kardanitin@gmail.com", url);
+    			return "forgotPassEmailSuccess";
+    		}
+        }
+        return "forgotpass";
+	}
 	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
-	public String resetPassword(Model model, @Valid Users users, BindingResult result) {
+	public String resetPassword(Model model, @Valid Users users, BindingResult result, HttpServletRequest request) throws IOException {
 		Users user = userService.getUserbyUsername(users.getUsername());
 		System.out.println(user);
-		return "homepage";
+		boolean verify = false;
+        if (verify){
+        	return "homepage";
+        }
+        else{
+        	return null;
+        }
 	}
 
 	@RequestMapping("/systemadmin")
@@ -61,76 +117,91 @@ public class LoginController {
 /*************************************SYSTEM**MANAGER*******************************/
 	
 	@RequestMapping("/manager")
-	public String showManagerHome(Model model) {
-//		List<User> user = userService.getAllNewUsers();
-//		model.addAttribute("user", user);
-		return "managerhome";
-	}
-	
-	@RequestMapping("/usersignuprequest")
-	public String showUserSignUpRequest(Model model) {
-		List<UserProfile> user = userService.getAllNewUsers();
-		model.addAttribute("user", user);
-		return "usersignuprequest";
-	}
-	@RequestMapping("/viewedituserdetails")
-	public String viewEditUserDetails(Model model) {
-		List<UserProfile> user = userService.getAllNewUsers();
-		model.addAttribute("user", user);
-		return "viewedituserdetails";
-	}
+    public String showManagerHome(Model model) {
+//        List<User> user = userService.getAllNewUsers();
+//        model.addAttribute("user", user);
+        return "managerhome";
+    }
+    
+    @RequestMapping("/usersignuprequest")
+    public String showUserSignUpRequest(Model model) {
+        List<UserProfile> user = userService.getAllNewUsers();
+        model.addAttribute("user", user);
+        return "usersignuprequest";
+    }
+    
+    @RequestMapping("/declinebtn")
+    public String deleteUserSignUp(Model model, @RequestParam("Decline") String username) {
+        System.out.println("Delete Button Operation");
+        System.out.println(username);
+        
+        userService.deleteUserRequest(username);
+        List<UserProfile> updateduser = userService.getAllNewUsers();
+        
+        model.addAttribute("user", updateduser);
+        return "usersignuprequest";
+        
+    }    
+    @RequestMapping("/acceptbtn")
+    public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
+     
+    	UserProfile user = userService.getUserregisterbyUsername(username);
+        user.setCanlogin(true);
+        user.setIsnewuser(false);
+        userService.createUser(user);
+        System.out.println("hello"+user);
 
-	@RequestMapping("/deletebtn")
-	public String deleteUserSignUp(Model model, @RequestParam("Edit") String username) {
-		// List <User> user = userService.getAllUsers();
-		// model.addAttribute("user",user);
-		System.out.println(username);
-		userService.deleteUserRequest(username);
-		System.out.println("Delete Button Operation");
-		List<UserProfile> updateduser = userService.getAllNewUsers();
-		model.addAttribute("user", updateduser);
-		return "usersignuprequest";
-		
-	}
-	
-	@RequestMapping("/acceptbtn")
-	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
-		// List <User> user = userService.getAllUsers();
-		// model.addAttribute("user",user);
-		System.out.println(username);
-		Users user = new Users();
-		user.setUsername(username);
-		user.setPassword("45678");
-		userService.userActivation(user);
-		//		userService.deleteUserRequest(username);
-		System.out.println("Delete Button Operation");
-		List<UserProfile> updateduser = userService.getAllNewUsers();
-		model.addAttribute("user", updateduser);
-		return "usersignuprequest";
-		
-	}
-	
-	@RequestMapping("/editbtn")
-	public String editButton(Model model, @RequestParam("View/Edit") String username) {
-		System.out.println("Edit Button Operation");
-		UserProfile user = userService.getUserregisterbyUsername(username);
-		model.addAttribute("user", user);
-		System.out.println(user);
-		return "edituser";
-	}
+        Users users = new Users();
+        users.setUsername(username);
+        users.setPassword("45678");
+        users.setEnabled(true);
+        users.setAccountNonExpired(true);
+        users.setAccountNonLocked(true);
+        users.setCredentialsNonExpired(true);
 
-	@RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
-	public String UpdaterUser(@Valid UserProfile user, BindingResult result, Model model) {
-		System.out.println(result.getErrorCount());
-		System.out.println(result.toString());
-		
-		if (result.getErrorCount() > 2)
-			return "edituser";
-		else {
-			List<UserProfile> updateduser = userService.getAllUsers();
-			model.addAttribute("user", updateduser);
-			return "usersignuprequest";
-		}
-	}
+        Authorities auth = new Authorities();
+        auth.setUsername(username);
+        auth.setAuthority("ROLE_NEW");
+        
+        userService.userActivation(users);
+        userService.setAuthority(auth);
+        
+        List<UserProfile> updateduser = userService.getAllNewUsers();
+        model.addAttribute("user", updateduser);
+        return "usersignuprequest";
+        
+    }
 
-}
+    @RequestMapping("/viewedituserdetails")
+    public String viewEditUserDetails(Model model) {
+        List<UserProfile> userlist = userService.getAllActiveUsers();
+        model.addAttribute("user", userlist);
+        return "viewedituserdetails";
+    }
+    
+    @RequestMapping("/editbtn")
+    public String editButton(Model model, @RequestParam("View/Edit") String username) {
+        System.out.println("Edit Button Operation");
+        UserProfile user = userService.getUserregisterbyUsername(username);
+        System.out.println(user);
+        model.addAttribute("user", user);
+        return "edituser";
+    }
+
+    @RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
+    public String UpdaterUser(@Valid UserProfile user, BindingResult result, Model model) {
+//        System.out.println(result.getErrorCount());
+//        System.out.println(result.toString());
+//        System.out.println(user);
+        user.setCanlogin(true);
+        
+        if (result.getErrorCount() > 2)
+            return "edituser";
+        else {
+            userService.createUser(user);    
+            List<UserProfile> updateduser = userService.getAllActiveUsers();
+            model.addAttribute("user", updateduser);
+            return "viewedituserdetails";
+        }
+    }
+    }

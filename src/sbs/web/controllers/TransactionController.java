@@ -2,22 +2,32 @@ package sbs.web.controllers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itextpdf.text.DocumentException;
 
 import sbs.web.models.Accounts;
 import sbs.web.models.Transaction;
+import sbs.web.models.TransactionLog;
 import sbs.web.models.Transaction_CompositeKey;
+
 import sbs.web.models.UserProfile;
+
+import sbs.web.service.AccountsService;
+
 import sbs.web.service.TransactionService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utils.PDFUtils;
@@ -27,13 +37,20 @@ public class TransactionController {
 	
 	static int transactionIDCounter=1000;
 	TransactionService transactionService;
-	
+	AccountsService accountService;
 	@Autowired
 	public void setTransactionService(TransactionService transactionService) {
 		this.transactionService = transactionService;
 	}
-
 	
+	@Autowired
+	public void setAccountService(AccountsService accountService) {
+		this.accountService = accountService;
+	}
+
+
+
+
 	@RequestMapping(value="/createTransaction")
 	public String createTransactions(Model model) {	
 		
@@ -43,7 +60,7 @@ public class TransactionController {
 		//add everything to transaction class and insert into db
 		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
 		fromCompositeKey.setAccountNo(Integer.parseInt(fromUserAccount));
-		fromCompositeKey.setTransactionID(++transactionIDCounter);
+		fromCompositeKey.setTransactionId(++transactionIDCounter);
 		
 		//populate Transaction data
 		Transaction fromTransaction = new Transaction();
@@ -60,7 +77,7 @@ public class TransactionController {
 		//set same transaction ID for to account
 		Transaction_CompositeKey toCompositeKey = new Transaction_CompositeKey();
 		toCompositeKey.setAccountNo(Integer.parseInt(toUserAccount));
-		toCompositeKey.setTransactionID(transactionIDCounter);
+		toCompositeKey.setTransactionId(transactionIDCounter);
 		Transaction toTransaction = new Transaction();
 		toTransaction.setPrimaryKey(toCompositeKey);
 		toTransaction.setAmount(Double.parseDouble(amount));
@@ -79,6 +96,40 @@ public class TransactionController {
 		}
 		return "homepage";
 	
+	}
+	
+	@RequestMapping(value="/transactionlog")
+	public String retrieveTransactionsLog(@Valid TransactionLog transactionLog,BindingResult result,Model model) {	
+		System.out.println(transactionLog.getLogFilter());
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		if(transactionLog!=null && transactionLog.getLogFilter()!=null)
+		{
+		if(transactionLog.getLogFilter().equals("date"))
+		{
+			transactions.addAll(transactionService.getAllTransactions(transactionLog.getDate()));
+			System.out.println(transactionLog.getDate());
+
+		}else if(transactionLog.getLogFilter().equals("account"))
+		{
+			transactions.addAll(transactionService.getAllTransactions(transactionLog.getAccountNo()));
+			System.out.println(transactionLog.getAccountNo());
+
+		}
+		else if(transactionLog.getLogFilter().equals("name"))
+		{
+			List<Accounts> accounts =accountService.getAccountDetails(transactionLog.getName());
+			for(Accounts acct:accounts)
+			{
+				transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
+			}
+			System.out.println(transactionLog.getName());
+
+		}
+		}
+		model.addAttribute("transactions", transactions);
+
+
+		return "transactionlog";
 	}
 	
 	@RequestMapping(value="/transactionhistory")
@@ -107,6 +158,12 @@ public class TransactionController {
 
 		} catch (FileNotFoundException | DocumentException e) {
 			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		model.addAttribute("transactions", transactions);
@@ -127,7 +184,7 @@ public class TransactionController {
 				user.setLastname("swaminathan");
 				user.setUsername("sswetha2809");
 				// saving the generated pdf to a temp folder for e-mailing
-				String path = context.getRealPath("/WEB-INF/temp")+"//"+user.getFirstname()+".pdf";
+				String path = context.getRealPath("/WEB-INF/temp")+"\\"+user.getFirstname()+".pdf";
 				PDFUtils.generatePDF(transactions,path);
 
 				SendMail.sendStatement(user,path);
@@ -143,11 +200,24 @@ public class TransactionController {
 
 		} catch (FileNotFoundException | DocumentException e) {
 			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		model.addAttribute("transactions", transactions);
 
 
 		return "transactionhistory";
+	}
+	
+	@RequestMapping(value = "/approvetransaction")
+	public String ApproveTransaction(Model model){
+		List<Transaction> transction = transactionService.getAllCriticalTransaction();
+		model.addAttribute("transaction", transction);
+		return "approvetransaction";
 	}
 }

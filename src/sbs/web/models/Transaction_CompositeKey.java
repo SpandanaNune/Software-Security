@@ -9,16 +9,16 @@ import javax.persistence.Embeddable;
 public class Transaction_CompositeKey implements Serializable{ 
 	
 	@Column(name = "transactionId")
-	 int transactionID=1000;
+	 int transactionId=1000;
 	
 	@Column(name = "accountNo")
 	private int accountNo;
 	
-	public int getTransactionID() {
-		return transactionID;
+	public int getTransactionId() {
+		return transactionId;
 	}
-	public void setTransactionID(int transactionID) {
-		this.transactionID = transactionID;
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
 	}
 	public int getAccountNo() {
 		return accountNo;
@@ -26,6 +26,8 @@ public class Transaction_CompositeKey implements Serializable{
 	public void setAccountNo(int accountNo) {
 		this.accountNo = accountNo;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "[transactionId=" + transactionId + ", accountNo=" + accountNo + "]";
+	}
 }

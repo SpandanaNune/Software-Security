@@ -38,14 +38,14 @@
 				<td><form method="post"
 						action="${pageContext.request.contextPath}/acceptbtn">
 						<input type="hidden" name="Accept" value="${user.getUsername()}" />
-						<input class="control" value="Accept" type="submit" /> <input
+						<input class="control" value = "Accept" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 					</form></td>
 				<td><form method="post"
-						action="${pageContext.request.contextPath}/deletebtn">
-						<input type="hidden" name="Edit" value="${user.getUsername()}" />
-						<input class="control" value="Delete" type="submit" /> <input
+						action="${pageContext.request.contextPath}/declinebtn">
+						<input type="hidden" name="Decline" value="${user.getUsername()}" />
+						<input class="control" value = "Decline" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 					</form></td>

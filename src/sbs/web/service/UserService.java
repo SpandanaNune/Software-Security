@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sbs.web.dao.UsersDao;
+
 import sbs.web.models.UserProfile;
+
+import sbs.web.models.Authorities;
+
 import sbs.web.models.Users;
 
 @Service("userService")
@@ -25,6 +29,10 @@ public class UserService {
 	public void createUser(UserProfile user) {
 		usersDao.createUser(user);
 	}
+	
+	public void setAuthority(Authorities auth){
+		usersDao.setAuthority(auth);
+	}
 
 	public UserProfile validateUser(UserProfile user) {
 		UserProfile validatedUser = (UserProfile) usersDao.validateUser(user);
@@ -38,11 +46,22 @@ public class UserService {
 
 	public UserProfile getUserregisterbyUsername(String username) {
 		UserProfile getuser = (UserProfile) usersDao.getUserregisterbyUsername(username);
+
 		return getuser;
 	}
+public Users getUserbyField(String field, String value)
+{
+	Users getuser = (Users) usersDao.getUserbyField(field, value);
+	return getuser;
+}
+
 
 	public List<UserProfile> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
+	}
+	
+	public List<UserProfile> getAllActiveUsers() {
+		return usersDao.getAllActiveUsers();
 	}
 
 	public void deleteUserRequest(String username) {

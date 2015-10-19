@@ -1,12 +1,17 @@
 @CHARSET "UTF-8";
 
 .formtable {
-	width: 400px;
+	width: 800px;
 	padding: 10px;
 	border: 1px solid blue;
 }
 
 input[type=text] {
+	width: 250px;
+	
+}
+
+input[type=password] {
 	width: 250px;
 	
 }
@@ -28,6 +33,11 @@ textarea {
 .error {
 	font-size: small;
 	color: red;
+	margin-left: 10px;
+}
+.valid {
+	font-size: small;
+	color: green;
 	margin-left: 10px;
 }
 
