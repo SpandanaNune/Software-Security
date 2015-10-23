@@ -57,12 +57,12 @@
 				<td><sf:input class="control" path="SSN" name="SSN" type="text" /><br />
 					<sf:errors path="SSN" Class="error"></sf:errors></td>
 			</tr>
-			<tr>
+			 		<tr>
 				<!-- <td class="label">Date of Birth (mm/dd/yyyy):</td> -->
 				<td><sf:input class="control" path="dob" name="dob"
 						type="hidden" /><br /> <sf:errors path="dob" Class="error"></sf:errors></td>
 			</tr>
-
+ 
 			<tr>
 				<td class="label">Address Line 1:</td>
 				<td><sf:input class="control" path="Addr1" name="Addr1"

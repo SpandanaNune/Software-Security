@@ -98,7 +98,7 @@ public class LoginController {
 
 		Users users = new Users();
 		users.setUsername(username);
-		users.setPassword("456780");
+		users.setPassword("45678");
 		users.setEnabled(true);
 		users.setAccountNonExpired(true);
 		users.setAccountNonLocked(true);
@@ -119,8 +119,8 @@ public class LoginController {
 
 	@RequestMapping("/viewedituserdetails")
 	public String viewEditUserDetails(Model model) {
-		List<User> user = userService.getAllActiveUsers();
-		model.addAttribute("user", user);
+		List<User> userlist = userService.getAllActiveUsers();
+		model.addAttribute("user", userlist);
 		return "viewedituserdetails";
 	}
 	

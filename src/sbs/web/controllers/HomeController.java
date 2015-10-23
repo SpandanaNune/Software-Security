@@ -166,6 +166,7 @@ public class HomeController {
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 	public String RegisterUser(@Valid User user, BindingResult result,Model model) {
 
+		System.out.println("Errors: "+result.toString());
 		if (result.hasErrors()) {
 			return "registeruser";
 		}
@@ -178,6 +179,7 @@ public class HomeController {
 			
 			userService.createUser(user);
 			return "homepage";
+			
 		} else {
 			System.out.println("Caught duplicate Username");
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
