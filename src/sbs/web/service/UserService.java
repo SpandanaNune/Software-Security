@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import sbs.web.dao.UsersDao;
 import sbs.web.models.Authorities;
+import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 
@@ -48,6 +49,11 @@ public class UserService {
 	public User getUserregisterbyUsername(String username) {
 		User getuser = (User) usersDao.getUserregisterbyUsername(username);
 		return getuser;
+	}
+	
+	public List<PII> getAllPIIs()
+	{
+		return usersDao.getAllPIIRequests();
 	}
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();

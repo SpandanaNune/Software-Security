@@ -2,7 +2,6 @@ package sbs.web.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import sbs.web.models.Authorities;
+import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 
@@ -81,6 +81,10 @@ public class UsersDao {
 	
 	public List<User> getAllActiveUsers(){
 		return session().createQuery("from User where canlogin = 1").list();	
+	}
+	
+	public List<PII> getAllPIIRequests(){
+		return session().createQuery("from PII").list();	
 	}
 	
 	

@@ -170,6 +170,7 @@ public class LoginController {
 		}
 		return "accountactivation";
 	}
+	
 	@RequestMapping("/acceptbtn")
 	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
 	 

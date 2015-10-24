@@ -12,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import sbs.web.models.Authorities;
+import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
@@ -33,10 +35,10 @@ public class HomeController {
 		return "homepage";
 	}
 
-	@RequestMapping("/random")
+	@RequestMapping("/Sample")
 	public String showRandom() {
 		System.out.println("random page");
-		return "random";
+		return "Sample";
 	}
 	// @RequestMapping("/forgotpassword")
 	// public String showForgotPassword(Model model) {
@@ -169,6 +171,30 @@ public class HomeController {
 		
 		System.out.println("Admin Home");
 		return "adminhome";
+	}
+	@RequestMapping(value = "/pii")
+	public String listPIIs(Model model)
+	{
+		List<PII> piis = userService.getAllPIIs();
+		model.addAttribute("piis", piis);
+		return "pii";
+	}
+	
+	@RequestMapping("/acceptpii")
+	public String acceptUserPII(Model model, @RequestParam("Accept") String username) {
+		System.out.println("accepted "+username);
+		List<PII> piis = userService.getAllPIIs();
+		model.addAttribute("piis", piis);
+		return "pii";
+	}
+	@RequestMapping("/declinepii")
+	public String declineUserPII(Model model, @RequestParam("Decline") String username) {
+		System.out.println("declined "+username);
+
+		List<PII> piis = userService.getAllPIIs();
+		model.addAttribute("piis", piis);
+		return "pii";
+
 	}
 
 	@RequestMapping(value = "/employeecreation")
