@@ -61,13 +61,13 @@ public class SendMail {
 			message.setFrom(new InternetAddress(randomMail));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject("EStatement from Money Tree Banking Corporation");
-			String msg = "Dear ";// + user.getUsername() + ","
-			// + "\n\n Your Money Tree Banking Corporation account e-statement
-			// is now being sent to you as a pdf document.\n To open this file,
-			// you need Adobe Acrobat Reader. If you do not have Adobe Acrobat
-			// Reader, please visit the following link to download it:
-			// http://www.adobe.com/products/acrobat/readstep2.html.
-			// \nSincerely,\nMoney Tree Banking Corporation ";
+			String msg = "Dear " + user.getUsername()
+			+ "\n\n Your Money Tree Banking Corporation account e-statement"
+			+ "is now being sent to you as a pdf document.\n To open this file"
+			+ "you need Adobe Acrobat Reader. If you do not have Adobe Acrobat"
+			+ "Reader, please visit the following link to download it:"
+			+ "http://www.adobe.com/products/acrobat/readstep2.html."
+			+ "\n\nSincerely,\nMoney Tree Banking Corporation \n 'Grow your money here'";
 			// creates message part
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setContent(msg, "text/html");
@@ -208,7 +208,7 @@ public class SendMail {
 			message.setSubject("Reset Password Link for " + user.getEmail());
 			String msg = "Dear " + uname + "," + "\n\n Your  link to rest password is " + link
 					+ ".\n The Link is valid for one time use only."
-					+ "\nSincerely,\nMoney Tree Banking Corporation ";
+					+ "\n\nSincerely,\nMoney Tree Banking Corporation \n 'Grow your money here'";
 			// creates message part
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setContent(msg, "text/html");
@@ -227,6 +227,58 @@ public class SendMail {
 			throw new RuntimeException(e);
 		}
 
+	}
+	
+	public void sendTempPassword(String email, String tempPass, String fname) {
+		// Recipient's email ID needs to be mentioned.
+		String to = email;
+
+		// Sender's email ID needs to be mentioned
+		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
+				"moneytreebanking4@gmail.com", "moneytreebanking5@gmail.com" };
+
+		final String username = "moneytreebanking";// change accordingly
+		final String password = "mtbc1234";// change accordingly
+		Properties props = new Properties();
+
+		props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+
+		Random rand = new Random();
+
+		int n = rand.nextInt(2) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		String randomMail = from[n - 1];
+		System.out.println(randomMail);
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(randomMail));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+			message.setSubject("Welcome To Money Tree Banking Corporation " + fname);
+			message.setText("Dear " + fname + ","
+					+ "\n\n We are pleased to have you with MTBC bank. "
+					+ "To Complete setting up your account please login with your temporary one time password"
+					+"\n Temporary Password :" + tempPass 
+					+ "\n\nSincerely,\nMoney Tree Banking Corporation \n 'Grow your money here'");
+			System.out.println("Sending message");
+			Transport.send(message);
+
+			System.out.println("Done");
+
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void sendOTP(OTP otpObj) {
@@ -268,7 +320,8 @@ public class SendMail {
 			message.setSubject("Welcome To Money Tree Banking Corporation " + otpObj.getFirstName());
 			message.setText("Dear " + otpObj.getFirstName() + ","
 					+ "\n\n We are pleased that you chose to bank with MTBC. Your OTP for creating your online account is "
-					+ otpObj.getOtpValue());
+					+ otpObj.getOtpValue()
+					+ "\n\nSincerely,\nMoney Tree Banking Corporation \n 'Grow your money here'");
 			System.out.println("Sending message");
 			Transport.send(message);
 

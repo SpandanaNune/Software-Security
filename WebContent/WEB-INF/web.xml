@@ -57,6 +57,6 @@
   <!-- Session Time Config -->
   <session-config>
       <!-- in minutes -->
-      <session-timeout>30</session-timeout>
+      <session-timeout>15</session-timeout>
    </session-config>
 </web-app>

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sbs.web.models.Authorities;
 import sbs.web.models.Users;
 import sbs.web.models.User;
-import sbs.web.models.Users;
 import sbs.web.service.UserService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utilities.VerifyCaptcha;
