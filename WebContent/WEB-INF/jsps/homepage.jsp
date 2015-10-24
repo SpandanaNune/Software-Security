@@ -57,8 +57,10 @@
 						href="${pageContext.request.contextPath}/openTransaction">Open transactions [Arjun]</a>
 						
 						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/random">Random </a>
+						href="${pageContext.request.contextPath}/getAccountDetails">Get Account Details</a>
 						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/Sample">Random </a>
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/accountactivation">Verify Account</a>
 						

@@ -2,14 +2,14 @@ package sbs.web.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import sbs.web.models.Authorities;
+import sbs.web.models.PII;
 import sbs.web.models.User;
 
 import sbs.web.models.Authorities;
@@ -54,9 +54,9 @@ public class UsersDao {
 	}
 
 	public Object validateUser(User user) {
-//		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
-//		return query.uniqueResult();
-		return null;
+		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
+		return query.uniqueResult();
+	//	return null;
 	}
 
 	public Object getUserbyUsername(String username) {
@@ -101,6 +101,24 @@ public class UsersDao {
 		return session().createQuery("from User where canlogin = 1").list();	
 	}
 	
+	public List<PII> getAllPIIRequests(){
+		return session().createQuery("from PII where isApproved = 0").list();	
+	}
+	
+	public Object getPII(String userName)
+	{
+		return session().createQuery("from PII where username = '"+userName+"'").uniqueResult();	
+	}
+	public void deletePIIRequest(String username)
+	{
+		PII pii = (PII)getPII(username);
+		 session().delete(pii);
+	}
+	
+	public void updatePII(PII pii)
+	{
+		session().saveOrUpdate(pii);
+	}
 	
 //	public List<User> getAllActiveUsers(){
 //		String hql = "from User ur, Users us where ur.username = us.username and us.enabled = 1";

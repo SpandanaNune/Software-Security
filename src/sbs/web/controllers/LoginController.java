@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sbs.web.models.Authorities;
 import sbs.web.models.Users;
 import sbs.web.models.User;
+import sbs.web.models.Users;
 import sbs.web.service.UserService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utilities.VerifyCaptcha;
@@ -115,39 +116,40 @@ public class LoginController {
 /*************************************SYSTEM**MANAGER*******************************/
 	
 	@RequestMapping("/manager")
-    public String showManagerHome(Model model) {
-//        List<User> user = userService.getAllNewUsers();
-//        model.addAttribute("user", user);
-        return "managerhome";
-    }
-    
-    @RequestMapping("/usersignuprequest")
-    public String showUserSignUpRequest(Model model) {
-        List<User> user = userService.getAllNewUsers();
-        model.addAttribute("user", user);
-        return "usersignuprequest";
-    }
-    
-    @RequestMapping("/declinebtn")
-    public String deleteUserSignUp(Model model, @RequestParam("Decline") String username) {
-        System.out.println("Delete Button Operation");
-        System.out.println(username);
-        
-        userService.deleteUserRequest(username);
-        List<User> updateduser = userService.getAllNewUsers();
-        
-        model.addAttribute("user", updateduser);
-        return "usersignuprequest";
-        
-    }    
-    @RequestMapping("/acceptbtn")
-    public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
-     
-    	User user = userService.getUserregisterbyUsername(username);
-//        user.setCanlogin(true);
-        user.setIsnewuser(false);
-        userService.createUser(user);
-        System.out.println("hello"+user);
+	public String showManagerHome(Model model) {
+//		List<User> user = userService.getAllNewUsers();
+//		model.addAttribute("user", user);
+		return "managerhome";
+	}
+	
+	@RequestMapping("/usersignuprequest")
+	public String showUserSignUpRequest(Model model) {
+		List<User> user = userService.getAllNewUsers();
+		model.addAttribute("user", user);
+		return "usersignuprequest";
+	}
+	
+	@RequestMapping("/declinebtn")
+	public String deleteUserSignUp(Model model, @RequestParam("Decline") String username) {
+		System.out.println("Delete Button Operation");
+		System.out.println(username);
+		
+		userService.deleteUserRequest(username);
+		List<User> updateduser = userService.getAllNewUsers();
+		
+		model.addAttribute("user", updateduser);
+		return "usersignuprequest";
+		
+	}
+	
+	@RequestMapping("/acceptbtn")
+	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
+	 
+		User user = userService.getUserregisterbyUsername(username);
+		//user.setCanlogin(true);
+		user.setIsnewuser(false);
+		userService.createUser(user);
+		System.out.println("hello"+user);
 
         Users users = new Users();
         users.setUsername(username);
@@ -169,6 +171,39 @@ public class LoginController {
         return "usersignuprequest";
         
     }
+	@RequestMapping("/accountactivation")
+	public String activateAccount(@Valid Users eUser,BindingResult result,Model model)
+	{
+		if(eUser!=null && eUser.getUsername()!=null)
+		{
+		User user = userService.getUserregisterbyUsername(eUser.getUsername());
+		//user.setCanlogin(true);
+		user.setIsnewuser(false);
+		userService.createUser(user);
+		System.out.println("hello"+user);
+		Users users = new Users();
+		users.setUsername(eUser.getUsername());
+		users.setPassword(eUser.getPassword());
+		users.setEnabled(true);
+		users.setAccountNonExpired(true);
+		users.setAccountNonLocked(true);
+		users.setCredentialsNonExpired(true);
+
+		Authorities auth = new Authorities();
+		auth.setUsername(eUser.getUsername());
+	//	auth.setAuthority(user.getRole());
+		
+		userService.saveOrUpdateUsers(users);
+		userService.setAuthority(auth);
+		}
+		else
+		{
+			model.addAttribute("users", new Users());
+		}
+		return "accountactivation";
+	}
+	
+	
 
     @RequestMapping("/viewedituserdetails")
     public String viewEditUserDetails(Model model) {

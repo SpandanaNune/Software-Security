@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sbs.web.dao.UsersDao;
-
+import sbs.web.models.Authorities;
+import sbs.web.models.PII;
 import sbs.web.models.User;
 
 import sbs.web.models.Authorities;
@@ -47,7 +48,11 @@ public class UserService {
 		Users getuser = (Users) usersDao.getUserbyUsername(username);
 		return getuser;
 	}
-
+	public Users getUserbyField(String field, String value)
+	{
+		Users getuser = (Users) usersDao.getUserbyField(field, value);
+		return getuser;
+	}
 	public User getUserregisterbyUsername(String username) {
 		User getuser = (User) usersDao.getUserregisterbyUsername(username);
 
@@ -59,11 +64,22 @@ public class UserService {
 		return getuser;
 	}
 
-	public Users getUserbyField(String field, String value) {
-		Users getuser = (Users) usersDao.getUserbyField(field, value);
-		return getuser;
+	public void deletePII(String username)
+	{
+		usersDao.deletePIIRequest(username);
 	}
-
+	
+	public void approvePII(String username)
+	{
+		PII pii = (PII)usersDao.getPII(username);
+		pii.setApproved(true);
+		usersDao.updatePII(pii);
+	}
+	
+	public List<PII> getAllPIIs()
+	{
+		return usersDao.getAllPIIRequests();
+	}
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}

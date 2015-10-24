@@ -7,65 +7,125 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
+<script type="text/javascript">
+          function datefn() {
+        	  document.getElementById('byaccount').style.visibilty = 'hidden';
+              document.getElementById('byname').style.visibility = 'hidden';
+              document.getElementById('byaccountlabel').style.visibilty = 'hidden';
+              document.getElementById('bynamelabel').style.visibility = 'hidden';
+              document.getElementById('bydate').style.visibility = 'visible';
+             
+
+              document.getElementById('bydatelabel').style.visibility = 'visible';
+             
+          }
+          function accountfn() {
+        	  document.getElementById('bydate').style.visibilty = 'hidden';
+              document.getElementById('byname').style.visibility = 'hidden';
+              document.getElementById('bydatelabel').style.visibilty = 'hidden';
+              document.getElementById('bynamelabel').style.visibility = 'hidden';
+              document.getElementById('byaccount').style.visibilty = 'visible';
+             
+
+              document.getElementById('byaccountlabel').style.visibilty = 'visible';
+             
+          }
+          function namefn() {
+        	  document.getElementById('byaccount').style.visibilty = 'hidden';
+        	  document.getElementById('byaccountlabel').style.visibilty = 'hidden';
+              document.getElementById('bydatelabel').style.visibility = 'hidden';
+          
+              document.getElementById('bydate').style.visibility = 'hidden';
+              document.getElementById('byname').style.visibility = 'visible';
+             
+
+              document.getElementById('bynamelabel').style.visibility = 'visible';
+          }
+</script>
+
 </head>
 <body>
-	Transaction Log
-	<h2>Filter Logs by</h2>
+  <div class="container">
+	<h1>Transaction Log</h1>
+  <br><br><br>
+	<h3>Filter Logs by</h3>
 
 	<sf:form method="POST" action="${pageContext.request.contextPath}/transactionlog" commandName="transactionLog" >
 		<sf:errors path="*" cssClass="errorblock" element="div" />
-		<table>
-			<tr>
-				<td><sf:radiobutton class="control" path="logFilter" value="date" name="By Date"/>By Date 
-				<sf:radiobutton
-						path="logFilter" class="control" value="account" name="By AccountNo"/>By AccountNo
-						<sf:radiobutton
-						path="logFilter" class="control" value="name" name ="By Name"/>By Name</td>
-				<td><sf:errors class="control" path="logFilter" cssClass="error" /></td>
-			</tr>
-			<tr>
-				<td class="label">Date: (MM/DD/YYYY)</td>
-				<td><sf:input class="control" path="date" name="date"
-						type="text" /><br /> <sf:errors path="date" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td class="label">Account No:</td>
-				<td><sf:input class="control" path="accountNo" name="accountNo"
-						type="text" /><br /> <sf:errors path="accountNo" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td class="label">User Name:</td>
-				<td><sf:input class="control" path="name" name="name"
-						type="text" /><br /> <sf:errors path="accountNo" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td colspan="3"><input class="control" type="submit" /></td>
-			</tr>
+    <table>
+                <tr>
+                    <td>  <sf:radiobutton class="control radio" path="logFilter" value="date" name="By Date" onclick="datefn()"/><font style="color:black">By Date</font>
+                          <sf:radiobutton
+                                    path="logFilter" class="control radio" value="account" name="By AccountNo" onclick="accountfn()"/><font style="color:black">By AccountNo</font>
+                              <sf:radiobutton
+                                    path="logFilter" class="control radio" value="name" name ="By Name" onclick="namefn()"/><font style="color:black">By Name</font></td>
+                    <td><sf:errors class="control" path="logFilter" cssClass="error" /></td>
+                </tr>
 
-		</table>
-		
-		<TABLE BORDER="1">
-		<TR>
-			<TH>Transaction Id</TH>
-			<TH>Account No</TH>
-			<TH>Transaction Type</TH>
-			<TH>Amount</TH>
-			<TH>Status</TH>
-		</TR>
-		<c:forEach items="${transactions}" var="transaction">
-			<TR>
-				<TD><c:out
-						value="${transaction.getPrimaryKey().getTransactionId()}" /></TD>
-				<TD><c:out
-						value="${transaction.getPrimaryKey().getAccountNo()}" /></TD>
-				<TD><c:out value="${transaction.getAmount()}" /></TD>
-				<TD><c:out value="${transaction.getTransactionType()}" /></TD>
-				<TD><c:out value="${transaction.getStatus()}" /></TD>
+                       <tr>
+                           <td class="label"><div id="bydatelabel"><h4 style="color:black">Date: (MM/DD/YYYY) &nbsp;</h4></div></td>
+                           <td><div id="bydate"><sf:input class="control form-control" path="date" name="date"
+                                   type="text" /><br /> </div> </td>
 
-			</TR>
-		</c:forEach>
+                                <td>   <sf:errors path="date" Class="error"></sf:errors></td>
+                       </tr>
 
-	</TABLE>
+                         <tr>
+                             <td class="label"><div id="byaccountlabel"><h4 style="color:black">Account No:</h4></div></td>
+                             <td><div id="byaccount"><sf:input class="control form-control" path="accountNo" name="accountNo"
+                                     type="text" /><br /></div> </td>
+
+                                  <td>   <sf:errors path="accountNo" Class="error"></sf:errors></td>
+                         </tr>
+
+
+                         <tr>
+                             <td class="label"><div id="bynamelabel"><h4 style="color:black">User Name:</h4></div></td>
+                             <td><div id="byname"><sf:input class="control form-control" path="name" name="name"
+                                     type="text" /><br /> </div> </td>
+
+                                  <td>   <sf:errors path="accountNo" Class="error"></sf:errors> </td>
+                         </tr>
+
+
+                </table>
+      <br><br>
+			<center><input class="control btn btn-info" type="submit" /></center>
+
+
+
+      <br><br><br>
+      <center>
+            		<TABLE BORDER="1">
+            		<TR>
+            			<TH>Transaction Id</TH>
+            			<TH>Account No</TH>
+            			<TH>Transaction Type</TH>
+            			<TH>Amount</TH>
+            			<TH>Status</TH>
+            		</TR>
+                <div id="outputtable">
+            		<c:forEach items="${transactions}" var="transaction">
+            			<TR>
+            				<TD><c:out
+            						value="${transaction.getPrimaryKey().getTransactionId()}" /></TD>
+            				<TD><c:out
+            						value="${transaction.getPrimaryKey().getAccountNo()}" /></TD>
+            				<TD><c:out value="${transaction.getAmount()}" /></TD>
+            				<TD><c:out value="${transaction.getTransactionType()}" /></TD>
+            				<TD><c:out value="${transaction.getStatus()}" /></TD>
+
+            			</TR>
+            		</c:forEach>
+              </div>
+            	</TABLE>
+        </center>
 	</sf:form>
+  </div>
+</body>
 </html>
