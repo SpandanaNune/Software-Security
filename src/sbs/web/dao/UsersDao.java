@@ -90,9 +90,23 @@ public class UsersDao {
 	}
 	
 	public List<PII> getAllPIIRequests(){
-		return session().createQuery("from PII").list();	
+		return session().createQuery("from PII where isApproved = 0").list();	
 	}
 	
+	public Object getPII(String userName)
+	{
+		return session().createQuery("from PII where username = '"+userName+"'").uniqueResult();	
+	}
+	public void deletePIIRequest(String username)
+	{
+		PII pii = (PII)getPII(username);
+		 session().delete(pii);
+	}
+	
+	public void updatePII(PII pii)
+	{
+		session().saveOrUpdate(pii);
+	}
 	
 //	public List<User> getAllActiveUsers(){
 //		String hql = "from User ur, Users us where ur.username = us.username and us.enabled = 1";

@@ -9,7 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<sf:form method="post" >
 	<H1>PII List</H1>
 	<TABLE BORDER="1">
 		<TR>
@@ -31,8 +30,7 @@
 						<input class="control" value = "Accept" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
-					</form>
-				<form method="post"
+					</form><form method="post"
 						action="${pageContext.request.contextPath}/declinepii">
 						<input type="hidden" name="Decline" value="${pii.getUserName()}" />
 						<input class="control" value = "Decline" type="submit" /> <input
@@ -47,6 +45,5 @@
 	<!--  <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">Download</button>
 	 	 <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">E-Mail</button> -->
 	 
-	 </sf:form>
 </body>
 </html>

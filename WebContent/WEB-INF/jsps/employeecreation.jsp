@@ -106,12 +106,11 @@
 
 				<tr>
 					<td class="label"><h4 style="color: black">User Role:</h4></td>
-					<td><sf:select name="role" class="control form-control"
-							path="role">
+					<td><select name="role" >
 							<c:forEach items="${roles}" var="id">
 								<option value="${id}">${id}</option>
 							</c:forEach>
-						</sf:select></td>
+						</select></td>
 				</tr>
 			</table>
 

@@ -55,6 +55,18 @@ public class UserService {
 		return getuser;
 	}
 	
+	public void deletePII(String username)
+	{
+		usersDao.deletePIIRequest(username);
+	}
+	
+	public void approvePII(String username)
+	{
+		PII pii = (PII)usersDao.getPII(username);
+		pii.setApproved(true);
+		usersDao.updatePII(pii);
+	}
+	
 	public List<PII> getAllPIIs()
 	{
 		return usersDao.getAllPIIRequests();

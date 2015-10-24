@@ -139,7 +139,37 @@ public class LoginController {
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
 		
-	}	
+	}
+	
+	@RequestMapping("/acceptbtn")
+	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
+	 
+		User user = userService.getUserregisterbyUsername(username);
+		//user.setCanlogin(true);
+		user.setIsnewuser(false);
+		userService.createUser(user);
+		System.out.println("hello"+user);
+
+        Users users = new Users();
+        users.setUsername(username);
+        users.setPassword("45678");
+        users.setEnabled(true);
+        users.setAccountNonExpired(true);
+        users.setAccountNonLocked(true);
+        users.setCredentialsNonExpired(true);
+
+        Authorities auth = new Authorities();
+        auth.setUsername(username);
+        auth.setAuthority("ROLE_NEW");
+        
+        userService.userActivation(users);
+        userService.setAuthority(auth);
+        
+        List<User> updateduser = userService.getAllNewUsers();
+        model.addAttribute("user", updateduser);
+        return "usersignuprequest";
+        
+    }
 	@RequestMapping("/accountactivation")
 	public String activateAccount(@Valid Users eUser,BindingResult result,Model model)
 	{
@@ -172,35 +202,7 @@ public class LoginController {
 		return "accountactivation";
 	}
 	
-	@RequestMapping("/acceptbtn")
-	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
-	 
-		User user = userService.getUserregisterbyUsername(username);
-		//user.setCanlogin(true);
-		user.setIsnewuser(false);
-		userService.createUser(user);
-		System.out.println("hello"+user);
-
-        Users users = new Users();
-        users.setUsername(username);
-        users.setPassword("45678");
-        users.setEnabled(true);
-        users.setAccountNonExpired(true);
-        users.setAccountNonLocked(true);
-        users.setCredentialsNonExpired(true);
-
-        Authorities auth = new Authorities();
-        auth.setUsername(username);
-        auth.setAuthority("ROLE_NEW");
-        
-        userService.userActivation(users);
-        userService.setAuthority(auth);
-        
-        List<User> updateduser = userService.getAllNewUsers();
-        model.addAttribute("user", updateduser);
-        return "usersignuprequest";
-        
-    }
+	
 
     @RequestMapping("/viewedituserdetails")
     public String viewEditUserDetails(Model model) {
