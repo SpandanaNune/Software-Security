@@ -9,6 +9,9 @@ import sbs.web.dao.UsersDao;
 import sbs.web.models.Authorities;
 import sbs.web.models.PII;
 import sbs.web.models.User;
+
+import sbs.web.models.Authorities;
+
 import sbs.web.models.Users;
 
 @Service("userService")
@@ -27,8 +30,8 @@ public class UserService {
 	public void createUser(User user) {
 		usersDao.createUser(user);
 	}
-	
-	public void setAuthority(Authorities auth){
+
+	public void setAuthority(Authorities auth) {
 		usersDao.setAuthority(auth);
 	}
 
@@ -48,6 +51,7 @@ public class UserService {
 	}
 	public User getUserregisterbyUsername(String username) {
 		User getuser = (User) usersDao.getUserregisterbyUsername(username);
+
 		return getuser;
 	}
 	
@@ -58,7 +62,7 @@ public class UserService {
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}
-	
+
 	public List<User> getAllActiveUsers() {
 		return usersDao.getAllActiveUsers();
 	}
@@ -66,8 +70,8 @@ public class UserService {
 	public void deleteUserRequest(String username) {
 		usersDao.deleteUserRequest(username);
 	}
-	
-	public void userActivation(Users users){
+
+	public void userActivation(Users users) {
 		usersDao.userActivation(users);
 	}
 }

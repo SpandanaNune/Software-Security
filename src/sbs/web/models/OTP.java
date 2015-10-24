@@ -1,6 +1,5 @@
 package sbs.web.models;
 
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +15,6 @@ public class OTP {
 	String mailID;
 	String otpValue;
 	String firstName;
-	Date timeStamp;
 	int attempts;
 	
 	public int getAttempts() {
@@ -43,11 +41,6 @@ public class OTP {
 	public void setOtpValue(String otpValue) {
 		this.otpValue = otpValue;
 	}
-	public Date getTimeStamp() {
-		return timeStamp;
-	}
-	public void setTimeStamp(Date timeStamp) {
-		this.timeStamp = timeStamp;
-	}
+	
 	
 }

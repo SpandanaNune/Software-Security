@@ -1,14 +1,11 @@
 package sbs.web.utils;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.servlet.ServletContext;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -24,7 +21,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import sbs.web.models.Transaction;
 import sbs.web.models.User;
-import sbs.web.utilities.SendMail;
 
 public class PDFUtils {
 	private static String FILE;
@@ -137,11 +133,11 @@ public class PDFUtils {
 			//	(ArrayList<Transaction>)transactionService.getAllTransactions(1234);
 		try {
 
-				User user = new User();
+			User user = new User();
 				user.setEmail("sswetha2809@gmail.com");
 				user.setFirstname("swetha");
 				user.setLastname("swaminathan");
-				user.setUsername("sswetha2809");
+//				user.setUsername("sswetha2809");
 				// saving the generated pdf to a temp folder for e-mailing
 				PDFUtils.generatePDF(transactions,"C:\\temp\\swetha.pdf");
 

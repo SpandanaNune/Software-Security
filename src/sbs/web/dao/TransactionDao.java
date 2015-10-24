@@ -35,6 +35,7 @@ public class TransactionDao {
 		return session().createQuery("from Transaction where DATE(createdDate)='"+date+"'").list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Transaction> getAllCriticalTransaction(){
 		return session().createQuery("from Transaction where isCritical = 1").list();
 	}

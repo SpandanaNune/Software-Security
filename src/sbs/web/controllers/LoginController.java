@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import sbs.web.models.Authorities;
+import sbs.web.models.Users;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
@@ -145,7 +146,7 @@ public class LoginController {
 		if(eUser!=null && eUser.getUsername()!=null)
 		{
 		User user = userService.getUserregisterbyUsername(eUser.getUsername());
-		user.setCanlogin(true);
+		//user.setCanlogin(true);
 		user.setIsnewuser(false);
 		userService.createUser(user);
 		System.out.println("hello"+user);
@@ -159,7 +160,7 @@ public class LoginController {
 
 		Authorities auth = new Authorities();
 		auth.setUsername(eUser.getUsername());
-		auth.setAuthority(user.getRole());
+	//	auth.setAuthority(user.getRole());
 		
 		userService.userActivation(users);
 		userService.setAuthority(auth);
@@ -175,62 +176,62 @@ public class LoginController {
 	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
 	 
 		User user = userService.getUserregisterbyUsername(username);
-		user.setCanlogin(true);
+		//user.setCanlogin(true);
 		user.setIsnewuser(false);
 		userService.createUser(user);
 		System.out.println("hello"+user);
 
-		Users users = new Users();
-		users.setUsername(username);
-		users.setPassword("456780");
-		users.setEnabled(true);
-		users.setAccountNonExpired(true);
-		users.setAccountNonLocked(true);
-		users.setCredentialsNonExpired(true);
+        Users users = new Users();
+        users.setUsername(username);
+        users.setPassword("45678");
+        users.setEnabled(true);
+        users.setAccountNonExpired(true);
+        users.setAccountNonLocked(true);
+        users.setCredentialsNonExpired(true);
 
-		Authorities auth = new Authorities();
-		auth.setUsername(username);
-		auth.setAuthority("ROLE_NEW");
-		
-		userService.userActivation(users);
-		userService.setAuthority(auth);
-		
-		List<User> updateduser = userService.getAllNewUsers();
-		model.addAttribute("user", updateduser);
-		return "usersignuprequest";
-		
-	}
+        Authorities auth = new Authorities();
+        auth.setUsername(username);
+        auth.setAuthority("ROLE_NEW");
+        
+        userService.userActivation(users);
+        userService.setAuthority(auth);
+        
+        List<User> updateduser = userService.getAllNewUsers();
+        model.addAttribute("user", updateduser);
+        return "usersignuprequest";
+        
+    }
 
-	@RequestMapping("/viewedituserdetails")
-	public String viewEditUserDetails(Model model) {
-		List<User> user = userService.getAllActiveUsers();
-		model.addAttribute("user", user);
-		return "viewedituserdetails";
-	}
-	
-	@RequestMapping("/editbtn")
-	public String editButton(Model model, @RequestParam("View/Edit") String username) {
-		System.out.println("Edit Button Operation");
-		User user = userService.getUserregisterbyUsername(username);
-		System.out.println(user);
-		model.addAttribute("user", user);
-		return "edituser";
-	}
+    @RequestMapping("/viewedituserdetails")
+    public String viewEditUserDetails(Model model) {
+        List<User> userlist = userService.getAllActiveUsers();
+        model.addAttribute("user", userlist);
+        return "viewedituserdetails";
+    }
+    
+    @RequestMapping("/editbtn")
+    public String editButton(Model model, @RequestParam("View/Edit") String username) {
+        System.out.println("Edit Button Operation");
+        User user = userService.getUserregisterbyUsername(username);
+        System.out.println(user);
+        model.addAttribute("user", user);
+        return "edituser";
+    }
 
-	@RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
-	public String UpdaterUser(@Valid User user, BindingResult result, Model model) {
-//		System.out.println(result.getErrorCount());
-//		System.out.println(result.toString());
-//		System.out.println(user);
-		user.setCanlogin(true);
-		
-		if (result.getErrorCount() > 2)
-			return "edituser";
-		else {
-			userService.createUser(user);	
-			List<User> updateduser = userService.getAllActiveUsers();
-			model.addAttribute("user", updateduser);
-			return "viewedituserdetails";
-		}
-	}
-}
+    @RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
+    public String UpdaterUser(@Valid User user, BindingResult result, Model model) {
+//        System.out.println(result.getErrorCount());
+//        System.out.println(result.toString());
+//        System.out.println(user);
+//        user.setCanlogin(true);
+        
+        if (result.getErrorCount() > 2)
+            return "edituser";
+        else {
+            userService.createUser(user);    
+            List<User> updateduser = userService.getAllActiveUsers();
+            model.addAttribute("user", updateduser);
+            return "viewedituserdetails";
+        }
+    }
+    }

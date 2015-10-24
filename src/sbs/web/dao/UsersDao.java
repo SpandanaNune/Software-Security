@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sbs.web.models.Authorities;
 import sbs.web.models.PII;
 import sbs.web.models.User;
+
+import sbs.web.models.Authorities;
+
 import sbs.web.models.Users;
 
 @Transactional
@@ -25,6 +28,7 @@ public class UsersDao {
 	}
 
 	@Transactional
+
 	public void createUser(User user) {
 		session().saveOrUpdate(user);
 	}
@@ -45,6 +49,7 @@ public class UsersDao {
 	public Object validateUser(User user) {
 		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
 		return query.uniqueResult();
+	//	return null;
 	}
 
 	public Object getUserbyUsername(String username) {
@@ -62,6 +67,7 @@ public class UsersDao {
 		return query.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> getAllNewUsers() {
 		return session().createQuery("from User where isnewuser = 1").list();
 	}
