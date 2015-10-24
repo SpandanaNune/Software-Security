@@ -27,10 +27,15 @@ public class TransactionDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Transaction> getAllTransactions(int accountNo){
+	public List<Transaction> getAllTransactions(long accountNo){
 		return session().createQuery("from Transaction where accountNo="+accountNo).list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Transaction> getAllTransactions(String date){
+		return session().createQuery("from Transaction where DATE(createdDate)="+date).list();
+	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Transaction> getAllCriticalTransaction(){
 		return session().createQuery("from Transaction where isCritical = 1").list();
 	}
@@ -38,8 +43,8 @@ public class TransactionDao {
 	//check if we need to add transactional
 	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
 		session().save(fromTransaction);
-		System.out.println(fromTransaction.getPrimaryKey().getTransactionID());
-		System.out.println(toTransaction.getPrimaryKey().getTransactionID());
+		System.out.println(fromTransaction.getPrimaryKey().getTransactionId());
+		System.out.println(toTransaction.getPrimaryKey().getTransactionId());
 		session().save(toTransaction);
 	}
 	

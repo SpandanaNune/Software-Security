@@ -1,6 +1,5 @@
 package sbs.web.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,12 +7,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class Users {
-	
-	
+
 	@Id
-	@Column(name = "username")
 	private String username;
 	private String password;
+
+	// private String email;
+	private int siteKeyID;
 	private boolean enabled;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
@@ -54,13 +54,20 @@ public class Users {
 		this.username = username;
 	}
 
-	
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public int getSiteKeyID() {
+		return siteKeyID;
+	}
+
+	public void setSiteKeyID(int siteKeyID) {
+		this.siteKeyID = siteKeyID;
 	}
 
 	public boolean isEnabled() {
@@ -97,12 +104,10 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "Users [username=" + username + ", password=" + password + ", enabled=" + enabled
-				+ ", accountNonExpired=" + accountNonExpired + ", accountNonLocked=" + accountNonLocked
-				+ ", credentialsNonExpired=" + credentialsNonExpired + ", q1=" + q1 + ", q2=" + q2 + ", q3=" + q3 + "]";
+		return "Users [ username=" + username + ", password=" + password + ", siteKeyID=" + siteKeyID + ", enabled="
+				+ enabled + ", accountNonExpired=" + accountNonExpired + ", accountNonLocked=" + accountNonLocked
+				+ ", credentialsNonExpired=" + credentialsNonExpired + "]";
+
 	}
-
-	
-
 
 }

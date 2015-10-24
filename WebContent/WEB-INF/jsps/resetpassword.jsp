@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 
 <link href="${pageContext.request.contextPath}/static/css/main.css"
-	rel="stylesheet" type="text/css" />
+	rel="stylesheet" type="text/css" />	
 </head>
 <body>
 	Forgot Password page
@@ -22,15 +22,9 @@
 
 		<table class="formtable">
 			<tr>
-				<td class="label">UserName:</td>
-				<td><sf:input class="control" path="username" name="username"
-						type="text" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
-			</tr>
-
-			<tr>
 				<td class="label">New Password:</td>
 				<td><sf:input class="control" path="password" name="password"
-						type="text" /><br /> <sf:errors path="password" Class="error"></sf:errors></td>
+						type="text" value=""/><br /> <sf:errors path="password" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
 				<td class="label">Confirm Password:</td>

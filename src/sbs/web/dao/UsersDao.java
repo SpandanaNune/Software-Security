@@ -2,13 +2,13 @@ package sbs.web.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import sbs.web.models.Accounts;
 import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
@@ -24,9 +24,14 @@ public class UsersDao {
 		return sessionFactory.getCurrentSession();
 	}
 
-	@Transactional
+//	@Transactional
 	public void createUser(User user) {
+		//System.out.println(user.toString());
 		session().saveOrUpdate(user);
+	}
+	
+	public void addNewAccount(Accounts account) {
+		session().saveOrUpdate(account);
 	}
 	
 	public void setAuthority(Authorities auth){
@@ -43,20 +48,37 @@ public class UsersDao {
 	}
 
 	public Object validateUser(User user) {
-		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
-		return query.uniqueResult();
+//		org.hibernate.Query query = session().createQuery("from User where username = '" + user.getUsername() + "'");
+//		return query.uniqueResult();
+		return null;
 	}
 
 	public Object getUserbyUsername(String username) {
 		org.hibernate.Query query = session().createQuery("from Users where username = '" + username + "'");
 		return query.uniqueResult();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getUserProfileByField(String field, String value) {
+		return session().createQuery("from User where " + field + "='" + value + "'").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Users> getUsersByField(String field, String value) {
+		return session().createQuery("from Users where " + field + "='" + value + "'").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Users> getUsersByFieldBool(String field, boolean value) {
+		return session().createQuery("from Users where " + field + "=" + value + "").list();	
+	}
+	
 	public Object getUserregisterbyUsername(String username) {
 		org.hibernate.Query query = session().createQuery("from User where username = '" + username + "'");
 		return query.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> getAllNewUsers() {
 		return session().createQuery("from User where isnewuser = 1").list();
 	}
@@ -74,8 +96,14 @@ public class UsersDao {
 //		System.out.println("Rows affected: " + result);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<User> getAllActiveUsers(){
 		return session().createQuery("from User where canlogin = 1").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Accounts> getAccountsByField(String field, long value){
+		return session().createQuery("from Accounts where " + field + "=" + value + "").list();	
 	}
 	
 	

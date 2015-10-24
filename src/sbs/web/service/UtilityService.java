@@ -28,8 +28,7 @@ public class UtilityService {
 	}
 
 	public void updateOTP(OTP otpObj) {
-		utilityDao.updateOTP(otpObj);
-		
+		utilityDao.updateOTP(otpObj);	
 	}
 
 }

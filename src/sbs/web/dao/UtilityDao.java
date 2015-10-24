@@ -19,7 +19,7 @@ public class UtilityDao {
 	}
 
 	public void insertOTP(OTP otp) {
-		session().save(otp);
+		session().saveOrUpdate(otp);
 	}
 	
 	public OTP checkOTP(OTP otpObj) {
