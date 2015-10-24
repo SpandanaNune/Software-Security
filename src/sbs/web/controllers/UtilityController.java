@@ -37,8 +37,8 @@ public class UtilityController {
 	public String verifyUserMailID(User user, Model model) {
 		System.out.println("showViewUser");
 //		String mail=user.getEmail();
-		String mail="khanjan.ce@gmail.com";
-		String firstName="Khanjan";
+		String mail="Mallikarjunbpbp@gmail.com";
+		String firstName="Mallikarjun";
 		//generate otp
 		String otp=generatePassword();
 		System.out.println("otp "+otp);
@@ -47,7 +47,7 @@ public class UtilityController {
 		otpObj.setFirstName(firstName);
 		otpObj.setMailID(mail);
 		otpObj.setOtpValue(otp);
-		otpObj.setTimeStamp(new Date());
+//		otpObj.setTimeStamp(new Date());
 		try{
 			utilityService.insertOTP(otpObj); 
 			SendMail sendMail = new SendMail();
@@ -56,7 +56,6 @@ public class UtilityController {
 		catch(Exception e){
 			System.out.println(e);
 		}
-		
 		return "homepage";
 		
 	}
@@ -65,9 +64,9 @@ public class UtilityController {
 	public String verifyUserOTP(User user, Model model) {
 		System.out.println("showViewUser");
 //		String mail=user.getEmail();
-		String mail="khanjan.ce@gmail.com";
-		String firstName="Khanjan";
-		String otp="CIZ0R11V";
+		String mail="Mallikarjunbpbp@gmail.com";
+		String firstName="Mallikarjun";
+		String otp="8T6DIJ9j";
 		OTP otpObj = new OTP();
 		otpObj.setFirstName(firstName);
 		otpObj.setMailID(mail);
@@ -82,13 +81,14 @@ public class UtilityController {
 			else{
 				System.out.println("DB Object "+dbObj.getFirstName()+" "+dbObj.getMailID()+" "+dbObj.getOtpValue());
 				System.out.println("otpObj.getOtpValue() "+otpObj.getOtpValue());
+				
 				if(otpObj.getOtpValue().equals(dbObj.getOtpValue())){
 					System.out.println("Correct OTP. Navigate to required page");
-					utilityService.deleteOTP(otpObj);
+//					utilityService.deleteOTP(otpObj);
 					return "homepage";
 				}
-				if(dbObj.getAttempts()==2){
-					System.out.println("Too many attempts. Deleting the OTP");
+				else if(dbObj.getAttempts()==2){
+					System.out.println("Too many attempts. Deleting the OTP. dbObj.getAttempts() "+dbObj.getAttempts());
 					utilityService.deleteOTP(otpObj);
 					return "homepage";
 				}else{
@@ -102,7 +102,8 @@ public class UtilityController {
 				
 		}
 		catch(Exception e){
-			System.out.println(e);
+			System.out.println("Printing stack trace");
+			e.printStackTrace();
 		}
 
 		return "homepage";

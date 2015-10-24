@@ -21,13 +21,11 @@ import com.itextpdf.text.DocumentException;
 
 import sbs.web.models.Accounts;
 import sbs.web.models.Transaction;
+import sbs.web.models.TransactionDetails;
 import sbs.web.models.TransactionLog;
 import sbs.web.models.Transaction_CompositeKey;
-
 import sbs.web.models.User;
-
 import sbs.web.service.AccountsService;
-
 import sbs.web.service.TransactionService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utils.PDFUtils;
@@ -35,7 +33,7 @@ import sbs.web.utils.PDFUtils;
 @Controller
 public class TransactionController {
 	
-	static int transactionIDCounter=1000;
+	static int transactionIDCounter=500;
 	TransactionService transactionService;
 	AccountsService accountService;
 	@Autowired
@@ -47,44 +45,62 @@ public class TransactionController {
 	public void setAccountService(AccountsService accountService) {
 		this.accountService = accountService;
 	}
-
-
-
-
+	
 	@RequestMapping(value="/createTransaction")
-	public String createTransactions(Model model) {	
+	public String createTransactions(Model model, TransactionDetails transactionDetails) {
+		System.out.println("inside transactionDetails");
+		model.addAttribute("transactionDetails",transactionDetails);
 		
-		String fromUserAccount ="1000";
-		String toUserAccount ="2000";
-		String amount="233.45";
+		
+		System.out.println(transactionDetails.getBalance());
+		System.out.println(transactionDetails.getFromAccountNo());
+		System.out.println(transactionDetails.getToAccountNo());
+		
+		//validate to account
+		int fromUserAccount =transactionDetails.getFromAccountNo();
+		int toUserAccount =transactionDetails.getToAccountNo();
+		double amount=transactionDetails.getBalance();
+		
+		
+//		String fromUserAccount ="1000";
+//		String toUserAccount ="2000";
+//		String amount="233.45";
+//		
+//		transactionDetails
 		//add everything to transaction class and insert into db
 		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
-		fromCompositeKey.setAccountNo(Integer.parseInt(fromUserAccount));
+		fromCompositeKey.setAccountNo(fromUserAccount);
 		fromCompositeKey.setTransactionId(++transactionIDCounter);
 		
 		//populate Transaction data
 		Transaction fromTransaction = new Transaction();
 		fromTransaction.setPrimaryKey(fromCompositeKey);
-		fromTransaction.setAmount(Double.parseDouble(amount));
+		fromTransaction.setStatus("pending");
+		fromTransaction.setAmount(amount);
 		fromTransaction.setTransactionType("Debit");
 		fromTransaction.setCritical(false);
+		
+		System.out.println("fromTransaction "+fromTransaction.toString());
 		//set status
-		if(Double.parseDouble(amount) >1000){
+		if(amount >1000){
 			fromTransaction.setCritical(true);
 		}
 		
 		
 		//set same transaction ID for to account
 		Transaction_CompositeKey toCompositeKey = new Transaction_CompositeKey();
-		toCompositeKey.setAccountNo(Integer.parseInt(toUserAccount));
+		toCompositeKey.setAccountNo(toUserAccount);
 		toCompositeKey.setTransactionId(transactionIDCounter);
 		Transaction toTransaction = new Transaction();
 		toTransaction.setPrimaryKey(toCompositeKey);
-		toTransaction.setAmount(Double.parseDouble(amount));
+		toTransaction.setAmount(amount);
+		toTransaction.setStatus("pending");
 		toTransaction.setTransactionType("Credit");
 		toTransaction.setCritical(false);
+		
+		System.out.println("toTransaction "+toTransaction.toString());
 		//set status
-		if(Double.parseDouble(amount) >1000){
+		if(amount >1000){
 			toTransaction.setCritical(true);
 		}
 		try{

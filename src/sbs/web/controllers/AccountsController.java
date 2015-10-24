@@ -1,5 +1,6 @@
 package sbs.web.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import sbs.web.models.Accounts;
+import sbs.web.models.TransactionDetails;
 import sbs.web.service.AccountsService;
 import sbs.web.service.TransactionService;
 
@@ -21,10 +23,15 @@ public class AccountsController {
 			this.accountsService = accountsService;
 		}
 
-		@RequestMapping(value="/getAccountDetails")
-		public String getAccountDetails(Model model) {	
-			System.out.println("Inside getAccountDetails");
-			String username="mallikarjun";
+		
+		@RequestMapping(value="/openTransaction")
+		public String openTransactions(Model model, Principal principal){
+			String username;
+//			username=principal.getName();
+			username="arjun";
+			
+			model.addAttribute("transactionDetails", new TransactionDetails());
+			
 			try{
 				
 				ArrayList<Accounts> accounts = (ArrayList<Accounts>)accountsService.getAccountDetails(username);
@@ -32,10 +39,14 @@ public class AccountsController {
 				model.addAttribute("accounts",accounts);
 				System.out.println(accounts.get(0).getAccountNo());
 				System.out.println(accounts.get(1).getAccountNo());
+				model.addAttribute("accounts", accounts);
+				
 			}catch ( Exception e) {
 				e.printStackTrace();
 			}
-			return "accountdetails";
 			
+			return "maketransaction";
 		}
+		
+		
 }

@@ -46,6 +46,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` VALUES (1000,2988,'0000-00-00 00:00:00',0,'2015-10-22 22:00:26',1,'rohit','banker'),(1234,90806,'0000-00-00 00:00:00',1,'2015-10-22 22:42:21',1,'arjun','banker'),(2000,9866,'0000-00-00 00:00:00',0,'2015-10-22 22:00:26',1,'arjun','banker');
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +100,7 @@ CREATE TABLE `otp` (
 
 LOCK TABLES `otp` WRITE;
 /*!40000 ALTER TABLE `otp` DISABLE KEYS */;
-INSERT INTO `otp` VALUES ('khanjan.ce@gmail.com','JF1KKEVF','Khanjan',1,'0000-00-00 00:00:00','2015-10-18 15:28:20'),('mallikarjunbpbp@gmail.com','OSQ6EF24','Mallikarjun',0,'0000-00-00 00:00:00','2015-10-18 15:28:20');
+INSERT INTO `otp` VALUES ('khanjan.ce@gmail.com','JF1KKEVF','Khanjan',1,'0000-00-00 00:00:00','2015-10-18 15:28:20');
 /*!40000 ALTER TABLE `otp` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +167,7 @@ CREATE TABLE `transaction` (
   `accountNo` int(11) NOT NULL,
   `transactionType` varchar(45) NOT NULL,
   `transactionAmount` double NOT NULL,
-  `status` int(11) NOT NULL,
+  `status` varchar(45) NOT NULL,
   `isCritical` tinyint(1) NOT NULL,
   `dt_modified` datetime DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `dt_created` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -183,6 +184,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
+INSERT INTO `transaction` VALUES (501,1234,'Debit',123,'pending',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(501,2000,'Credit',123,'pending',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(503,1234,'Debit',12,'pending',0,NULL,NULL),(503,2000,'Credit',12,'pending',0,NULL,NULL);
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +223,7 @@ CREATE TABLE `user_profile` (
 
 LOCK TABLES `user_profile` WRITE;
 /*!40000 ALTER TABLE `user_profile` DISABLE KEYS */;
-INSERT INTO `user_profile` VALUES ('nitin','karda','03/17/1990','898989898','8989898989','kjsdghjsdg','jsdgfdhsjg','hgsdhjsdg','shdvghjdf','89898',NULL,1,0,'nitin','karda@nitin.com');
+INSERT INTO `user_profile` VALUES ('arjun','patil','03/17/1990','898989898','8989898989','kjsdghjsdg','jsdgfdhsjg','hgsdhjsdg','shdvghjdf','89898',NULL,0,0,'arjun','mallikarjunbpbp@gmail.com'),('banker','asd','03/17/1990','898989898','898989898','shdvghjdf','shdvghjdf','shdvghjdf','shdvghjdf','89898',NULL,0,0,'banker',''),('nitin','karda','03/17/1990','898989898','8989898989','kjsdghjsdg','jsdgfdhsjg','hgsdhjsdg','shdvghjdf','89898',NULL,0,0,'nitin','karda@nitin.com'),('rohit','asd','03/17/1990','898989898','898989898','shdvghjdf','shdvghjdf','hgsdhjsdg','shdvghjdf','89898',NULL,0,0,'rohit','banker@gmail.com');
 /*!40000 ALTER TABLE `user_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,6 +262,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('arjun','12345',1,1,1,1,'0000-00-00 00:00:00','2015-10-22 22:52:19','kdhbqwilu@gmail.com',1,'liughiu','oiuhiuh',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -272,4 +275,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-18 21:04:06
+-- Dump completed on 2015-10-23 23:56:11

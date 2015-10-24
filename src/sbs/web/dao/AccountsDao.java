@@ -22,10 +22,9 @@ public class AccountsDao {
 	}
 		@SuppressWarnings("unchecked")
 		public List<Accounts> getAccountDetails(String username) {
-//			return session().createQuery("from Accounts").list();
-			List<Accounts> temp =session().createQuery("from Accounts").list(); 
-			for (Accounts a: temp)
-			System.out.println("*******"+a.getAccountNo());
+//			List<Accounts> temp =session().createQuery("from Accounts").list(); 
+//			for (Accounts a: temp)
+//			System.out.println("*******"+a.getAccountNo());
 			return session().createQuery("from Accounts where username = '"+username+"'").list();
 		}
 		
