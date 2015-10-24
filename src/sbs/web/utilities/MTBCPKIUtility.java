@@ -1,12 +1,27 @@
 package sbs.web.utilities;
 
-import java.security.*;
-import java.security.spec.*;
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+
+import org.apache.log4j.Logger;
 
 public class MTBCPKIUtility {
-
+	private static final Logger logger = Logger.getLogger(MTBCPKIUtility.class);
 	public PrivateKey privateKey;
 	private KeyPairGenerator publicPrivateKey;
 	private SecureRandom random;
@@ -23,39 +38,40 @@ public class MTBCPKIUtility {
 			KeyPair publicPrivateKeyPair = publicPrivateKey.generateKeyPair();
 			return publicPrivateKeyPair;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			logger.error("Error Generating KeyPair");
 		}
 		return null;
 	}
 
-//	public String signMessageWithPrivateKey(String message, PrivateKey privateKey) throws SignatureException {
-//		try {
-//			Signature sign = Signature.getInstance(SignatureAlgo);
-//			sign.initSign(privateKey);
-//			sign.update(message.getBytes("UTF-8"));
-//			return new String(Base64.getEncoder().encodeToString(sign.sign()));
-//		} catch (Exception ex) {
-//			throw new SignatureException(ex);
-//		}
-//	}
-//
-//	public boolean verifyMessageWithPublicKey(String message, String signature, PublicKey publicKey) throws SignatureException {
-//		try {
-//			Signature sign = Signature.getInstance(SignatureAlgo);
-//			sign.initVerify(publicKey);
-//			sign.update(message.getBytes("UTF-8"));
-//			return sign.verify(Base64.getDecoder().decode(signature.getBytes("UTF-8")));
-//		} catch (Exception ex) {
-//			throw new SignatureException(ex);
-//		}
-//	}
+	public String signMessageWithPrivateKey(String message, PrivateKey privateKey) throws SignatureException {
+		try {
+			Signature sign = Signature.getInstance(SignatureAlgo);
+			sign.initSign(privateKey);
+			sign.update(message.getBytes("UTF-8"));
+			return new String(Base64.getEncoder().encodeToString(sign.sign()));
+		} catch (Exception ex) {
+			throw new SignatureException(ex);
+		}
+	}
 
-	public String SaveKeyPair(KeyPair keyPair, String userID) throws IOException {
+	public boolean verifyMessageWithPublicKey(String message, String encryptedMessage, PublicKey publicKey)
+			throws SignatureException {
+		try {
+			Signature sign = Signature.getInstance(SignatureAlgo);
+			sign.initVerify(publicKey);
+			sign.update(message.getBytes("UTF-8"));
+			return sign.verify(Base64.getDecoder().decode(encryptedMessage.getBytes("UTF-8")));
+		} catch (Exception ex) {
+			throw new SignatureException(ex);
+		}
+	}
+
+	public String SaveKeyPair(KeyPair keyPair, String username) throws IOException {
 		PrivateKey privateKey = keyPair.getPrivate();
 		PublicKey publicKey = keyPair.getPublic();
-		
-		String keyPath = createDir(userID);
-		
+
+		String keyPath = createDir(username);
+
 		// Store Public Key.
 		X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKey.getEncoded());
 		FileOutputStream newFileOpStream = new FileOutputStream(keyPath + "public.key");
@@ -67,21 +83,21 @@ public class MTBCPKIUtility {
 		newFileOpStream = new FileOutputStream(keyPath + "private.key");
 		newFileOpStream.write(pkcs8EncodedKeySpec.getEncoded());
 		newFileOpStream.close();
-		
+
 		return keyPath;
 	}
-	
-	public boolean deletePrivateKey(String keyPath)
-	{
+
+	public boolean deletePrivateKey(String keyPath) {
 		File filePrivateKey = new File(keyPath + "private.key");
-		if (filePrivateKey.delete()){
-			return true; 
+		if (filePrivateKey.delete()) {
+			return true;
 		}
 		return false;
 	}
-	public KeyPair LoadKeyPair(String userID) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+	public KeyPair LoadKeyPair(String username) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 		// Read Public Key.
-		String keyPath = defaultPath + userID;
+		String keyPath = defaultPath + username;
 		File filePublicKey = new File(keyPath + "public.key");
 		FileInputStream newFileIpStream = new FileInputStream(keyPath + "public.key");
 		byte[] encodedPublicKey = new byte[(int) filePublicKey.length()];
@@ -105,16 +121,15 @@ public class MTBCPKIUtility {
 
 		return new KeyPair(publicKey, privateKey);
 	}
-	
-	private String createDir(String userID){
+
+	private String createDir(String userID) {
 		String keyPath = defaultPath + userID;
 		File new_dir = new File(keyPath);
-		if (!new_dir.exists())
-		{
-			if(new_dir.mkdirs()){
+		if (!new_dir.exists()) {
+			if (new_dir.mkdirs()) {
 				return keyPath;
 			}
 		}
-		return null;
+		return keyPath;
 	}
 }

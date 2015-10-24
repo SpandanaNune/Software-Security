@@ -31,7 +31,8 @@
 				<td><input class="control" value="Register" type="submit" /></td>
 			</tr>
 		</table>
-
+	Please select a file to upload : <input type="file" name="file" />
+		<input type="submit" value="upload" />
 	</sf:form>
 	<a href="${pageContext.request.contextPath}/login">Login</a>
 </body>

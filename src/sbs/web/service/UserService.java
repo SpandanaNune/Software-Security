@@ -29,6 +29,10 @@ public class UserService {
 	public void createUser(User user) {
 		usersDao.createUser(user);
 	}
+	
+	public void updateUser(User user) {
+		usersDao.updateUser(user);
+	}
 
 	public void setAuthority(Authorities auth) {
 		usersDao.setAuthority(auth);
@@ -49,6 +53,11 @@ public class UserService {
 
 		return getuser;
 	}
+	
+	public User getUserProfilebyField(String field, String value) {
+		User getuser = (User) usersDao.getUserProfilebyField(field, value);
+		return getuser;
+	}
 
 	public Users getUserbyField(String field, String value) {
 		Users getuser = (Users) usersDao.getUserbyField(field, value);
@@ -67,7 +76,7 @@ public class UserService {
 		usersDao.deleteUserRequest(username);
 	}
 
-	public void userActivation(Users users) {
-		usersDao.userActivation(users);
+	public void saveOrUpdateUsers(Users users) {
+		usersDao.saveOrUpdateUsers(users);
 	}
 }

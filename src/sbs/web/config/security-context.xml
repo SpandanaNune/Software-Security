@@ -19,24 +19,24 @@
 	<security:http use-expressions="true">
 
 	    <security:intercept-url pattern="/welcome"
-			access="hasAnyRole('ROLE_NEW,ROLE_USER')" />
+			access="hasAnyRole('ROLE_NEW,ROLE_USER')"/>
 		<security:intercept-url pattern="/random"
-			access="hasRole('ROLE_USER')" />
+			access="hasRole('ROLE_USER')"/>
 		<security:intercept-url pattern="/userconfirm"
-			access="hasRole('ROLE_NEW')" />
+			access="hasRole('ROLE_NEW')"/>
 		<security:intercept-url pattern="/systemadmin"
-			access="hasRole('ROLE_ADMIN')" />
+			access="hasRole('ROLE_ADMIN')"/>
 		<!-- <security:intercept-url pattern="/manager"
 			access="hasRole('ROLE_MANAGER')" /> -->
 		<security:intercept-url pattern="/mylogin"
-			access="permitAll" />
+			access="permitAll"/>
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/login"
-			access="permitAll" />
+			access="permitAll"/>
 		<security:intercept-url pattern="/static/**"
-			access="permitAll" />
+			access="permitAll"/>
 		<security:intercept-url pattern="/loggedout"
-			access="PermitAll" />
+			access="PermitAll"/>
 
 
 
@@ -44,7 +44,9 @@
 			login-processing-url="/login" authentication-failure-url="/login?error=true"
 			password-parameter="j_password" username-parameter="j_username" />
 		<security:logout logout-success-url="/loggedout"
-			logout-url="/logout" invalidate-session="true" />
-		<security:session-management></security:session-management>
+			logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID"/>
+		<security:session-management invalid-session-url="/sessionTimeout.jsp" session-authentication-error-url="/sessionaccesserror.jsp">
+			<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+		</security:session-management>
 	</security:http>
 </beans>

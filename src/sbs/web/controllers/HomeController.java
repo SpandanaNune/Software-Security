@@ -1,7 +1,6 @@
 package sbs.web.controllers;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,10 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import sbs.web.models.User;
 import sbs.web.models.Authorities;
+import sbs.web.models.User;
 import sbs.web.models.Users;
-
 import sbs.web.service.UserService;
 
 @Controller
@@ -157,7 +155,7 @@ public class HomeController {
 		auth.setAuthority("ROLE_USER");
 		userService.setAuthority(auth);
 
-		userService.userActivation(users);
+		userService.saveOrUpdateUsers(users);
 		return "homepage";
 	}
 
@@ -167,37 +165,40 @@ public class HomeController {
 		System.out.println("Admin Home");
 		return "adminhome";
 	}
-//
-//	@RequestMapping(value = "/employeecreation")
-//	public String createEmployee(@Valid UserProfile user, BindingResult result, Model model) {
-//		if (user != null && user.getUsername() != null) {
-//			System.out.println(user);
-//			UserProfile uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-//			if (uniqueUser == null) {
-//				System.out.println(user);
-//				user.setIsnewuser(true);
-//				user.setCanlogin(false);
-//
-//				userService.createUser(user);
-//				return "employeecreation";
-//			} else {
-//				System.out.println("Caught duplicate Username");
-//				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-//				return "employeecreation";
-//			}
-//		}
-//		List<String> authorities = new ArrayList<>();
-//		authorities.add("ROLE_USER");
-//		authorities.add("ROLE_MANAGER");
-//		model.addAttribute("roles", authorities);
-//		model.addAttribute("user", new UserProfile());
-//		return "employeecreation";
-//	}
+	//
+	// @RequestMapping(value = "/employeecreation")
+	// public String createEmployee(@Valid UserProfile user, BindingResult
+	// result, Model model) {
+	// if (user != null && user.getUsername() != null) {
+	// System.out.println(user);
+	// UserProfile uniqueUser =
+	// (userService.getUserregisterbyUsername(user.getUsername()));
+	// if (uniqueUser == null) {
+	// System.out.println(user);
+	// user.setIsnewuser(true);
+	// user.setCanlogin(false);
+	//
+	// userService.createUser(user);
+	// return "employeecreation";
+	// } else {
+	// System.out.println("Caught duplicate Username");
+	// result.rejectValue("username", "DuplicateKeyException.user.username",
+	// "Username already exists.");
+	// return "employeecreation";
+	// }
+	// }
+	// List<String> authorities = new ArrayList<>();
+	// authorities.add("ROLE_USER");
+	// authorities.add("ROLE_MANAGER");
+	// model.addAttribute("roles", authorities);
+	// model.addAttribute("user", new UserProfile());
+	// return "employeecreation";
+	// }
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 
-	public String RegisterUser(Model model,@Valid User user, BindingResult result) {
-		System.out.println("Finding errors, "+result.toString());
+	public String RegisterUser(Model model, @Valid User user, BindingResult result) {
+		System.out.println("Finding errors, " + result.toString());
 		if (result.hasErrors()) {
 			System.out.println("It has errors");
 			return "registeruser";

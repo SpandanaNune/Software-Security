@@ -33,11 +33,18 @@ public class UsersDao {
 		session().saveOrUpdate(user);
 	}
 	
+	@Transactional
+
+	public void updateUser(User user) {
+		session().saveOrUpdate(user);
+	}
+
 	public void setAuthority(Authorities auth){
 		session().saveOrUpdate(auth);
 	}
 	
-	public void userActivation(Users users) {
+	@Transactional
+	public void saveOrUpdateUsers(Users users) {
 		session().saveOrUpdate(users);
 	}
 
@@ -59,6 +66,11 @@ public class UsersDao {
 	
 	public Object getUserbyField(String field, String value) {
 		org.hibernate.Query query = session().createQuery("from Users where " + field + "='" + value + "'");
+		return query.uniqueResult();
+	}
+	
+	public Object getUserProfilebyField(String field, String value) {
+		org.hibernate.Query query = session().createQuery("from User where " + field + "='" + value + "'");
 		return query.uniqueResult();
 	}
 	

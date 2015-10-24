@@ -48,19 +48,29 @@ public class LoginController {
 
 	@RequestMapping("/resetpassword")
 	public String showForgotPassword(Model model, HttpServletRequest request) {
-		logger.debug("resetpassword page");
 		String token = request
                 .getParameter("token");
 		if (token == null || "".equals(token))
 		{
 			return "login";
 		}
-		//Users user = userService.getUserbyField("username", token);
-		Users user = userService.getUserbyUsername("arpit");
-		//User user = userService.getUserregisterbyUsername("kardanitin");
-		model.addAttribute("users", user);
-		System.out.println(user);
-		return "resetpassword";
+		User user = userService.getUserProfilebyField("reset_pass_token", token);
+		if (user != null){
+			model.addAttribute("users", user);
+			return "resetpassword";
+		}
+		return "login";
+	}
+	
+	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
+	public String resetPassword(Model model, @Valid User user, BindingResult result, @RequestParam("password") String password) throws IOException {
+		Users users = userService.getUserbyField("username", user.getUsername());
+		users.setPassword(password);
+		userService.saveOrUpdateUsers(users);
+		User user_profile = userService.getUserProfilebyField("username", user.getUsername());
+		user_profile.setReset_pass_token(null);
+		userService.updateUser(user);
+        return "homepage";
 	}
 
 	@RequestMapping("/forgotpass")
@@ -69,41 +79,32 @@ public class LoginController {
 	}	
 	
 	@RequestMapping("/forgotPassEmailSuccess")
-	public String forgotPassEmailSuccess( HttpServletRequest request) throws IOException
+	public String forgotPassEmailSuccess(Model model, HttpServletRequest request) throws IOException
 	{
 		String email = request
                 .getParameter("email");
 		String gCaptchaResponse = request
                 .getParameter("g-recaptcha-response");
-		//Users user = userService.getUserbyField("username", email);
 		
 		boolean verify = false;
 		verify = VerifyCaptcha.verify(gCaptchaResponse);
         if (verify){
-        	User user = userService.getUserregisterbyUsername(email);
-    		System.out.println(user);
+        	User user = userService.getUserProfilebyField("email",email);
     		if (user != null){
     			SecureRandom random = new SecureRandom();
     			String token = new BigInteger(130, random).toString(32);
     			String url = request.getScheme() + "://"+ request.getServerName() + request.getContextPath() + "/resetpassword?token=" + token;
+    			user.setReset_pass_token(token);
+    			userService.updateUser(user);
     			SendMail mail = new SendMail();
-    			mail.resetPasswordLink("Nitin","kardanitin@gmail.com", url);
+    			mail.resetPasswordLink(user, url);
     			return "forgotPassEmailSuccess";
+    		}
+    		else{
+    			return "forgotpass";
     		}
         }
         return "forgotpass";
-	}
-	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
-	public String resetPassword(Model model, @Valid Users users, BindingResult result, HttpServletRequest request) throws IOException {
-		Users user = userService.getUserbyUsername(users.getUsername());
-		System.out.println(user);
-		boolean verify = false;
-        if (verify){
-        	return "homepage";
-        }
-        else{
-        	return null;
-        }
 	}
 
 	@RequestMapping("/systemadmin")
@@ -160,7 +161,7 @@ public class LoginController {
         auth.setUsername(username);
         auth.setAuthority("ROLE_NEW");
         
-        userService.userActivation(users);
+        userService.saveOrUpdateUsers(users);
         userService.setAuthority(auth);
         
         List<User> updateduser = userService.getAllNewUsers();
