@@ -26,7 +26,7 @@ public class User {
 	private String lastname;
 	
 	@NotNull
-	@Size(min = 2, max = 45, message = "lastname must be atleast 2 characters and less than 45 characters")
+	@Size(min = 2, max = 45, message = "email must be atleast 2 characters and less than 45 characters")
 	private String email;
 	
 	@NotNull

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Approve Transactions</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
@@ -20,15 +20,16 @@
 
 </head>
 <body>
-
+<div class="container">
 	<H1>Transactions List</H1>
-	<TABLE BORDER="1">
+	<TABLE class="table table-hover">
 		<TR>
 			<TH>Transaction Id</TH>
 			<TH>Account No</TH>
 			<TH>Transaction Type</TH>
 			<TH>Amount</TH>
 			<TH>Approve</TH>
+      <TH></TH>
 		</TR>
 		<c:forEach items="${transactions}" var="transaction">
 			<TR>
@@ -40,29 +41,29 @@
 				<TD><c:out value="${transaction.getTransactionType()}" /></TD>
 				<td><form method="post"
 						action="${pageContext.request.contextPath}/accepttransaction">
-						
+
 						<input type="hidden" name="Accept" value="${transaction.getPrimaryKey().getTransactionId()}" />
-						<input class="control" value = "Accept" type="submit" /> <input
+						<input class="control btn btn-success" value = "Accept" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" /> 
-					</form>		
+							value="${_csrf.token}" />
+					</form>
 					</td>
 				<td><form method="post"
 						action="${pageContext.request.contextPath}/declinetransaction">
 						<input type="hidden" name="Decline" value="${transaction.getPrimaryKey().getTransactionId()}" />
-						<input class="control" value = "Decline" type="submit" /> <input
+						<input class="control btn btn-danger" value = "Decline" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" /> 
-							
+							value="${_csrf.token}" />
+
 					</form></td>
-				
-				
-				
+
+
+
 
 			</TR>
-			
+
 		</c:forEach>
 		</TABLE>
-	
+	</div>
 </body>
 </html>

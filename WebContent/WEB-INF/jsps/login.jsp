@@ -64,8 +64,9 @@
 		</table>
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
+					<input type="button" id ='btVisible' onClick="toggleVisible()" value="Hide" />
+			
 	</form>
-		<input type="button" id ='btVisible' onClick="toggleVisible()" value="Hide" />
 	<a href="${pageContext.request.contextPath}/forgotpass">Forgot
 		Password</a>
 </body>

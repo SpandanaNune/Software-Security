@@ -179,17 +179,15 @@ public class TransactionController {
 	@RequestMapping(value = "/emailTransactions")
 	public String emailTransactions(Model model, HttpServletRequest request) {
 		System.out.println("Mail Transaction History");
-		ArrayList<Transaction> transactions = (ArrayList<Transaction>) transactionService.getAllTransactions(1234);
+		ArrayList<Transaction> transactions = (ArrayList<Transaction>) transactionService.getAllTransactions(1000);
 		try {
-			ServletContext context = request.getSession().getServletContext();
 
 			User user = new User();
 			user.setEmail("sswetha2809@gmail.com");
 			user.setFirstname("swetha");
 			user.setLastname("swaminathan");
-			// user.setUsername("sswetha2809");
 			// saving the generated pdf to a temp folder for e-mailing
-			String path = context.getRealPath("/WEB-INF/temp") + "\\" + user.getFirstname() + ".pdf";
+			String path = System.getProperty("catalina.home") + "\\temp\\"+ user.getFirstname() + ".pdf";
 			PDFUtils.generatePDF(transactions, path);
 
 			SendMail.sendStatement(user, path);
@@ -202,6 +200,7 @@ public class TransactionController {
 			} else {
 				System.out.println("Delete operation is failed.");
 			}
+			
 
 		} catch (FileNotFoundException | DocumentException e) {
 			e.printStackTrace();

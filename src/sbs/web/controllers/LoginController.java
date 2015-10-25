@@ -22,6 +22,7 @@ import sbs.web.models.Accounts;
 import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
+import sbs.web.service.AccountsService;
 import sbs.web.service.UserService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utilities.VerifyCaptcha;
@@ -30,15 +31,23 @@ import sbs.web.utilities.VerifyCaptcha;
 public class LoginController {
 	private static final Logger logger = Logger.getLogger(LoginController.class);
 	private UserService userService;
+	private AccountsService accountService;
 
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+	
+	@Autowired
+	public void setAccountService(AccountsService accountService) {
+		this.accountService = accountService;
+	}
+	
 
 	@RequestMapping("/login")
-	public String showLogin() {
+	public String showLogin( HttpServletRequest request) {
 		logger.info("In the login controller");
+	
 		return "login";
 	}
 
@@ -255,6 +264,26 @@ public class LoginController {
 		model.addAttribute("user", userProfileList);
 		return "viewedituserdetails";
 	}
+	
+	@RequestMapping("/viewedituserdetails_employee")
+	public String viewEditUserDetailsByEmployee(Model model) {
+		ArrayList<Accounts> accounts = (ArrayList<Accounts>)accountService.getAccountsForBanker("banker");
+		List<Users> userlist = new ArrayList<Users>();
+		for(Accounts account: accounts)
+		{
+			Users user = userService.getUserByFieldBool("enabled", true, account.getUsername());
+			if(user!=null)
+				userlist.add(user);
+		}
+		
+		List<User> userProfileList = new ArrayList<User>();
+		for (Users user : userlist) {
+			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
+		}
+
+		model.addAttribute("user", userProfileList);
+		return "viewedituserdetails_employee";
+	}
 
 	@RequestMapping("/editbtn")
 	public String editUserDetails(Model model, @RequestParam("View/Edit") String username) {
@@ -264,12 +293,64 @@ public class LoginController {
 		model.addAttribute("user", user);
 		return "edituser";
 	}
+	
+	@RequestMapping("/editprofileemployee")
+	public String editEmployeeProfile(Model model) {
+		System.out.println("Edit Button Operation");
+		User user = userService.getUserregisterbyUsername("banker");
+		System.out.println(user);
+		model.addAttribute("user", user);
+		return "editemployeeprofile";
+	}
+	
+	@RequestMapping("/editemployeeprofile")
+	public String editEmployeeProfileDone(@Valid User user, BindingResult result,Model model) {
+			System.out.println(user.toString());
+			userService.createUser(user);
+		
+		return "internalemp";
+	}
+	@RequestMapping("/editbtn_employee")
+	public String editUserDetailsByEmployee(Model model, @RequestParam("View/Edit") String username) {
+		System.out.println("Edit Button Operation");
+		User user = userService.getUserregisterbyUsername(username);
+		System.out.println(user);
+		model.addAttribute("user", user);
+		return "edituser_employee";
+	}
 
 	@RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
 	public String updateActiveUserDetails(@Valid User user, BindingResult result, Model model) {
 
 		if (result.getErrorCount() > 3)
 			return "edituser";
+		else {
+
+			userService.createUser(user);
+			ArrayList<Accounts> accounts = (ArrayList<Accounts>)accountService.getAccountsForBanker("banker");
+			List<Users> userlist = new ArrayList<Users>();
+			for(Accounts account: accounts)
+			{
+				Users userNew = userService.getUserByFieldBool("enabled", true, account.getUsername());
+				if(userNew!=null)
+					userlist.add(userNew);
+			}
+			
+			List<User> userProfileList = new ArrayList<User>();
+			for (Users userNew : userlist) {
+				userProfileList.add((User) userService.getUserProfileByField("username", userNew.getUsername()).get(0));
+			}
+
+			model.addAttribute("user", userProfileList);
+			return "viewedituserdetails";
+		}
+	}
+	
+	@RequestMapping(value = "/updatebtn_employee", method = RequestMethod.POST)
+	public String updateActiveUserDetailsByEmployee(@Valid User user, BindingResult result, Model model) {
+
+		if (result.getErrorCount() > 3)
+			return "edituser_employee";
 		else {
 
 			userService.createUser(user);
@@ -281,7 +362,7 @@ public class LoginController {
 						.add((User) userService.getUserProfileByField("username", listofuser.getUsername()).get(0));
 			}
 			model.addAttribute("user", userProfileList);
-			return "viewedituserdetails";
+			return "viewedituserdetails_employee";
 		}
 	}
 
@@ -359,5 +440,60 @@ public class LoginController {
 		}
 		return "accountactivation";
 	}
+	@RequestMapping("/getinternalusers")
+	public String viewInternalUsers( Model model) {
+		List<Authorities> employees = userService.getAllEmployees();
+		List<User> userProfileList = new ArrayList<User>();
+		List<String> roles = new ArrayList<String>();
 
+		for(Authorities auth:employees)
+		{
+			userProfileList.add(userService.getUserregisterbyUsername(auth.getUsername()));
+			roles.add(auth.getAuthority());
+		}
+		model.addAttribute("user", userProfileList);
+		model.addAttribute("roles", roles);
+
+		return "vieweditinternalusers";
+	}
+	
+	@RequestMapping("/editemployee")
+	public String editemployee(Model model, @RequestParam("View/Edit") String username) {
+		User user = userService.getUserregisterbyUsername(username);
+		model.addAttribute("user", user);
+		return "employeeUpdation";
+	}
+	@RequestMapping("/employeeupdationdone")
+	public String employeeUpdate(@Valid User eUser, BindingResult result) {
+		userService.createUser(eUser);
+		return "adminhome";
+	}
+	
+	@RequestMapping("/deleteemployee")
+	public String deleteEmployee(Model model, @RequestParam("Decline") String username) {
+
+		User user = userService.getUserProfileByField("username", username).get(0);
+		user.setIsnewuser(false);
+		user.setIs_deleted(true);
+		userService.createUser(user);
+		
+		Authorities employee = userService.getEmployee(username);
+		userService.deleteEmployee(employee);
+
+		List<Authorities> employees = userService.getAllEmployees();
+		List<User> userProfileList = new ArrayList<User>();
+		List<String> roles = new ArrayList<String>();
+
+		for(Authorities auth:employees)
+		{
+			userProfileList.add(userService.getUserregisterbyUsername(auth.getUsername()));
+			roles.add(auth.getAuthority());
+		}
+		model.addAttribute("user", userProfileList);
+		model.addAttribute("roles", roles);
+
+		return "vieweditinternalusers";
+
+	}
+	
 }

@@ -21,13 +21,16 @@
 
                <a class="btn btn-info btn-large"
                  href="${pageContext.request.contextPath}/employeecreation">Add Employee</a></body> <br> <br><br>
-
+ <a class="btn btn-info btn-large"
+                 href="${pageContext.request.contextPath}/getinternalusers">View/Edit Employee</a><br> <br><br>
                  <a class="btn btn-info btn-large"
                  href="${pageContext.request.contextPath}/transactionlog">Transaction Logs</a></body>
          <br><br>
          <br>
          <a class="btn btn-info btn-large"
-                 href="${pageContext.request.contextPath}/pii">Approve PII</a></body>
+                 href="${pageContext.request.contextPath}/pii">Approve PII</a>
+                 
+                 </body>
          <br><br>
        </center>
        </div>
