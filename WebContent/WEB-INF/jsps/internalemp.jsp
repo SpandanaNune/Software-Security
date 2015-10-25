@@ -26,6 +26,11 @@
 						href="${pageContext.request.contextPath}/bankers">View Transactions</a>							
 				</p>
 				
+					<p>					
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/bankers">View Transactions</a>							
+				</p>
+				
 
 </body>
 </html>

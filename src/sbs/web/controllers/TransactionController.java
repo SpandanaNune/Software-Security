@@ -231,12 +231,56 @@ public class TransactionController {
 		return "transactionhistory";
 	}
 	
-	@RequestMapping(value = "/approvetransaction")
-	public String ApproveTransaction(Model model){
+	@RequestMapping(value = "/accepttransactionbtn")
+	public String ApproveTransactionsByManager(Model model,@RequestParam("Accept") int transactionId){
+		boolean approved=false;
+		Transaction t=(Transaction)transactionService.getTransaction(transactionId);
+		System.out.println(t);
+		t.setStatus("APPROVED");
+		Accounts acct = accountService.getAccountForID(t.getPrimaryKey().getAccountNo());
+		double balance = acct.getBalance();
+		if(t.getTransactionType().equalsIgnoreCase("CREDIT"))
+		{
+			acct.setBalance(balance + t.getAmount());
+			approved= true;
+			
+		}else if(t.getTransactionType().equalsIgnoreCase("DEBIT"))
+		{
+			if(t.getAmount() <= balance)
+			{
+				acct.setBalance(balance - t.getAmount());
+				approved = true;
+			}
+		}
+		
+		if(approved)
+		{
+			transactionService.updateTransaction(t);
+			accountService.updateAccount(acct);
+		}
 		List<Transaction> transction = transactionService.getAllCriticalTransaction();
 		model.addAttribute("transaction", transction);
 		return "approvetransaction";
 	}
+	
+	@RequestMapping(value = "/deletetransactionbtn")
+	public String DeleteTransactionByManager(Model model,@RequestParam("Accept") int transactionId){
+		Transaction t=(Transaction)transactionService.getTransaction(transactionId);
+		System.out.println(t);
+		t.setStatus("DECLINED");
+		transactionService.updateTransaction(t);
+		List<Transaction> transction = transactionService.getAllCriticalTransaction();
+		model.addAttribute("transaction", transction);
+		return "approvetransaction";
+	}
+	
+	@RequestMapping(value="/approvetransaction")
+	public String approveCriticalTransactions(Model model) {	
+		List<Transaction> transction = transactionService.getAllCriticalTransaction();
+		model.addAttribute("transaction", transction);
+		return "approvetransaction";
+	}
+
 	
 	@RequestMapping(value="/bankers")
 	public String bankersTransactions(Model model) {	
