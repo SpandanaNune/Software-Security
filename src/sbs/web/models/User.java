@@ -19,18 +19,18 @@ public class User {
 	private String username;
 
 	
-	@Size(min = 2, max = 45, message = "firstname must be atleast 2 characters and less than 45 characters")
+	@Size(min = 2, max = 45, message = "Name must be atleast 2 characters and less than 45 characters")
 	private String firstname;
 	
 	@Size(min = 2, max = 45, message = "lastname must be atleast 2 characters and less than 45 characters")
 	private String lastname;
 	
-	@NotNull
-	@Size(min = 2, max = 45, message = "email must be atleast 2 characters and less than 45 characters")
+	  @NotNull
+	  @Pattern(regexp=".+@.+\\..+", message="Email Address incorrect")
 	private String email;
 	
 	@NotNull
-	//@Pattern(regexp="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$", message="Incorrect Date of Birth")
+	@Pattern(regexp="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$", message="Incorrect Date of Birth")
 	private String dob;
 	
 	@NotNull
@@ -62,8 +62,15 @@ public class User {
 	private String reset_pass_token;
 	private boolean isnewuser;
 	private boolean is_deleted;
+	private boolean ismerchant;
 	
 	
+	public boolean isIsmerchant() {
+		return ismerchant;
+	}
+	public void setIsmerchant(boolean ismerchant) {
+		this.ismerchant = ismerchant;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -163,9 +170,10 @@ public class User {
 	public String toString() {
 		return "User [username=" + username + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
 				+ ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone + ", Addr1=" + Addr1 + ", Addr2=" + Addr2
-				+ ", City=" + City + ", State=" + State + ", Zip=" + Zip + ", isnewuser=" + isnewuser
-				+ ", reset_pass_token=" + reset_pass_token + "]";
+				+ ", City=" + City + ", State=" + State + ", Zip=" + Zip + ", reset_pass_token=" + reset_pass_token
+				+ ", isnewuser=" + isnewuser + ", is_deleted=" + is_deleted + ", ismerchant=" + ismerchant + "]";
 	}
+	
 		
 
 }

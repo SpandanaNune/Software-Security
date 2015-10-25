@@ -122,6 +122,65 @@ public class LoginController {
 		return "adminhome";
 	}
 
+	
+	/*************************************
+	 * Merchant
+	 *******************************/
+	
+/**********************************Merchant**Home*********************************/
+
+	
+	@RequestMapping("/merchanthome")
+    public String showMerchantHome(Model model) {
+//        List<User> user = userService.getAllNewUsers();
+//        model.addAttribute("user", user);
+        return "merchanthome";
+    }
+
+  
+  @RequestMapping("/editmerchant")
+  public String editMerchantDetails(Model model) {
+//      List<User> user = userService.getAllNewUsers();
+//      model.addAttribute("usermerchant", user);
+	  Users user = userService.getUserbyUsername("arpit");
+		//User user = userService.getUserregisterbyUsername("kardanitin");
+		model.addAttribute("users", user);
+		System.out.println(user);
+		return "merchanthome";
+  }
+  
+  
+  
+  
+  
+@RequestMapping(value = "/updatemerchantbtn", method = RequestMethod.POST)
+public String UpdaterMerchantUser(@Valid User user, BindingResult result, Model model) {
+//    System.out.println(result.getErrorCount());
+//    System.out.println(result.toString());
+//    System.out.println(user);
+//    user.setCanlogin(true);
+ 
+    if (result.getErrorCount() > 2)
+        return "editmerchant";
+    else {
+        userService.createUser(user);    
+        List<User> updateduser = userService.getAllActiveUsers();
+        model.addAttribute("user", updateduser);
+        return "viewedituserdetails";
+    }
+}
+
+  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*************************************
 	 * SYSTEM**MANAGER
 	 *******************************/

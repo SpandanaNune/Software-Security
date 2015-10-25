@@ -39,7 +39,15 @@
 						href="${pageContext.request.contextPath}/sendOTP">Send OTP [Arjun]</a>
 							 <a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/verifyOTP">Verify OTP [Arjun]</a>
-
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/merchanthome">Merchant Home</a>
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/managerhome">Manager Home</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/merchant">Merchant Register</a>
+						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
 						

@@ -3,9 +3,18 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<title>Merchant Registration Page</title>
+<link href="${pageContext.request.contextPath}/static/css/main.css"
+	rel="stylesheet" type="text/css" />
 <script language="javascript">
 document.onmousedown=disableclick;
 status="Right Click Is Disabled For The Website";
@@ -18,12 +27,7 @@ function disableclick(event)
    }
 }
 </script>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<title>User Registration</title>
+​
 <script type="text/javascript">
           function generate() {
               document.getElementById('otpbtn').style.visibility = 'hidden';
@@ -31,72 +35,58 @@ function disableclick(event)
 							document.getElementById('otpvalue').style.visibility = 'visible';
           }
 					</script>
-<link href="${pageContext.request.contextPath}/static/css/main.css"
-	rel="stylesheet" type="text/css" />
+​
 </head>
-<body>
-​
-	<div class = "container">
-	<h1>User Registration page</h1>
-​
+<body >
+  <div class = "container">
+	<h1>Merchant Registration page</h1>
+	<br />
 	<sf:form method="post"
-		action="${pageContext.request.contextPath}/registerbtn"
+		action="${pageContext.request.contextPath}/merchantregisterbtn"
 		commandName="user" htmlEscape="true">
-​
 		<table>
 			<tr>
 				<td class="label"><h4 style="color:black">UserName:</h4></td>
 				<td><sf:input class="control form-control" path="username" name="username"
 						type="text" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
 			</tr>
-​
 			<tr>
-				<td class="label"><h4 style="color:black">FirstName:</h4></td>
+				<td class="label"><h4 style="color:black">CompanyName:</h4></td>
 				<td><sf:input class="control form-control" path="firstname" name="firstname"
 						type="text" /><br /> <sf:errors path="firstname" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td class="label"><h4 style="color:black">LastName:</h4></td>
-				<td><sf:input class="control form-control" path="lastname" name="lastname"
-						type="text" /><br /> <sf:errors path="lastname" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
 				<td class="label"><h4 style="color:black">Email:</h4></td>
 				<td><sf:input class="control form-control" path="email" name="email"
 						type="text" /><br /> <sf:errors path="email" Class="error"></sf:errors></td>
 			</tr>
-​
-			<tr>
+      <tr>
 				<td><br> <center><input class="control btn btn-info" value="Get OTP" type="button" onclick="generate()" id="otpbtn"/></center></td>
 			</tr>
 			<tr>
 				<td class="label"><div id="otplabel" style="visibility:hidden"><h4 style="color:black">OTP: </h4></div></td>
-				<td><div id="otpvalue" style="visibility:hidden">
-				<input class="control form-control"  name="otp" type="text" /><br /> <sf:errors path="email" Class="error"></sf:errors></div></td>
+				<td><div id="otpvalue" style="visibility:hidden"><input class="control form-control" name="otp" type="text" /><br /> <sf:errors Class="error"></sf:errors></div></td>
 			</tr>
-​
 			<tr>
 				<td class="label"><h4 style="color:black">Phone:</h4></td>
 				<td><sf:input class="control form-control" path="phone" name="phone"
 						type="text" /><br /> <sf:errors path="phone" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
-				<td class="label"><h4 style="color:black">SSN:</h4></td>
+				<td class="label"><h4 style="color:black">TIN:</h4></td>
 				<td><sf:input class="control form-control" path="SSN" name="SSN" type="text" /><br />
 					<sf:errors path="SSN" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
-				<td class="label"><h4 style="color:black">Date of Birth<br>(mm/dd/yyyy):</h4></td>
+				<td class="label"><h4 style="color:black">Date of Foundation (mm/dd/yyyy): </h4></td>
 				<td><sf:input class="control form-control" path="dob" name="dob" type="text" /><br />
 					<sf:errors path="dob" Class="error"></sf:errors></td>
 			</tr>
-​
 			<tr>
 				<td class="label"><h4 style="color:black">Address Line 1:</h4></td>
 				<td><sf:input class="control form-control" path="Addr1" name="Addr1"
 						type="text" /><br /> <sf:errors path="Addr1" Class="error"></sf:errors></td>
 			</tr>
-​
 			<tr>
 				<td class="label"><h4 style="color:black">Address Line 2:</h4></td>
 				<td><sf:input class="control form-control" path="Addr2" name="Addr2"
@@ -117,11 +107,11 @@ function disableclick(event)
 				<td><sf:input class="control form-control" path="Zip" name="Zip" type="text" /><br />
 					<sf:errors path="Zip" Class="error"></sf:errors></td>
 			</tr>
-		</table>
-			<br><center>
+			</table>
+				<br>
+        <center>
 				<input class="control btn btn-info" value="Register" type="submit" />
-			</center>
-			<br>
+      </center>
 ​
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
@@ -129,5 +119,3 @@ function disableclick(event)
 </div>
 </body>
 </html>
-
-
