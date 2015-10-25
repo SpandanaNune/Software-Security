@@ -193,10 +193,8 @@ public class LoginController {
 			if(accountsList1.size()==0){
 				System.out.println("Got account 1");
 				account1IsNotValid=false;
-			}
-			
-		}
-		
+			}	
+		}	
 		boolean account2IsNotValid=true;
 		List<Accounts> accountsList2;
 		while(account2IsNotValid){
