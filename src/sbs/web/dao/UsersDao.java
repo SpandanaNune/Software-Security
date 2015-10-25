@@ -88,6 +88,11 @@ public class UsersDao {
 	public List<User> getAllActiveUsers(){
 		return session().createQuery("from User where canlogin = 1").list();	
 	}
+
+	public Object getUserregisterbyEmail(String mail) {
+		org.hibernate.Query query = session().createQuery("from User where email = '" + mail + "'");
+		return query.uniqueResult();
+	}
 	
 	
 //	public List<User> getAllActiveUsers(){

@@ -10,7 +10,7 @@ import sbs.web.dao.UsersDao;
 import sbs.web.models.User;
 
 import sbs.web.models.Authorities;
-
+import sbs.web.models.OTP;
 import sbs.web.models.Users;
 
 @Service("userService")
@@ -46,7 +46,6 @@ public class UserService {
 
 	public User getUserregisterbyUsername(String username) {
 		User getuser = (User) usersDao.getUserregisterbyUsername(username);
-
 		return getuser;
 	}
 
@@ -54,6 +53,13 @@ public class UserService {
 		Users getuser = (Users) usersDao.getUserbyField(field, value);
 		return getuser;
 	}
+	
+	public User getUserregisterbyEmail(String mail) {
+		User getuser = (User) usersDao.getUserregisterbyEmail(mail);
+		return getuser;
+		
+	}
+
 
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
@@ -70,4 +76,6 @@ public class UserService {
 	public void userActivation(Users users) {
 		usersDao.userActivation(users);
 	}
+
+	
 }

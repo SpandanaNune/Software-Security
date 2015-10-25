@@ -16,6 +16,7 @@ public class UtilityService {
 	}
 
 	public void insertOTP(OTP otp) {
+		System.out.println("12312\n"+otp.toString());
 		utilityDao.insertOTP(otp);
 	}
 

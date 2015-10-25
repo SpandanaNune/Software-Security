@@ -37,8 +37,7 @@
 						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a>
 							 <a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/sendOTP">Send OTP [Arjun]</a>
-							 <a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/verifyOTP">Verify OTP [Arjun]</a>
+							 
 
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
@@ -55,6 +54,9 @@
 						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/openTransaction">Open transactions [Arjun]</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/openDebitCreditTransaction">Debit credit your account [Arjun]</a>
 						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/random">Random </a>

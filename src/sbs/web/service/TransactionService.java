@@ -35,6 +35,13 @@ public class TransactionService {
 		transactionDao.addTransactions(fromTransaction, toTransaction);
 		
 	}
+
+	public void saveTransaction(Transaction transaction) {
+		transactionDao.saveTransaction(transaction);
+		
+	}
+
+	
 	
 
 }

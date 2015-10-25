@@ -26,4 +26,14 @@ public class AccountsService {
 			
 		}
 
+
+		public Accounts getAccountForID(long toUserAccount) {
+			return accountsDao.getAccountForID(toUserAccount);
+		}
+
+
+		public void updateAccount(Accounts from) {
+			 accountsDao.updateAccount(from);
+		}
+
 }

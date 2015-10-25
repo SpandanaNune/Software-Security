@@ -41,6 +41,11 @@ public class OTP {
 	public void setOtpValue(String otpValue) {
 		this.otpValue = otpValue;
 	}
+	@Override
+	public String toString() {
+		return "OTP [mailID=" + mailID + ", otpValue=" + otpValue + ", firstName=" + firstName + ", attempts="
+				+ attempts + "]";
+	}
 	
 	
 }

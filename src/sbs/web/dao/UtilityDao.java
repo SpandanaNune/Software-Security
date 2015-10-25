@@ -19,6 +19,7 @@ public class UtilityDao {
 	}
 
 	public void insertOTP(OTP otp) {
+		System.out.println("\n\n"+otp.toString());
 		session().saveOrUpdate(otp);
 	}
 	

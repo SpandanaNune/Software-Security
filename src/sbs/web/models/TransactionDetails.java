@@ -2,23 +2,38 @@ package sbs.web.models;
 
 public class TransactionDetails {
 
-	private int fromAccountNo;
-	private int toAccountNo;
+	private long fromAccountNo;
+	private long toMyAccountNo;
+	private long toOtherAccountNo;
 	private double balance;
-	private boolean account_type;
+	private String account_type;
+	private String transaction_type;
 	
 	
-	public int getFromAccountNo() {
+	public String getTransaction_type() {
+		return transaction_type;
+	}
+	public void setTransaction_type(String transaction_type) {
+		this.transaction_type = transaction_type;
+	}
+	public long getFromAccountNo() {
 		return fromAccountNo;
 	}
-	public void setFromAccountNo(int fromAccountNo) {
+	public void setFromAccountNo(long fromAccountNo) {
 		this.fromAccountNo = fromAccountNo;
 	}
-	public int getToAccountNo() {
-		return toAccountNo;
+	
+	public long getToMyAccountNo() {
+		return toMyAccountNo;
 	}
-	public void setToAccountNo(int toAccountNo) {
-		this.toAccountNo = toAccountNo;
+	public void setToMyAccountNo(long toMyAccountNo) {
+		this.toMyAccountNo = toMyAccountNo;
+	}
+	public long getToOtherAccountNo() {
+		return toOtherAccountNo;
+	}
+	public void setToOtherAccountNo(long toOtherAccountNo) {
+		this.toOtherAccountNo = toOtherAccountNo;
 	}
 	public double getBalance() {
 		return balance;
@@ -26,13 +41,11 @@ public class TransactionDetails {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	public boolean isAccount_type() {
+	public String getAccount_type() {
 		return account_type;
 	}
-	public void setAccount_type(boolean account_type) {
+	public void setAccount_type(String account_type) {
 		this.account_type = account_type;
 	}
-	
-	
 	
 }

@@ -38,7 +38,7 @@ public class MTBCPKIUtility {
 //			throw new SignatureException(ex);
 //		}
 //	}
-//
+
 //	public boolean verifyMessageWithPublicKey(String message, String signature, PublicKey publicKey) throws SignatureException {
 //		try {
 //			Signature sign = Signature.getInstance(SignatureAlgo);

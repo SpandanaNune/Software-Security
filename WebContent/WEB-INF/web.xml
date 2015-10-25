@@ -39,14 +39,32 @@
 			classpath:sbs/web/config/security-context.xml
 		</param-value>
   </context-param>
-  <filter>
+  <!--  <filter>
+    <display-name>springMultipartFilter</display-name>
+    <filter-name>springMultipartFilter</filter-name>
+    <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+</filter>-->
+<!--<filter-mapping>
+    <filter-name>springMultipartFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>-->
+
+<filter>
     <display-name>springSecurityFilterChain</display-name>
     <filter-name>springSecurityFilterChain</filter-name>
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy
-		</filter-class>
-  </filter>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+</filter-mapping>
+
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
 </web-app>
