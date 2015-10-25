@@ -111,6 +111,13 @@ public class HomeController {
 		return "registeruser";
 	}
 	
+	@RequestMapping(value = "/merchant")
+	public String showMerchantUser(Model model) {
+		System.out.println("showRegisterMerchant");
+		model.addAttribute("user", new User());
+		return "merchant";
+	}
+	
 	@RequestMapping(value = "/userconfirm")
 	public String showUserConfirmation(Model model) {
 		System.out.println("User Confirmation");
@@ -278,7 +285,29 @@ public class HomeController {
 		return "employeecreation";
 	}
 
+	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
+	public String RegisterMerchant(@Valid User user, BindingResult result,Model model) {
 
+		if (result.hasErrors()) {
+			return "merchant";
+		}
+
+		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+		if (uniqueUser == null) {
+			System.out.println(user);
+				user.setIsnewuser(true);
+				user.setIsmerchant(true);
+				user.setLastname("Merchant");
+			userService.createUser(user);
+			return "homepage";
+		} else {
+			System.out.println("Caught duplicate Username");
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+			return "merchant";
+		}
+	}
+
+		
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 
 	public String RegisterUser(Model model, @Valid User user, BindingResult result) {
