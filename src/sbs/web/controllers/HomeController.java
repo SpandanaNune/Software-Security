@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import sbs.web.models.Authorities;
-import sbs.web.models.Authorities;
 import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
@@ -162,7 +161,7 @@ public class HomeController {
 		auth.setAuthority("ROLE_USER");
 		userService.setAuthority(auth);
 
-		userService.userActivation(users);
+		userService.saveOrUpdateUsers(users);
 		return "homepage";
 	}
 
@@ -237,8 +236,8 @@ public class HomeController {
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 
-	public String RegisterUser(Model model,@Valid User user, BindingResult result) {
-		System.out.println("Finding errors, "+result.toString());
+	public String RegisterUser(Model model, @Valid User user, BindingResult result) {
+		System.out.println("Finding errors, " + result.toString());
 		if (result.hasErrors()) {
 			System.out.println("It has errors");
 			return "registeruser";

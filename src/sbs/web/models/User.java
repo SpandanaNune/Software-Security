@@ -213,7 +213,15 @@ public class User {
 
 	private boolean isnewuser;
 	
-//	private boolean canlogin;	
+	private String reset_pass_token;
+	
+	public String getReset_pass_token() {
+		return reset_pass_token;
+	}
+	public void setReset_pass_token(String reset_pass_token) {
+		this.reset_pass_token = reset_pass_token;
+	}
+	//	private boolean canlogin;	
 //	public boolean isCanlogin() {
 //		return canlogin;
 //	}
@@ -303,11 +311,11 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "UserProfile [ username=" + username + ", email=" + email + ", firstname="
-				+ firstname + ", lastname=" + lastname + ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone
-				+ ", Addr1=" + Addr1 + ", Addr2=" + Addr2 + ", City=" + City + ", State=" + State + ", Zip=" + Zip
-				+ ", isnewuser=" + isnewuser + "]";
+		return "User [username=" + username + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
+				+ ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone + ", Addr1=" + Addr1 + ", Addr2=" + Addr2
+				+ ", City=" + City + ", State=" + State + ", Zip=" + Zip + ", isnewuser=" + isnewuser
+				+ ", reset_pass_token=" + reset_pass_token + "]";
 	}
-	
+		
 
 }

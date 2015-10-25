@@ -9,9 +9,6 @@ import sbs.web.dao.UsersDao;
 import sbs.web.models.Authorities;
 import sbs.web.models.PII;
 import sbs.web.models.User;
-
-import sbs.web.models.Authorities;
-
 import sbs.web.models.Users;
 
 @Service("userService")
@@ -29,6 +26,10 @@ public class UserService {
 
 	public void createUser(User user) {
 		usersDao.createUser(user);
+	}
+	
+	public void updateUser(User user) {
+		usersDao.updateUser(user);
 	}
 
 	public void setAuthority(Authorities auth) {
@@ -55,6 +56,11 @@ public class UserService {
 		return getuser;
 	}
 	
+	public User getUserProfilebyField(String field, String value) {
+		User getuser = (User) usersDao.getUserProfilebyField(field, value);
+		return getuser;
+	}
+
 	public void deletePII(String username)
 	{
 		usersDao.deletePIIRequest(username);
@@ -83,7 +89,7 @@ public class UserService {
 		usersDao.deleteUserRequest(username);
 	}
 
-	public void userActivation(Users users) {
-		usersDao.userActivation(users);
+	public void saveOrUpdateUsers(Users users) {
+		usersDao.saveOrUpdateUsers(users);
 	}
 }
