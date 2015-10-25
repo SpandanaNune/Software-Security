@@ -11,30 +11,43 @@ import sbs.web.models.Transaction;
 
 @Service("transactionService")
 public class TransactionService {
-	
+
 	private TransactionDao transactionDao;
-	
+
 	@Autowired
 	public void setTransactionDao(TransactionDao transactionDao) {
 		this.transactionDao = transactionDao;
 	}
-	
-	public List<Transaction> getAllTransactions(long accountNo){
+
+	public List<Transaction> getAllTransactions(long accountNo) {
 		return transactionDao.getAllTransactions(accountNo);
 	}
-	public List<Transaction> getAllTransactions(String date){
+
+	public List<Transaction> getAllTransactions(String date) {
 		return transactionDao.getAllTransactions(date);
 	}
-	
-	
-	public List<Transaction> getAllCriticalTransaction(){
+
+	public List<Transaction> getAllCriticalTransaction() {
 		return transactionDao.getAllCriticalTransaction();
+	}
+
+	public List<Transaction> getAllCriticalTransactions(long accountNo) {
+		return transactionDao.getAllCriticalTransactionForAccount(accountNo);
 	}
 
 	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
 		transactionDao.addTransactions(fromTransaction, toTransaction);
-		
+
 	}
-	
+
+	public Object getTransaction(int transactionId) {
+		return transactionDao.getTransaction(transactionId);
+
+	}
+
+	public void updateTransaction(Transaction t) {
+		transactionDao.updateTransaction(t);
+
+	}
 
 }

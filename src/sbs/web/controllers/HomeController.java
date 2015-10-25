@@ -172,6 +172,13 @@ public class HomeController {
 		System.out.println("Admin Home");
 		return "adminhome";
 	}
+	
+	@RequestMapping(value = "/internalemp")
+	public String employeeHome(Model model) {
+
+		System.out.println("Intenal Employee");
+		return "internalemp";
+	}
 	@RequestMapping(value = "/pii")
 	public String listPIIs(Model model)
 	{

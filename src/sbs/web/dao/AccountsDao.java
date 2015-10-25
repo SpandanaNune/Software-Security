@@ -27,5 +27,16 @@ public class AccountsDao {
 //			System.out.println("*******"+a.getAccountNo());
 			return session().createQuery("from Accounts where username = '"+username+"'").list();
 		}
+		@SuppressWarnings("unchecked")
+		public List<Accounts> getAccountDetailsForBanker(String bankerName) {
+			return session().createQuery("from Accounts where bankername = '"+bankerName+"'").list();
+		}
+		
+		public Accounts getAccountForID(long toUserAccount) {
+            return (Accounts) session().createQuery("from Accounts where accountNo = "+toUserAccount).uniqueResult();
+        }
+        public void updateAccount(Accounts from) {
+             session().saveOrUpdate(from);
+        }
 		
 }
