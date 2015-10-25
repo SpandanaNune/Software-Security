@@ -120,20 +120,16 @@ public class TransactionController {
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		if (transactionLog != null && transactionLog.getLogFilter() != null) {
 			if (transactionLog.getLogFilter().equals("date")) {
-				transactions.addAll(transactionService.getAllTransactions(transactionLog.getDate()));
-				System.out.println(transactionLog.getDate());
+				transactions.addAll(transactionService.getAllTransactions(transactionLog.getInput()));
 
 			} else if (transactionLog.getLogFilter().equals("account")) {
-				transactions.addAll(transactionService.getAllTransactions(transactionLog.getAccountNo()));
-				System.out.println(transactionLog.getAccountNo());
+				transactions.addAll(transactionService.getAllTransactions(Long.parseLong(transactionLog.getInput())));
 
 			} else if (transactionLog.getLogFilter().equals("name")) {
-				List<Accounts> accounts = accountService.getAccountDetails(transactionLog.getName());
+				List<Accounts> accounts = accountService.getAccountDetails(transactionLog.getInput());
 				for (Accounts acct : accounts) {
 					transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 				}
-				System.out.println(transactionLog.getName());
-
 			}
 		}
 		model.addAttribute("transactions", transactions);

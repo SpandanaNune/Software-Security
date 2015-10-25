@@ -249,8 +249,8 @@ public class LoginController {
 		for (Users user : userlist) {
 			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
 		}
-		System.out.println(userlist.size());
-		System.out.println(userlist.get(0).getUsername());
+//		System.out.println(userlist.size());
+//		System.out.println(userlist.get(0).getUsername());
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
 		return "viewedituserdetails";

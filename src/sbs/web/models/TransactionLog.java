@@ -3,34 +3,18 @@ package sbs.web.models;
 public class TransactionLog {
 	
 	String logFilter;
-	String date;
-	long accountNo;
-	String name;
+	String input;
 	
 	
 
-	public String getDate() {
-		return date;
+	
+
+	public String getInput() {
+		return input;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public long getAccountNo() {
-		return accountNo;
-	}
-
-	public void setAccountNo(long accountNo) {
-		this.accountNo = accountNo;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setInput(String input) {
+		this.input = input;
 	}
 
 	public String getLogFilter() {
