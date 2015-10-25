@@ -36,9 +36,9 @@
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a>
 							 <a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/sendOTP">Send OTP</a>
+						href="${pageContext.request.contextPath}/sendOTP">Send OTP [Arjun]</a>
 							 <a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/verifyOTP">Verify OTP</a>
+						href="${pageContext.request.contextPath}/verifyOTP">Verify OTP [Arjun]</a>
 
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
@@ -54,15 +54,16 @@
 						
 						
 						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/createTransaction">Make transactions</a>
+						href="${pageContext.request.contextPath}/openTransaction">Open transactions [Arjun]</a>
 						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/getAccountDetails">Get Account Details</a>
 						
 						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/random">Random </a>
+						href="${pageContext.request.contextPath}/Sample">Random </a>
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/accountactivation">Verify Account</a>
+						
 						<a href ="<c:url value ='/logout'/>">Log out</a>
 				</p>
 				

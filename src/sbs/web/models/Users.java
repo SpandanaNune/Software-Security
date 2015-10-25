@@ -12,7 +12,7 @@ public class Users {
 	private String username;
 	private String password;
 
-	// private String email;
+	private String email;
 	private int siteKeyID;
 	private boolean enabled;
 	private boolean accountNonExpired;
@@ -62,6 +62,14 @@ public class Users {
 		this.password = password;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public int getSiteKeyID() {
 		return siteKeyID;
 	}
@@ -104,9 +112,9 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "Users [ username=" + username + ", password=" + password + ", siteKeyID=" + siteKeyID + ", enabled="
-				+ enabled + ", accountNonExpired=" + accountNonExpired + ", accountNonLocked=" + accountNonLocked
-				+ ", credentialsNonExpired=" + credentialsNonExpired + "]";
+		return "Users [ username=" + username + ", password=" + password + ", email=" + email + ", siteKeyID="
+				+ siteKeyID + ", enabled=" + enabled + ", accountNonExpired=" + accountNonExpired
+				+ ", accountNonLocked=" + accountNonLocked + ", credentialsNonExpired=" + credentialsNonExpired + "]";
 
 	}
 

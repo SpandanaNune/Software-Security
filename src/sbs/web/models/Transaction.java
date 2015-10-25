@@ -69,6 +69,12 @@ public class Transaction {
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
+	@Override
+	public String toString() {
+		return "Transaction [primaryKey=" + primaryKey + ", transactionType=" + transactionType + ", amount=" + amount
+				+ ", status=" + status + ", isCritical=" + isCritical + ", modifiedDate=" + modifiedDate
+				+ ", createdDate=" + createdDate + "]";
+	}
 	
 }
 

@@ -60,12 +60,10 @@ public class User {
 	private String Zip;
 
 	private String reset_pass_token;
-	
 	private boolean isnewuser;
 	private boolean is_deleted;
 	
 	
-
 	public String getUsername() {
 		return username;
 	}
@@ -163,11 +161,11 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "UserProfile [ username=" + username + ", email=" + email + ", firstname="
-				+ firstname + ", lastname=" + lastname + ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone
-				+ ", Addr1=" + Addr1 + ", Addr2=" + Addr2 + ", City=" + City + ", State=" + State + ", Zip=" + Zip
-				+ ", isnewuser=" + isnewuser + "]";
+		return "User [username=" + username + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
+				+ ", dob=" + dob + ", SSN=" + SSN + ", phone=" + phone + ", Addr1=" + Addr1 + ", Addr2=" + Addr2
+				+ ", City=" + City + ", State=" + State + ", Zip=" + Zip + ", isnewuser=" + isnewuser
+				+ ", reset_pass_token=" + reset_pass_token + "]";
 	}
-	
+		
 
 }

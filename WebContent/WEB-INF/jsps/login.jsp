@@ -7,6 +7,35 @@
 <html>
 <head>
 <title>Login Page</title>
+<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript">
+    /**  How to setup a textarea that allows typing with a Hindi Virtual Keyboard. */
+    
+    google.load("elements", "1", {packages: "keyboard"});
+    
+    function onLoad() {
+   //  var content = document.getElementById('content');
+      // Create the HTML for out text area
+    // content.innerHTML = '<textarea id="textCode" name="textCode" cols="100" rows="5"></textarea>';
+    
+      var kbd = new google.elements.keyboard.Keyboard(
+          [google.elements.keyboard.LayoutCode.ENGLISH]
+          );
+    }
+    
+    function toggleVisible() {
+    	  if (kbd.isVisible()) {
+    	    kbd.setVisible(false);
+    	    document.getElementById('btVisible').value = 'Show';
+    	  } else {
+    	    kbd.setVisible(true);
+    	    document.getElementById('btVisible').value = 'Hide';
+    	  }
+    }
+    
+    google.setOnLoadCallback(onLoad);
+    
+    </script>
 <link href="${pageContext.request.contextPath}/static/css/main.css"
 	rel="stylesheet" type="text/css" />
 </head>
@@ -17,11 +46,10 @@
 	</c:if>
 	<form name='f' action="${pageContext.request.contextPath}/login"
 		method="POST">
-
-		<table class="formtable">
+		<table id='content' class="formtable">
 			<tr>
 				<td>User:</td>
-				<td><input type='text' name='j_username' value=''></td>
+				<td><input type='text'  name='j_username' value=''></td>
 			</tr>
 			<tr>
 				<td>Password:</td>
@@ -37,6 +65,7 @@
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
 	</form>
+		<input type="button" id ='btVisible' onClick="toggleVisible()" value="Hide" />
 	<a href="${pageContext.request.contextPath}/forgotpass">Forgot
 		Password</a>
 </body>

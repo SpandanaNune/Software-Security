@@ -18,19 +18,11 @@ public class Accounts {
 	private boolean isLocked; 
 	private String bankername;
 	private String username;
-	
 	public long getAccountNo() {
 		return accountNo;
 	}
 	public void setAccountNo(long accountNo) {
 		this.accountNo = accountNo;
-	}
-	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
 	}
 	public boolean isAccount_type() {
 		return account_type;
@@ -56,9 +48,16 @@ public class Accounts {
 	public void setBankername(String bankername) {
 		this.bankername = bankername;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	@Override
 	public String toString() {
 		return "Accounts [accountNo=" + accountNo + ", account_type=" + account_type + ", balance=" + balance
 				+ ", isLocked=" + isLocked + ", bankername=" + bankername + ", username=" + username + "]";
-	}	
+	}
+	
 }

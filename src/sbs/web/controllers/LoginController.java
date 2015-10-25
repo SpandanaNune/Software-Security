@@ -50,17 +50,31 @@ public class LoginController {
 
 	@RequestMapping("/resetpassword")
 	public String showForgotPassword(Model model, HttpServletRequest request) {
-		logger.debug("resetpassword page");
+
 		String token = request.getParameter("token");
 		if (token == null || "".equals(token)) {
 			return "login";
 		}
-		// Users user = userService.getUserbyField("username", token);
-		Users user = userService.getUserbyUsername("arpit");
-		// User user = userService.getUserregisterbyUsername("kardanitin");
-		model.addAttribute("users", user);
-		System.out.println(user);
-		return "resetpassword";
+		User user = userService.getUserProfilebyField("reset_pass_token", token);
+		if (user != null) {
+			model.addAttribute("users", user);
+			return "resetpassword";
+		}
+		return "login";
+	}
+
+	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
+	public String resetPassword(Model model, @Valid User user, BindingResult result,
+			@RequestParam("password") String password) throws IOException {
+		List<Users> userlist = userService.getUsersByField("username", user.getUsername());
+		Users users = userlist.get(0);
+
+		users.setPassword(password);
+		userService.saveOrUpdateUsers(users);
+		User user_profile = userService.getUserProfilebyField("username", user.getUsername());
+		user_profile.setReset_pass_token(null);
+		userService.updateUser(user);
+		return "homepage";
 	}
 
 	@RequestMapping("/forgotpass")
@@ -69,40 +83,29 @@ public class LoginController {
 	}
 
 	@RequestMapping("/forgotPassEmailSuccess")
-	public String forgotPassEmailSuccess(HttpServletRequest request) throws IOException {
+	public String forgotPassEmailSuccess(Model model, HttpServletRequest request) throws IOException {
 		String email = request.getParameter("email");
 		String gCaptchaResponse = request.getParameter("g-recaptcha-response");
-		// Users user = userService.getUserbyField("username", email);
 
 		boolean verify = false;
 		verify = VerifyCaptcha.verify(gCaptchaResponse);
 		if (verify) {
-			User user = userService.getUserregisterbyUsername(email);
-			System.out.println(user);
+			User user = userService.getUserProfilebyField("email", email);
 			if (user != null) {
 				SecureRandom random = new SecureRandom();
 				String token = new BigInteger(130, random).toString(32);
 				String url = request.getScheme() + "://" + request.getServerName() + request.getContextPath()
 						+ "/resetpassword?token=" + token;
+				user.setReset_pass_token(token);
+				userService.updateUser(user);
 				SendMail mail = new SendMail();
-				mail.resetPasswordLink("Nitin", "kardanitin@gmail.com", url);
+				mail.resetPasswordLink(user, url);
 				return "forgotPassEmailSuccess";
+			} else {
+				return "forgotpass";
 			}
 		}
 		return "forgotpass";
-	}
-
-	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
-	public String resetPassword(Model model, @Valid Users users, BindingResult result, HttpServletRequest request)
-			throws IOException {
-		Users user = userService.getUserbyUsername(users.getUsername());
-		System.out.println(user);
-		boolean verify = false;
-		if (verify) {
-			return "homepage";
-		} else {
-			return null;
-		}
 	}
 
 	@RequestMapping("/systemadmin")
@@ -144,13 +147,13 @@ public class LoginController {
 
 	@RequestMapping("/acceptbtn")
 	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
-		long account1, account2;
+		long account1 = 0, account2=0;
 
 		User user = userService.getUserProfileByField("username", username).get(0);
 		// User user = userService.getUserregisterbyUsername(username);
 		// user.setCanlogin(true);
 		user.setIsnewuser(false);
-//		String email = user.getEmail();
+		String email = user.getEmail();
 		userService.createUser(user);
 		// System.out.println("hello" + user);
 
@@ -165,31 +168,49 @@ public class LoginController {
 		users.setAccountNonExpired(true);
 		users.setAccountNonLocked(true);
 		users.setCredentialsNonExpired(true);
-		// users.setEmail(email);
+		users.setEmail(email);
 		users.setSiteKeyID(1);
 		users.setQ1(" ");
 		users.setQ2(" ");
 		users.setQ3(" ");
 
-		account1 = UtilityController.generateAccountNumber();
-		account2 = UtilityController.generateAccountNumber();
+//		userService.saveOrUpdateUsers(users);
 
-		// List<Accounts> accountsList1 = new ArrayList<Accounts>();
-		// List<Accounts> accountsList2 = new ArrayList<Accounts>();
-		// accountsList1 = userService.getAccountsByField("accountNo",
-		// account1);
-		// accountsList2 = userService.getAccountsByField("accountNo",
-		// account2);
+		Authorities auth = new Authorities();
+		auth.setUsername(username);
+		auth.setAuthority("ROLE_NEW");
+//		userService.setAuthority(auth);
+		
+		System.out.println("Creating account Numbers");
+		
 
-		// while(userService.getAccountsByField("accountNo", account1).size() >
-		// 0){
-		// account1 = UtilityController.generateAccountNumber();
-		// }
-		// while(userService.getAccountsByField("accountNo", account2).size() >
-		// 0){
-		// account2 = UtilityController.generateAccountNumber();
-		// }
-
+		boolean account1IsNotValid=true;
+		List<Accounts> accountsList1;
+		while(account1IsNotValid){
+			System.out.println("GEtting account 1");
+			account1 = UtilityController.generateAccountNumber();
+			 accountsList1 = userService.getAccountsByField("accountNo", account1);
+			if(accountsList1.size()==0){
+				System.out.println("Got account 1");
+				account1IsNotValid=false;
+			}
+			
+		}
+		
+		boolean account2IsNotValid=true;
+		List<Accounts> accountsList2;
+		while(account2IsNotValid){
+			System.out.println("Getting account 2");
+			account2 = UtilityController.generateAccountNumber();
+			 accountsList2 = userService.getAccountsByField("accountNo", account2);
+			if(accountsList2.size()==0){
+				account2IsNotValid=false;
+				System.out.println("Got account 2");
+			}
+			
+		}
+		System.out.println("Successfully got two account number :"+ account1 +", "+account2);
+		
 		Accounts newAccount1 = new Accounts();
 		Accounts newAccount2 = new Accounts();
 
@@ -197,13 +218,14 @@ public class LoginController {
 		newAccount1.setAccount_type(true);
 		newAccount1.setAccountNo(account1);
 		newAccount1.setUsername(username);
+		
 		/**********************************************
 		 * Random Banker
 		 ***************************************/
 		newAccount1.setBankername("arjun");
 
 		newAccount2.setBalance(0);
-		newAccount2.setAccount_type(true);
+		newAccount2.setAccount_type(false);
 		newAccount2.setAccountNo(account2);
 		newAccount2.setUsername(username);
 		/**********************************************
@@ -211,12 +233,6 @@ public class LoginController {
 		 ***************************************/
 		newAccount2.setBankername("arjun");
 
-		Authorities auth = new Authorities();
-		auth.setUsername(username);
-		auth.setAuthority("ROLE_NEW");
-
-		userService.userActivation(users);
-		userService.setAuthority(auth);
 		System.out.println(newAccount1);
 		System.out.println(newAccount2);
 
@@ -253,12 +269,8 @@ public class LoginController {
 
 	@RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
 	public String updateActiveUserDetails(@Valid User user, BindingResult result, Model model) {
-		// System.out.println(result.getErrorCount());
-		// System.out.println(result.toString());
-		// System.out.println(user);
-		// user.setCanlogin(true);
 
-		if (result.getErrorCount() > 2)
+		if (result.getErrorCount() > 3)
 			return "edituser";
 		else {
 
@@ -274,7 +286,7 @@ public class LoginController {
 			return "viewedituserdetails";
 		}
 	}
-	
+
 	@RequestMapping("/deleteactiveusers")
 	public String showActiveUsersforDelete(Model model) {
 		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
@@ -289,13 +301,13 @@ public class LoginController {
 		model.addAttribute("user", userProfileList);
 		return "deleteactiveusers";
 	}
-	
+
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
-	public String deleteActiveUser(Model model,@RequestParam("Delete") String username) {
+	public String deleteActiveUser(Model model, @RequestParam("Delete") String username) {
 		Users users = userService.getUsersByField("username", username).get(0);
 		users.setEnabled(false);
-		userService.userActivation(users);
-		
+		userService.saveOrUpdateUsers(users);
+
 		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
 		List<User> userProfileList = new ArrayList<User>();
 		for (Users user : userlist) {
@@ -308,5 +320,46 @@ public class LoginController {
 
 	}
 
+	// @RequestMapping("/declinebtn")
+	// public String deleteUserSignUp(Model model, @RequestParam("Decline")
+	// String username) {
+	// System.out.println("Delete Button Operation");
+	// System.out.println(username);
+	//
+	// userService.deleteUserRequest(username);
+	// List<User> updateduser = userService.getAllNewUsers();
+	//
+	// model.addAttribute("user", updateduser);
+	// return "usersignuprequest";
+	//
+	// }
+
+	@RequestMapping("/accountactivation")
+	public String activateAccount(@Valid Users eUser, BindingResult result, Model model) {
+		if (eUser != null && eUser.getUsername() != null) {
+			User user = userService.getUserregisterbyUsername(eUser.getUsername());
+			// user.setCanlogin(true);
+			user.setIsnewuser(false);
+			userService.createUser(user);
+			System.out.println("hello" + user);
+			Users users = new Users();
+			users.setUsername(eUser.getUsername());
+			users.setPassword(eUser.getPassword());
+			users.setEnabled(true);
+			users.setAccountNonExpired(true);
+			users.setAccountNonLocked(true);
+			users.setCredentialsNonExpired(true);
+
+			Authorities auth = new Authorities();
+			auth.setUsername(eUser.getUsername());
+			// auth.setAuthority(user.getRole());
+
+			userService.saveOrUpdateUsers(users);
+			userService.setAuthority(auth);
+		} else {
+			model.addAttribute("users", new Users());
+		}
+		return "accountactivation";
+	}
 
 }
