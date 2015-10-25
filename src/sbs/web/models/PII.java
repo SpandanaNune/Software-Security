@@ -10,9 +10,9 @@ public class PII {
 	@Id
 	private String userName;
 	
-	private long oldSSN;
+	private String oldSSN;
 	
-	private long newSSN;
+	private String newSSN;
 	
 	private boolean isApproved;
 
@@ -24,19 +24,19 @@ public class PII {
 		this.userName = userName;
 	}
 
-	public long getOldSSN() {
+	public String getOldSSN() {
 		return oldSSN;
 	}
 
-	public void setOldSSN(long oldSSN) {
+	public void setOldSSN(String oldSSN) {
 		this.oldSSN = oldSSN;
 	}
 
-	public long getNewSSN() {
+	public String getNewSSN() {
 		return newSSN;
 	}
 
-	public void setNewSSN(long newSSN) {
+	public void setNewSSN(String newSSN) {
 		this.newSSN = newSSN;
 	}
 

@@ -6,16 +6,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<title>PII</title>
 </head>
 <body>
+  <div class = "container">
 	<H1>PII List</H1>
-	<TABLE BORDER="1">
+	<TABLE class = "offers table table-hover">
 		<TR>
 			<TH>User Name</TH>
 			<TH>Old SSN</TH>
 			<TH>New SSN</TH>
 			<TH>Approve / Decline</TH>
+      <TH></TH>
 		</TR>
 		<c:forEach items="${piis}" var="pii">
 			<TR>
@@ -27,13 +34,14 @@
 				<td><form method="post"
 						action="${pageContext.request.contextPath}/acceptpii">
 						<input type="hidden" name="Accept" value="${pii.getUserName()}" />
-						<input class="control" value = "Accept" type="submit" /> <input
+						<input class="control btn btn-success" value = "Accept" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
-					</form><form method="post"
+             
+					</form></td> <td><form method="post"
 						action="${pageContext.request.contextPath}/declinepii">
 						<input type="hidden" name="Decline" value="${pii.getUserName()}" />
-						<input class="control" value = "Decline" type="submit" /> <input
+						<input class="control btn btn-danger" value = "Decline" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 					</form></td>
@@ -44,6 +52,6 @@
 	</TABLE>
 	<!--  <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">Download</button>
 	 	 <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">E-Mail</button> -->
-	 
+   </div>
 </body>
 </html>

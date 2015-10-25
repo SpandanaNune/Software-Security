@@ -91,6 +91,12 @@ public class UserService {
 	{
 		return usersDao.getAllPIIRequests();
 	}
+
+	
+	public PII getPII(String username)
+	{
+		return (PII)usersDao.getPII(username);
+	}
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}

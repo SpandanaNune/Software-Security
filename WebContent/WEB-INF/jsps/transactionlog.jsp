@@ -13,10 +13,12 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 <script type="text/javascript">
+
+
           function datefn() {
-        	  document.getElementById('byaccount').style.visibilty = 'hidden';
+        	  document.getElementById('byaccount').style.visibility = 'hidden';
               document.getElementById('byname').style.visibility = 'hidden';
-              document.getElementById('byaccountlabel').style.visibilty = 'hidden';
+              document.getElementById('byaccountlabel').style.visibility = 'hidden';
               document.getElementById('bynamelabel').style.visibility = 'hidden';
               document.getElementById('bydate').style.visibility = 'visible';
              
@@ -25,19 +27,19 @@
              
           }
           function accountfn() {
-        	  document.getElementById('bydate').style.visibilty = 'hidden';
+        	  document.getElementById('bydate').style.visibility = 'hidden';
               document.getElementById('byname').style.visibility = 'hidden';
-              document.getElementById('bydatelabel').style.visibilty = 'hidden';
+              document.getElementById('bydatelabel').style.visibility = 'hidden';
               document.getElementById('bynamelabel').style.visibility = 'hidden';
-              document.getElementById('byaccount').style.visibilty = 'visible';
+              document.getElementById('byaccount').style.visibility = 'visible';
              
 
-              document.getElementById('byaccountlabel').style.visibilty = 'visible';
+              document.getElementById('byaccountlabel').style.visibility = 'visible';
              
           }
           function namefn() {
-        	  document.getElementById('byaccount').style.visibilty = 'hidden';
-        	  document.getElementById('byaccountlabel').style.visibilty = 'hidden';
+        	  document.getElementById('byaccount').style.visibility = 'hidden';
+        	  document.getElementById('byaccountlabel').style.visibility = 'hidden';
               document.getElementById('bydatelabel').style.visibility = 'hidden';
           
               document.getElementById('bydate').style.visibility = 'hidden';
@@ -59,11 +61,12 @@
 		<sf:errors path="*" cssClass="errorblock" element="div" />
     <table>
                 <tr>
-                    <td>  <sf:radiobutton class="control radio" path="logFilter" value="date" name="By Date" onclick="datefn()"/><font style="color:black">By Date</font>
-                          <sf:radiobutton
-                                    path="logFilter" class="control radio" value="account" name="By AccountNo" onclick="accountfn()"/><font style="color:black">By AccountNo</font>
-                              <sf:radiobutton
-                                    path="logFilter" class="control radio" value="name" name ="By Name" onclick="namefn()"/><font style="color:black">By Name</font></td>
+                <td>  <sf:radiobutton
+                                    path="logFilter" class="control radio" checked="checked" value="account" name="Filter" onchange="accountfn()"/><font style="color:black">By AccountNo</font>
+                           </td>
+                    <td>  <sf:radiobutton class="control radio" path="logFilter" value="date" name="Filter" onchange="datefn()"/><font style="color:black">By Date</font>
+                        </td><td>   <sf:radiobutton
+                                    path="logFilter" class="control radio" value="name" name ="Filter" onchange="namefn()"/><font style="color:black">By Name</font></td>
                     <td><sf:errors class="control" path="logFilter" cssClass="error" /></td>
                 </tr>
 

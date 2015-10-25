@@ -207,6 +207,13 @@ public class HomeController {
 	// return "employeecreation";
 	// }
 	
+	
+	@RequestMapping(value = "/internalemp")
+	public String employeeHome(Model model) {
+
+		System.out.println("Intenal Employee");
+		return "internalemp";
+	}
 	@RequestMapping(value = "/pii")
 	public String listPIIs(Model model)
 	{
@@ -217,15 +224,24 @@ public class HomeController {
 	
 	@RequestMapping("/acceptpii")
 	public String acceptUserPII(Model model, @RequestParam("Accept") String username) {
-		System.out.println("accepted "+username);
-		userService.approvePII(username);
+		User user=userService.getUserregisterbyUsername(username);
+		PII pii = userService.getPII(username);
+		if(pii.getOldSSN().equalsIgnoreCase(user.getSSN()))
+		{
+		user.setSSN(pii.getNewSSN());
+		userService.updateUser(user);
+		userService.approvePII(pii.getUserName());
+		}
+		else
+		{
+			//error SSN not matched
+		}
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);
 		return "pii";
 	}
 	@RequestMapping("/declinepii")
-	public String declineUserPII(Model model, @RequestParam("Decline") String username) {
-		System.out.println("declined "+username);
+	public String declineUserPII(Model model, @RequestParam("Decline")String username) {
 		userService.deletePII(username);
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);

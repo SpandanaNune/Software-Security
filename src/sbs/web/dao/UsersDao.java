@@ -109,7 +109,7 @@ public class UsersDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllActiveUsers(){
-		return session().createQuery("from User where canlogin = 1").list();	
+		return session().createQuery("from User where isnewuser = 0 and isdeleted=0").list();	
 	}
 	
 
