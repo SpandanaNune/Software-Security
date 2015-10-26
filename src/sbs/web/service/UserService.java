@@ -28,7 +28,7 @@ public class UserService {
 	public void createUser(User user) {
 		usersDao.createUser(user);
 	}
-	
+
 	public void updateUser(User user) {
 		usersDao.updateUser(user);
 	}
@@ -52,15 +52,18 @@ public class UserService {
 		return getuser;
 	}
 
-
 	public List<Users> getUsersByField(String field, String value) {
 		return usersDao.getUsersByField(field, value);
 	}
-	
+
 	public List<User> getUserProfileByField(String field, String value) {
 		return usersDao.getUserProfileByField(field, value);
 	}
-	
+
+	public List<Authorities> getUserAuthoritiesByField(String field, String value) {
+		return usersDao.getUserAuthoritiesByField(field, value);
+	}
+
 	public List<Users> getUsersByFieldBool(String field, boolean value) {
 		return usersDao.getUsersByFieldBool(field, value);
 	}
@@ -78,21 +81,18 @@ public class UserService {
 	public List<Accounts> getAccountsByField(String field, long value) {
 		return usersDao.getAccountsByField(field, value);
 	}
-	
-	
+
 	public User getUserProfilebyField(String field, String value) {
 		User getuser = (User) usersDao.getUserProfilebyField(field, value);
 		return getuser;
 	}
 
-	public void deletePII(String username)
-	{
+	public void deletePII(String username) {
 		usersDao.deletePIIRequest(username);
 	}
-	
-	public void approvePII(String username)
-	{
-		PII pii = (PII)usersDao.getPII(username);
+
+	public void approvePII(String username) {
+		PII pii = (PII) usersDao.getPII(username);
 		pii.setApproved(true);
 		usersDao.updatePII(pii);
 	}
@@ -107,11 +107,11 @@ public class UserService {
 		return usersDao.getAllPIIRequests();
 	}
 
-	
-	public PII getPII(String username)
-	{
-		return (PII)usersDao.getPII(username);
+
+	public PII getPII(String username) {
+		return (PII) usersDao.getPII(username);
 	}
+
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}
@@ -123,13 +123,12 @@ public class UserService {
 	public void deleteUserRequest(String username) {
 		usersDao.deleteUserRequest(username);
 	}
-	
 
 	public void saveOrUpdateUsers(Users users) {
 		usersDao.saveOrUpdateUsers(users);
 	}
-	
-	public void addNewAccount(Accounts account){
+
+	public void addNewAccount(Accounts account) {
 		usersDao.addNewAccount(account);
 	}
 

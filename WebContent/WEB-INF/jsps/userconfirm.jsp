@@ -51,7 +51,6 @@
 	}
 	$(document).ready(onLoad);
 </script>
->
 <meta content="Content-Type" content="text/html; charset-US-ASCII">
 </head>
 <body>
@@ -59,7 +58,8 @@
 	<br />
 
 	<sf:form id="details" method="post"
-		action="${pageContext.request.contextPath}/activateuser" commandName = "users">
+		action="${pageContext.request.contextPath}/activateuser"
+		commandName="users">
 
 		<table class="formtable">
 			<%-- <tr>
@@ -78,29 +78,30 @@
 				<td class="label">Confirm Password:</td>
 				<td><input id="confirmpassword" class="control"
 					name="confirmpassword" type="text" />
-				<div id="matchpass"></div></td>
+					<div id="matchpass"></div></td>
 			</tr>
 			<tr>
 				<td class="label">Q1:What is your mother's maiden name:</td>
-				<td><sf:input class="control" path="q1" name="q1"
-						type="text" /><br /> <sf:errors path="q1" Class="error"></sf:errors></td>
+				<td><sf:input class="control" path="q1" name="q1" type="text" /><br />
+					<sf:errors path="q1" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
 				<td class="label">Q2:Name of your Highschool:</td>
-				<td><sf:input class="control" path="q2" name="q2"
-						type="text" /><br /> <sf:errors path="q2" Class="error"></sf:errors></td>
+				<td><sf:input class="control" path="q2" name="q2" type="text" /><br />
+					<sf:errors path="q2" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
 				<td class="label">Q3:Name your favourite colour:</td>
-				<td><sf:input class="control" path="q3" name="q3"
-						type="text" /><br /> <sf:errors path="q3" Class="error"></sf:errors></td>
+				<td><sf:input class="control" path="q3" name="q3" type="text" /><br />
+					<sf:errors path="q3" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
 				<td class="label"></td>
 				<td><input class="control" value="Activate" type="submit" /></td>
 			</tr>
 		</table>
-
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
 	</sf:form>
 
 </body>

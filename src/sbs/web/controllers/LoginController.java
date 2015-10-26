@@ -31,7 +31,10 @@ import sbs.web.utilities.VerifyCaptcha;
 public class LoginController {
 	private static final Logger logger = Logger.getLogger(LoginController.class);
 	private UserService userService;
+	private static int bankerIndex = 0;
+
 	private AccountsService accountService;
+
 
 	@Autowired
 	public void setUserService(UserService userService) {
@@ -47,13 +50,11 @@ public class LoginController {
 	@RequestMapping("/login")
 	public String showLogin( HttpServletRequest request) {
 		logger.info("In the login controller");
-	
 		return "login";
 	}
 
-	@RequestMapping("/logout")
+	@RequestMapping(value="/loggedout")
 	public String showLoggedOut() {
-		System.out.println("login page");
 		return "loggedout";
 	}
 
@@ -76,6 +77,7 @@ public class LoginController {
 	public String resetPassword(Model model, @Valid User user, BindingResult result,
 			@RequestParam("password") String password) throws IOException {
 		List<Users> userlist = userService.getUsersByField("username", user.getUsername());
+
 		Users users = userlist.get(0);
 
 		users.setPassword(password);
@@ -121,22 +123,7 @@ public class LoginController {
 	public String showAdminHome() {
 		return "adminhome";
 	}
-
-
-	// @RequestMapping("/declinebtn")
-	// public String deleteUserSignUp(Model model, @RequestParam("Decline")
-	// String username) {
-	// System.out.println("Delete Button Operation");
-	// System.out.println(username);
-	//
-	// userService.deleteUserRequest(username);
-	// List<User> updateduser = userService.getAllNewUsers();
-	//
-	// model.addAttribute("user", updateduser);
-	// return "usersignuprequest";
-	//
-	// }
-
+	
 	@RequestMapping("/accountactivation")
 	public String activateAccount(@Valid Users eUser, BindingResult result, Model model) {
 		if (eUser != null && eUser.getUsername() != null) {
@@ -164,8 +151,5 @@ public class LoginController {
 		}
 		return "accountactivation";
 	}
-	
-	
-	
-	
+
 }
