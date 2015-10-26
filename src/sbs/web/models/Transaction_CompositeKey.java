@@ -12,7 +12,7 @@ public class Transaction_CompositeKey implements Serializable{
 	 int transactionId=1000;
 	
 	@Column(name = "accountNo")
-	private int accountNo;
+	private long accountNo;
 	
 	public int getTransactionId() {
 		return transactionId;
@@ -20,10 +20,10 @@ public class Transaction_CompositeKey implements Serializable{
 	public void setTransactionId(int transactionId) {
 		this.transactionId = transactionId;
 	}
-	public int getAccountNo() {
+	public long getAccountNo() {
 		return accountNo;
 	}
-	public void setAccountNo(int accountNo) {
+	public void setAccountNo(long accountNo) {
 		this.accountNo = accountNo;
 	}
 	@Override

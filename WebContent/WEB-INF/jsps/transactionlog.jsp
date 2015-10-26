@@ -15,7 +15,20 @@
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
+<script type="text/javascript">
+	function radiofn() {
+		
+		if (document.getElementById('radioaccount').checked) {
+			document.getElementById('radiolabel').innerHTML = 'Account No :';
+		} else if (document.getElementById('radiodate').checked) {
 
+			document.getElementById('radiolabel').innerHTML = 'Date :';
+		} else if (document.getElementById('radioname').checked) {
+			document.getElementById('radiolabel').innerHTML = 'Name :';
+		}
+
+	}
+</script>
 
 </head>
 <body>
@@ -61,20 +74,7 @@
 
 
 			</table>
-			<script type="text/javascript">
-	function radiofn() {
-		
-		if (document.getElementById('radioaccount').checked) {
-			document.getElementById('radiolabel').innerHTML = 'Account No :';
-		} else if (document.getElementById('radiodate').checked) {
-
-			document.getElementById('radiolabel').innerHTML = 'Date :';
-		} else if (document.getElementById('radioname').checked) {
-			document.getElementById('radiolabel').innerHTML = 'Name :';
-		}
-
-	}
-</script>
+			
 			<br>
 			<br>
 			<center>

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sbs.web.models.Accounts;
 
+
 @Transactional
 @Component("accountsDao")
 public class AccountsDao {
@@ -22,9 +23,6 @@ public class AccountsDao {
 	}
 		@SuppressWarnings("unchecked")
 		public List<Accounts> getAccountDetails(String username) {
-//			List<Accounts> temp =session().createQuery("from Accounts").list(); 
-//			for (Accounts a: temp)
-//			System.out.println("*******"+a.getAccountNo());
 			return session().createQuery("from Accounts where username = '"+username+"'").list();
 		}
 		@SuppressWarnings("unchecked")

@@ -19,7 +19,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-
 	<c:out value="${user.getUsername()}"></c:out>
 
 	<div class="row-fluid">
@@ -37,6 +36,7 @@
 						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a>
 							 <a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/sendOTP">Send OTP [Arjun]</a>
+
 							 <a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/verifyOTP">Verify OTP [Arjun]</a>
 						
@@ -65,13 +65,17 @@
 						href="${pageContext.request.contextPath}/openTransaction">Open transactions [Arjun]</a>
 						
 						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/getAccountDetails">Get Account Details</a>
+						href="${pageContext.request.contextPath}/openDebitCreditTransaction">Debit credit your account [Arjun]</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/random">Random </a>
 						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/Sample">Random </a>
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/accountactivation">Verify Account</a>
-						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/edituserprofile">Edit Customer Profile</a>
 						<a href ="<c:url value ='/logout'/>">Log out</a>
 				</p>
 				

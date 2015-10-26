@@ -2,6 +2,7 @@ package sbs.web.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class TransactionDao {
 	public List<Transaction> getAllTransactions(long accountNo){
 		return session().createQuery("from Transaction where accountNo="+accountNo).list();
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Transaction> getAllTransactions(String date){
 		return session().createQuery("from Transaction where DATE(createdDate)='"+date+"'").list();
@@ -49,9 +51,12 @@ public class TransactionDao {
 	//check if we need to add transactional
 	public void addTransactions(Transaction fromTransaction, Transaction toTransaction) {
 		session().save(fromTransaction);
-		System.out.println(fromTransaction.getPrimaryKey().getTransactionId());
-		System.out.println(toTransaction.getPrimaryKey().getTransactionId());
 		session().save(toTransaction);
+	}
+
+	public void saveTransaction(Transaction transaction) {
+		session().save(transaction);
+		
 	}
 	
 	

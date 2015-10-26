@@ -1,13 +1,13 @@
 package sbs.web.controllers;
 
 import java.security.Principal;
-import java.util.*;
 
-import java.util.ArrayList;
+import java.security.SecureRandom;
+
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
-
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,24 +18,40 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import sbs.web.models.Authorities;
+import sbs.web.models.OTP;
 import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utils.PKIUtil;
+import sbs.web.service.UtilityService;
+import sbs.web.utilities.SendMail;
 
 @Controller
 public class HomeController {
 	private UserService userService;
+	private UtilityService utilityService;
 
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 
+	@Autowired
+	public void setUtilityService(UtilityService utilityService) {
+		this.utilityService = utilityService;
+	}
+
+	// @RequestMapping("/")
+	// public String showhome(Model model) {
+	// System.out.println("showhome");
+	// return "homepage";
+	// }
+
 	@RequestMapping("/")
 	public String showhome(Model model) {
 		System.out.println("showhome");
-		return "homepage";
+		return "home";
 	}
 
 	@RequestMapping("/Sample")
@@ -84,18 +100,13 @@ public class HomeController {
 	// return "mylogin";
 	// }
 
-	
+	@RequestMapping(value = "/registeruser")
+	public String showRegisterUser(Model model) {
 
-	@RequestMapping(value = "/signup")
-	public String showRegister(Model model) {
-		model.addAttribute("externaluser", new User());
-		return "signup";
+		System.out.println("showRegisterUser");
+		model.addAttribute("user", new User());
+		return "registeruser";
 	}
-
-	// @RequestMapping(value="/logout")
-	// public String logoutUser(Model model) {
-	// return "homepage";
-	// }
 
 	@RequestMapping(value = "/mylogin")
 	public String loginUser(Model model) {
@@ -104,20 +115,13 @@ public class HomeController {
 		return "mylogin";
 	}
 
-	@RequestMapping(value = "/registeruser")
-	public String showRegisterUser(Model model) {
-		System.out.println("showRegisterUser");
-		model.addAttribute("user", new User());
-		return "registeruser";
-	}
-	
 	@RequestMapping(value = "/merchant")
 	public String showMerchantUser(Model model) {
 		System.out.println("showRegisterMerchant");
 		model.addAttribute("user", new User());
 		return "merchant";
 	}
-	
+
 	@RequestMapping(value = "/userconfirm")
 	public String showUserConfirmation(Model model) {
 		System.out.println("User Confirmation");
@@ -159,9 +163,9 @@ public class HomeController {
 	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal) {
 		String uname = principal.getName();
 		System.out.println(uname);
-//		if (result.hasErrors()) {
-//			return "userconfirmation";
-//		}
+		// if (result.hasErrors()) {
+		// return "userconfirmation";
+		// }
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);
 		users.setAccountNonLocked(true);
@@ -175,6 +179,9 @@ public class HomeController {
 		userService.setAuthority(auth);
 
 		userService.saveOrUpdateUsers(users);
+		User user_profile = userService.getUserProfilebyField("username", uname);
+		PKIUtil pki = new PKIUtil();
+		pki.sendPrivateKey(user_profile);
 		return "homepage";
 	}
 
@@ -184,152 +191,187 @@ public class HomeController {
 		System.out.println("Admin Home");
 		return "adminhome";
 	}
+
+	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
+	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result) {
+		System.out.println("Finding errors, " + result.toString());
+		if (result.hasErrors()) {
+			return "registeruser";
+		}
+		user.setIsmerchant(false);
+		sendOTPMail(user.getFirstname(), user.getEmail());
+		System.out.println("Inserting USer into database");
+		userService.createUser(user);
+		model.addAttribute("mail", user.getEmail());
+		return "completeregistration";
+	}
+
+	public static String generatePassword() {
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
+		final int PW_LENGTH = 8;
+		Random rnd = new SecureRandom();
+		StringBuilder pass = new StringBuilder();
+		for (int i = 0; i < PW_LENGTH; i++)
+			pass.append(chars.charAt(rnd.nextInt(chars.length())));
+		return pass.toString();
+	}
+
+	void sendOTPMail(String firstName, String mail) {
+
+		// generate otp
+		String otp = generatePassword();
+
+		OTP otpObj = new OTP();
+		otpObj.setFirstName(firstName);
+		otpObj.setMailID(mail);
+		otpObj.setOtpValue(otp);
+		// otpObj.setTimeStamp(new Date());
+
+		try {
+			System.out.println("Sending email. Here");
+			System.out.println("otpObj " + otpObj.toString());
+			utilityService.insertOTP(otpObj);
+			System.out.println("Sending email");
+			SendMail sendMail = new SendMail();
+			sendMail.sendOTP(otpObj);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e);
+		}
+	}
+
+	@RequestMapping(value = "/registerbtn2", method = RequestMethod.POST)
+	public String RegisterUserComplete(Model model, User user, HttpServletRequest request) {
+		// @RequestParam("otpvalue") String otpValue
+		// I need Mail ID, first name and OTP
+		// I need the whole user object
+		// Check OTP- if exists then insert
+
+		System.out.println("Final stage");
+		String mail = request.getParameter("mail");
+		String otpValue = request.getParameter("otpValue");
+		// user
+		System.out.println("GEtting user object for user name " + mail);
+		User userObj = userService.getUserregisterbyEmail(mail);
+
+		String otpStatus = verifyUserOTP(userObj, otpValue);
+		System.out.println("otpStatus " + otpStatus);
+		if (otpStatus.equalsIgnoreCase("success")) {
+
+			// Users uniqueUser =
+			// (userService.getUserregisterbyUsername(user.getUsername()));
+			// if (uniqueUser == null) {
+			userObj.setIsnewuser(true);
+			System.out.println(userObj.toString());
+			userService.createUser(userObj);
+			return "homepage";
+			// } else {
+			// System.out.println("Caught duplicate Username");
+			// result.rejectValue("username",
+			// "DuplicateKeyException.user.username",
+			// "Username already exists.");
+			// return "registeruser";
+			// }
+
+		} else if (otpStatus.equalsIgnoreCase("attempts")) {
+			// Too many attempts. Refresh and request OTP again
+			System.out.println("Wrong otp, otpStatus " + otpStatus);
+		} else if (otpStatus.equalsIgnoreCase("failure")) {
+			// Wrong OTP
+			System.out.println("FAilure refresh and request OTP, otpStatus " + otpStatus);
+		}
+		// DELETE THIS LATER
+		return "homepage";
+	}
+
+	// @RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
+	// public String RegisterUser(Model model, @Valid User user, BindingResult
+	// result) {
+	// System.out.println("Finding errors, " + result.toString());
+	// if (result.hasErrors()) {
+	// System.out.println("It has errors");
+	// return "registeruser";
+	// }
 	//
-	// @RequestMapping(value = "/employeecreation")
-	// public String createEmployee(@Valid UserProfile user, BindingResult
-	// result, Model model) {
-	// if (user != null && user.getUsername() != null) {
-	// System.out.println(user);
-	// UserProfile uniqueUser =
+	// User uniqueUser =
 	// (userService.getUserregisterbyUsername(user.getUsername()));
 	// if (uniqueUser == null) {
 	// System.out.println(user);
 	// user.setIsnewuser(true);
-	// user.setCanlogin(false);
-	//
 	// userService.createUser(user);
-	// return "employeecreation";
+	// return "homepage";
+	//
 	// } else {
 	// System.out.println("Caught duplicate Username");
 	// result.rejectValue("username", "DuplicateKeyException.user.username",
 	// "Username already exists.");
-	// return "employeecreation";
+	// return "registeruser";
 	// }
 	// }
-	// List<String> authorities = new ArrayList<>();
-	// authorities.add("ROLE_USER");
-	// authorities.add("ROLE_MANAGER");
-	// model.addAttribute("roles", authorities);
-	// model.addAttribute("user", new UserProfile());
-	// return "employeecreation";
-	// }
-	
-	
-	@RequestMapping(value = "/internalemp")
-	public String employeeHome(Model model) {
 
-		System.out.println("Intenal Employee");
-		return "internalemp";
-	}
-	@RequestMapping(value = "/pii")
-	public String listPIIs(Model model)
-	{
-		List<PII> piis = userService.getAllPIIs();
-		model.addAttribute("piis", piis);
-		return "pii";
-	}
-	
-	@RequestMapping("/acceptpii")
-	public String acceptUserPII(Model model, @RequestParam("Accept") String username) {
-		User user=userService.getUserregisterbyUsername(username);
-		PII pii = userService.getPII(username);
-		if(pii.getOldSSN().equalsIgnoreCase(user.getSSN()))
-		{
-		user.setSSN(pii.getNewSSN());
-		userService.updateUser(user);
-		userService.approvePII(pii.getUserName());
-		}
-		else
-		{
-			//error SSN not matched
-		}
-		List<PII> piis = userService.getAllPIIs();
-		model.addAttribute("piis", piis);
-		return "pii";
-	}
-	@RequestMapping("/declinepii")
-	public String declineUserPII(Model model, @RequestParam("Decline")String username) {
-		userService.deletePII(username);
-		List<PII> piis = userService.getAllPIIs();
-		model.addAttribute("piis", piis);
-		return "pii";
+	public String verifyUserOTP(User user, String otpValue) {
+		System.out.println("showViewUser");
+		// String mail=user.getEmail();
+		String mail = user.getEmail();
+		String firstName = user.getFirstname();
 
-	}
-
-	@RequestMapping(value = "/employeecreation")
-	public String createEmployee(HttpServletRequest rqst, @Valid User user,BindingResult result,Model model) {
-		if(user!=null && user.getUsername() != null)
-		{	
-			String role = rqst.getParameter("role");
-			System.out.println(user);
-			User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-			if (uniqueUser == null) {
-				System.out.println(user);
-				user.setIsnewuser(true);				
-				userService.createUser(user);
-				
-				Authorities auth = new Authorities();
-				auth.setUsername(user.getUsername());
-				auth.setAuthority(role);
-				userService.setAuthority(auth);
+		OTP otpObj = new OTP();
+		otpObj.setFirstName(firstName);
+		otpObj.setMailID(mail);
+		otpObj.setOtpValue(otpValue);
+		try {
+			OTP dbObj = utilityService.checkOTP(otpObj);
+			if (dbObj == null) {
+				System.out.println("bdObj is null. Go to error page");
+				// Go to error page
+				return "failure";
 			} else {
-				System.out.println("Caught duplicate Username");
-				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-			}	
-		}
-		List<String> authorities = new ArrayList<>();
-		authorities.add("ROLE_EMPLOYEE");
-		authorities.add("ROLE_MANAGER");
-		model.addAttribute("roles", authorities);
-		model.addAttribute("user", new User());
-		return "employeecreation";
-	}
+				System.out.println(
+						"DB Object " + dbObj.getFirstName() + " " + dbObj.getMailID() + " " + dbObj.getOtpValue());
+				System.out.println("otpObj.getOtpValue() " + otpObj.getOtpValue());
 
-	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
-	public String RegisterMerchant(@Valid User user, BindingResult result,Model model) {
+				if (otpObj.getOtpValue().equals(dbObj.getOtpValue())) {
+					System.out.println("Correct OTP. Navigate to required page");
 
-		if (result.hasErrors()) {
-			return "merchant";
-		}
+					// utilityService.deleteOTP(otpObj);
+					return "success";
+				} else if (dbObj.getAttempts() == 2) {
+					System.out
+							.println("Too many attempts. Deleting the OTP. dbObj.getAttempts() " + dbObj.getAttempts());
+					userService.deleteUserRequest(user.getUsername());
+					utilityService.deleteOTP(otpObj);
+					return "failure";
+				} else {
+					int attempts = dbObj.getAttempts();
+					otpObj.setAttempts(attempts + 1);
+					utilityService.updateOTP(otpObj);
+					return "attempts";
+				}
 
-		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-		if (uniqueUser == null) {
-			System.out.println(user);
-				user.setIsnewuser(true);
-				user.setIsmerchant(true);
-				user.setLastname("Merchant");
-			userService.createUser(user);
-			return "homepage";
-		} else {
-			System.out.println("Caught duplicate Username");
-			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-			return "merchant";
-		}
-	}
+			}
 
-		
-	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-
-	public String RegisterUser(Model model, @Valid User user, BindingResult result) {
-		System.out.println("Finding errors, " + result.toString());
-		if (result.hasErrors()) {
-			System.out.println("It has errors");
-			return "registeruser";
 		}
 
-		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-		if (uniqueUser == null) {
-			System.out.println(user);
-			user.setIsnewuser(true);
-			// user.setCanlogin(false);
-
-			userService.createUser(user);
-			return "homepage";
-
-		} else {
-			System.out.println("Caught duplicate Username");
-			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-			return "registeruser";
+		catch (Exception e) {
+			System.out.println("Printing stack trace");
+			e.printStackTrace();
 		}
+		return null;
+		// User uniqueUser =
+		// (userService.getUserregisterbyUsername(user.getUsername()));
+		// if (uniqueUser == null) {
+		// System.out.println(user);
+		// user.setIsnewuser(true);
+		// // user.setCanlogin(false);
+		//
+		// userService.createUser(user);
+		// return "homepage";
+		//
+		// } else {
+		// System.out.println("Caught duplicate Username");
+		// result.rejectValue("username", "DuplicateKeyException.user.username",
+		// "Username already exists.");
+		// return "registeruser";
+		// }
 	}
 }
