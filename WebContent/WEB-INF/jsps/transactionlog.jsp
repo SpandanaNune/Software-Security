@@ -63,14 +63,7 @@
 			</table>
 			<script type="text/javascript">
 	function radiofn() {
-		/* document.getElementById('byaccount').style.visibility = 'hidden';
-		document.getElementById('byname').style.visibility = 'hidden';
-		document.getElementById('byaccountlabel').style.visibility = 'hidden';
-		document.getElementById('bynamelabel').style.visibility = 'hidden';
-		document.getElementById('bydate').style.visibility = 'visible';
 		
-
-		document.getElementById('bydatelabel').style.visibility = 'visible'; */
 		if (document.getElementById('radioaccount').checked) {
 			document.getElementById('radiolabel').innerHTML = 'Account No :';
 		} else if (document.getElementById('radiodate').checked) {

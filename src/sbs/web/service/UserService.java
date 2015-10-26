@@ -64,6 +64,7 @@ public class UserService {
 	public List<Users> getUsersByFieldBool(String field, boolean value) {
 		return usersDao.getUsersByFieldBool(field, value);
 	}
+<<<<<<< HEAD
 	
 	public User getUserregisterbyEmail(String mail) {
 		User getuser = (User) usersDao.getUserregisterbyEmail(mail);
@@ -71,6 +72,11 @@ public class UserService {
 		
 	}
 
+=======
+	public Users getUserByFieldBool(String field, boolean value,String username) {
+		return (Users)usersDao.getUserByFieldBool(field, value,username);
+	}
+>>>>>>> 4328d59488496bd5db09c6174f658ca2f692cfd1
 
 	public List<Accounts> getAccountsByField(String field, long value) {
 		return usersDao.getAccountsByField(field, value);
@@ -124,6 +130,25 @@ public class UserService {
 	public void addNewAccount(Accounts account){
 		usersDao.addNewAccount(account);
 	}
+<<<<<<< HEAD
 
 	
+=======
+	
+	public List<Authorities> getAllEmployees()
+	{
+		return usersDao.getAllEmployees();
+	}
+	
+	public Authorities getEmployee(String username)
+	{
+		return (Authorities)usersDao.getEmployee(username);
+	}
+	
+	public void deleteEmployee(Authorities auth)
+	{
+		usersDao.deleteEmployee(auth);
+	}
+
+>>>>>>> 4328d59488496bd5db09c6174f658ca2f692cfd1
 }

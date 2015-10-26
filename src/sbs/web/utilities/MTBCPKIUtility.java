@@ -1,3 +1,4 @@
+
 package sbs.web.utilities;
 
 import java.util.*;
@@ -44,29 +45,6 @@ public class MTBCPKIUtility {
 		return null;
 	}
 
-//	public String signMessageWithPrivateKey(String message, PrivateKey privateKey) throws SignatureException {
-//		try {
-//			Signature sign = Signature.getInstance(SignatureAlgo);
-//			sign.initSign(privateKey);
-//			sign.update(message.getBytes("UTF-8"));
-//			return new String(Base64.getEncoder().encodeToString(sign.sign()));
-//		} catch (Exception ex) {
-//			throw new SignatureException(ex);
-//		}
-//	}
-
-//	public boolean verifyMessageWithPublicKey(String message, String signature, PublicKey publicKey) throws SignatureException {
-//		try {
-//			Signature sign = Signature.getInstance(SignatureAlgo);
-//			sign.initVerify(publicKey);
-//			sign.update(message.getBytes("UTF-8"));
-//			return sign.verify(Base64.getDecoder().decode(signature.getBytes("UTF-8")));
-//		} catch (Exception ex) {
-//			throw new SignatureException(ex);
-//		}
-//	}
-
-//	public String SaveKeyPair(KeyPair keyPair, String userID) throws IOException {
 	public String signMessageWithPrivateKey(String message, PrivateKey privateKey) throws SignatureException {
 		try {
 			Signature sign = Signature.getInstance(SignatureAlgo);
