@@ -384,4 +384,29 @@ public class HomeController {
 		// return "registeruser";
 		// }
 	}
+	
+	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
+	public String RegisterMerchant(@Valid User user, BindingResult result,Model model) {
+
+		if (result.hasErrors()) {
+			return "merchant";
+		}
+
+		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+		if (uniqueUser == null) {
+			System.out.println(user);
+				user.setIsnewuser(false);
+				user.setIsmerchant(true);
+				user.setLastname("Merchant");
+			userService.createUser(user);
+			sendOTPMail(user.getFirstname(), user.getEmail());
+			model.addAttribute("mail", user.getEmail());
+
+			return "completeregistration";
+		} else {
+			System.out.println("Caught duplicate Username");
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+			return "merchant";
+		}
+	}
 }

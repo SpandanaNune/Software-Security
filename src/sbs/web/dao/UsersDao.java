@@ -162,7 +162,7 @@ public class UsersDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<Authorities> getUserAuthoritiesByField(String field, String value){
-		return session().createQuery("from Authorities where " + field + "=" + value + "").list();	
+		return session().createQuery("from Authorities where " + field + "='" + value + "'").list();	
 
 	}	
 	@SuppressWarnings("unchecked")

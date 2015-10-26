@@ -26,13 +26,7 @@
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <title>User Registration</title>
-<script type="text/javascript">
-	function generate() {
-		document.getElementById('otpbtn').style.visibility = 'hidden';
-		document.getElementById('otplabel').style.visibility = 'visible';
-		document.getElementById('otpvalue').style.visibility = 'visible';
-	}
-</script>
+
 <link href="${pageContext.request.contextPath}/static/css/main.css"
 	rel="stylesheet" type="text/css" />
 </head>
@@ -72,23 +66,8 @@
 							Class="error"></sf:errors></td>
 				</tr>
 				​
-				<tr>
-					<td><br>
-						<center>
-							<input class="control btn btn-info" value="Get OTP" type="button"
-								onclick="generate()" id="otpbtn" />
-						</center></td>
-				</tr>
-				<tr>
-					<td class="label"><div id="otplabel"
-							style="visibility: hidden">
-							<h4 style="color: black">OTP:</h4>
-						</div></td>
-					<td><div id="otpvalue" style="visibility: hidden">
-							<input class="control form-control" name="otp" type="text" /><br />
-							<sf:errors path="email" Class="error"></sf:errors>
-						</div></td>
-				</tr>
+				
+				
 				​
 				<tr>
 					<td class="label"><h4 style="color: black">Phone:</h4></td>
