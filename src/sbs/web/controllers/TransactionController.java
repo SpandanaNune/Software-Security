@@ -112,7 +112,118 @@ public class TransactionController {
 		return "homepage";
 		
 	}
+//************Pankaj*************
+	
+	
+	@RequestMapping(value = "/createMerChnatTransaction")
+	public String createMerchantTransactions(Model model, TransactionDetails transactionDetails, HttpServletRequest request) throws IOException {
+		model.addAttribute("transactionDetails", transactionDetails);
+	
+		System.out.println("check1");
+		long fromUserAccount = transactionDetails.getFromAccountNo();
+		long toOtherUserAccount = transactionDetails.getToOtherAccountNo();
+		double amount = transactionDetails.getBalance();
 
+		// transactionDetails
+		// add everything to transaction class and insert into db
+		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
+		fromCompositeKey.setAccountNo(fromUserAccount);
+		fromCompositeKey.setTransactionId(++transactionIDCounter);
+
+		// populate Transaction data
+		Transaction fromTransaction = new Transaction();
+		fromTransaction.setPrimaryKey(fromCompositeKey);
+		fromTransaction.setStatus("APPROVED");
+		fromTransaction.setAmount(amount);
+		fromTransaction.setTransactionType("DEBIT");
+		fromTransaction.setCritical(false);
+		// set status
+		
+		if(amount >1000){
+			fromTransaction.setCritical(true);
+			fromTransaction.setStatus("PENDING");
+		}
+
+		// set same transaction ID for to account
+		Transaction_CompositeKey toCompositeKey = new Transaction_CompositeKey();
+
+		toCompositeKey.setTransactionId(transactionIDCounter);
+		Transaction toTransaction = new Transaction();
+		toTransaction.setPrimaryKey(toCompositeKey);
+		toTransaction.setAmount(amount);
+		toTransaction.setStatus("APPROVED");
+		toTransaction.setTransactionType("CREDIT");
+		toTransaction.setCritical(false);
+
+		// Which account to insert
+			System.out.println("Setting other user " + toOtherUserAccount);
+			toCompositeKey.setAccountNo(toOtherUserAccount);
+		//} 
+
+		// set status
+
+		if (amount > 1000) {
+			toTransaction.setCritical(true);
+			toTransaction.setStatus("PENDING");
+		}
+		try {
+
+			// toUserAccount
+			System.out.println("Checking if " + toCompositeKey.getAccountNo() + " exists");
+			Accounts acc = accountService.getAccountForID(toCompositeKey.getAccountNo());
+
+			if (acc != null) {
+
+				Accounts from = accountService.getAccountForID(fromUserAccount);
+				if (from.getBalance() - amount < 0) {
+					// return a message that insufficient balance
+					return "homepage";
+				}
+
+				System.out.println("To Account exists, Going ahead with the transaction");
+				transactionService.addTransactions(fromTransaction, toTransaction);
+				// if from and to transaction is "approved" then update the
+				// balance for from and to account
+				if (toTransaction.getStatus().equalsIgnoreCase("APPROVED")) {
+					// Accounts from =
+					// accountService.getAccountForID(fromCompositeKey.getAccountNo());
+					Accounts to = accountService.getAccountForID(toCompositeKey.getAccountNo());
+
+					System.out.println("Deducting/Adding account balance for both accounts");
+					// deduct balance in both accounts.
+					from.setBalance(from.getBalance() - amount);
+					System.out.println(to.getBalance());
+					System.out.println(amount);
+					to.setBalance(to.getBalance() + amount);
+					System.out.println("From account details " + from.toString());
+					System.out.println("To account details " + to.toString());
+					accountService.updateAccount(from);
+					accountService.updateAccount(to);
+				}
+			} else {
+				// say that the to account number is invalid
+			}
+			// model.addAttribute("transactions", transactions);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "homepage";
+
+	}
+
+	
+	
+	
+	
+	
+	//************pankaj**********
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = "/createTransaction")
 	public String createTransactions(Model model, TransactionDetails transactionDetails, HttpServletRequest request) throws IOException {
 		model.addAttribute("transactionDetails", transactionDetails);

@@ -87,7 +87,8 @@
 		<div class="span4"></div>
 	</div>
 
-
+		<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 
 	<%-- <a href = "${pageContext.request.contextPath}/viewuser">Click Here to Login</a>
  --%>

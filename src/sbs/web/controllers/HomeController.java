@@ -49,7 +49,7 @@ public class HomeController {
 	@RequestMapping("/")
 	public String showhome(Model model) {
 		System.out.println("showhome");
-		return "home";
+		return "homepage";
 	}
 	@RequestMapping("/sessionTimeout")
 	public String showSessionTimeOut(Model model) {
@@ -168,6 +168,7 @@ public class HomeController {
 		// if (result.hasErrors()) {
 		// return "userconfirmation";
 		// }
+		Authorities authority = userService.getUserActivatebyUsername(uname);
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);
 		users.setAccountNonLocked(true);
@@ -177,7 +178,14 @@ public class HomeController {
 
 		Authorities auth = new Authorities();
 		auth.setUsername(uname);
-		auth.setAuthority("ROLE_USER");
+		if ("ROLE_NEWMERCHANT".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_MERCHANT");
+		} else if ("ROLE_NEWMANAGER".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_MANAGER");
+		} else if ("ROLE_NEWEMPLOYEE".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_EMPLOYEE");
+		} else
+			auth.setAuthority("ROLE_USER");
 		userService.setAuthority(auth);
 
 		userService.saveOrUpdateUsers(users);
@@ -375,5 +383,30 @@ public class HomeController {
 		// "Username already exists.");
 		// return "registeruser";
 		// }
+	}
+	
+	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
+	public String RegisterMerchant(@Valid User user, BindingResult result,Model model) {
+
+		if (result.hasErrors()) {
+			return "merchant";
+		}
+
+		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+		if (uniqueUser == null) {
+			System.out.println(user);
+				user.setIsnewuser(false);
+				user.setIsmerchant(true);
+				user.setLastname("Merchant");
+			userService.createUser(user);
+			sendOTPMail(user.getFirstname(), user.getEmail());
+			model.addAttribute("mail", user.getEmail());
+
+			return "completeregistration";
+		} else {
+			System.out.println("Caught duplicate Username");
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+			return "merchant";
+		}
 	}
 }

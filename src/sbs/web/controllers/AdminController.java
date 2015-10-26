@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sbs.web.models.Authorities;
 import sbs.web.models.PII;
 import sbs.web.models.User;
+import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utilities.SendMail;
 
 @Controller
 public class AdminController {
@@ -93,6 +95,26 @@ public class AdminController {
 				user.setIsnewuser(true);				
 				userService.createUser(user);
 				
+				Users users = new Users();
+				users.setUsername(user.getUsername());
+				String tempPassword = UtilityController.generatePassword();
+
+				SendMail sendmail = new SendMail();
+				sendmail.sendTempPassword(user.getEmail(), tempPassword, user.getFirstname());
+				
+				users.setPassword(tempPassword);
+				users.setEnabled(true);
+				users.setAccountNonExpired(true);
+				users.setAccountNonLocked(true);
+				users.setCredentialsNonExpired(true);
+				users.setEmail(user.getEmail());
+				users.setSiteKeyID(1);
+				users.setQ1(" ");
+				users.setQ2(" ");
+				users.setQ3(" ");
+
+				userService.saveOrUpdateUsers(users);
+				
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority(role);
@@ -103,8 +125,8 @@ public class AdminController {
 			}	
 		}
 		List<String> authorities = new ArrayList<>();
-		authorities.add("ROLE_EMPLOYEE");
-		authorities.add("ROLE_MANAGER");
+		authorities.add("ROLE_NEW_EMPLOYEE");
+		authorities.add("ROLE_NEW_MANAGER");
 		model.addAttribute("roles", authorities);
 		model.addAttribute("user", new User());
 		return "employeecreation";

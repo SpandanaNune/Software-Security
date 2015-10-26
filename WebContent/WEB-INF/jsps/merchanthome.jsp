@@ -43,7 +43,7 @@ function disableclick(event)
 				href="${pageContext.request.contextPath}/editmerchant">View/Edit User
 				Details</a><br /> <br />  <br />
 				<a class="btn btn-info btn-large"
-				href="${pageContext.request.contextPath}/openTransaction">Make Transaction</a><br /> <br />
+				href="${pageContext.request.contextPath}/openMerchantTransaction">Make Transaction</a><br /> <br />
 		<br><br>
   </center>
   </div>
