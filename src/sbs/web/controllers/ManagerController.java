@@ -227,7 +227,7 @@ public class ManagerController {
 		}
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
-		return "deleteactiveusers";
+		return "viewedituserdetails";
 
 	}
 	

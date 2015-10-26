@@ -73,27 +73,7 @@ public String UpdaterMerchantUser(@Valid User user, BindingResult result, Model 
     }
 }
 
-@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
-public String RegisterMerchant(@Valid User user, BindingResult result,Model model) {
 
-	if (result.hasErrors()) {
-		return "merchant";
-	}
-
-	User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-	if (uniqueUser == null) {
-		System.out.println(user);
-			user.setIsnewuser(true);
-			user.setIsmerchant(true);
-			user.setLastname("Merchant");
-		userService.createUser(user);
-		return "homepage";
-	} else {
-		System.out.println("Caught duplicate Username");
-		result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-		return "merchant";
-	}
-}
 
 
 @RequestMapping(value = "/edituserprofile")
