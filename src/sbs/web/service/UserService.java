@@ -97,6 +97,11 @@ public class UserService {
 		usersDao.updatePII(pii);
 	}
 	
+	public void createPII(PII pii)
+	{
+		usersDao.updatePII(pii);
+	}
+	
 	public List<PII> getAllPIIs()
 	{
 		return usersDao.getAllPIIRequests();

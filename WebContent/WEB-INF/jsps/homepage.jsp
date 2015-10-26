@@ -77,6 +77,8 @@
 						href="${pageContext.request.contextPath}/accountactivation">Verify Account</a>
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/edituserprofile">Edit Customer Profile</a>
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/editmerchantprofile">Edit Merchant Profile</a>
 						<a href ="<c:url value ='/logout'/>">Log out</a>
 				</p>
 				
