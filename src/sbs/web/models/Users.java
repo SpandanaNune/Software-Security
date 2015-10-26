@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "users")
 public class Users {
 
+	
 	@Id
 	private String username;
 	private String password;
@@ -59,6 +62,7 @@ public class Users {
 	}
 
 	public void setPassword(String password) {
+//		this.password = passwordEncoder.encode(password);
 		this.password = password;
 	}
 

@@ -22,6 +22,7 @@ import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utils.PKIUtil;
 
 @Controller
 public class HomeController {
@@ -32,12 +33,19 @@ public class HomeController {
 		this.userService = userService;
 	}
 
+//	@RequestMapping("/")
+//	public String showhome(Model model) {
+//		System.out.println("showhome");
+//		return "homepage";
+//	}
+
 	@RequestMapping("/")
 	public String showhome(Model model) {
 		System.out.println("showhome");
-		return "homepage";
+		return "home";
 	}
 
+	
 	@RequestMapping("/Sample")
 	public String showRandom() {
 		System.out.println("random page");
@@ -84,8 +92,6 @@ public class HomeController {
 	// return "mylogin";
 	// }
 
-	
-
 	@RequestMapping(value = "/signup")
 	public String showRegister(Model model) {
 		model.addAttribute("externaluser", new User());
@@ -110,7 +116,7 @@ public class HomeController {
 		model.addAttribute("user", new User());
 		return "registeruser";
 	}
-	
+
 	@RequestMapping(value = "/userconfirm")
 	public String showUserConfirmation(Model model) {
 		System.out.println("User Confirmation");
@@ -152,22 +158,25 @@ public class HomeController {
 	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal) {
 		String uname = principal.getName();
 		System.out.println(uname);
-//		if (result.hasErrors()) {
-//			return "userconfirmation";
-//		}
+		// if (result.hasErrors()) {
+		// return "userconfirmation";
+		// }
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);
 		users.setAccountNonLocked(true);
 		users.setEnabled(true);
 		users.setCredentialsNonExpired(true);
 		users.setSiteKeyID(1);
-
+	
 		Authorities auth = new Authorities();
 		auth.setUsername(uname);
 		auth.setAuthority("ROLE_USER");
 		userService.setAuthority(auth);
 
 		userService.saveOrUpdateUsers(users);
+		User user_profile = userService.getUserProfilebyField("username", uname);
+		PKIUtil pki = new PKIUtil();
+		pki.sendPrivateKey(user_profile);
 		return "homepage";
 	}
 
@@ -206,61 +215,56 @@ public class HomeController {
 	// model.addAttribute("user", new UserProfile());
 	// return "employeecreation";
 	// }
-	
-	
+
 	@RequestMapping(value = "/internalemp")
 	public String employeeHome(Model model) {
 
 		System.out.println("Intenal Employee");
 		return "internalemp";
 	}
+
 	@RequestMapping(value = "/pii")
-	public String listPIIs(Model model)
-	{
+	public String listPIIs(Model model) {
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);
 		return "pii";
 	}
-	
+
 	@RequestMapping("/acceptpii")
 	public String acceptUserPII(Model model, @RequestParam("Accept") String username) {
-		User user=userService.getUserregisterbyUsername(username);
+		User user = userService.getUserregisterbyUsername(username);
 		PII pii = userService.getPII(username);
-		if(pii.getOldSSN().equalsIgnoreCase(user.getSSN()))
-		{
-		user.setSSN(pii.getNewSSN());
-		userService.updateUser(user);
-		userService.approvePII(pii.getUserName());
-		}
-		else
-		{
-			//error SSN not matched
+		if (pii.getOldSSN().equalsIgnoreCase(user.getSSN())) {
+			user.setSSN(pii.getNewSSN());
+			userService.updateUser(user);
+			userService.approvePII(pii.getUserName());
+		} else {
+			// error SSN not matched
 		}
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);
 		return "pii";
 	}
+
 	@RequestMapping("/declinepii")
-	public String declineUserPII(Model model, @RequestParam("Decline")String username) {
+	public String declineUserPII(Model model, @RequestParam("Decline") String username) {
 		userService.deletePII(username);
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);
 		return "pii";
-
 	}
 
 	@RequestMapping(value = "/employeecreation")
-	public String createEmployee(HttpServletRequest rqst, @Valid User user,BindingResult result,Model model) {
-		if(user!=null && user.getUsername() != null)
-		{	
+	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model) {
+		if (user != null && user.getUsername() != null) {
 			String role = rqst.getParameter("role");
 			System.out.println(user);
 			User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
 			if (uniqueUser == null) {
 				System.out.println(user);
-				user.setIsnewuser(true);				
+				user.setIsnewuser(true);
 				userService.createUser(user);
-				
+
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority(role);
@@ -268,7 +272,7 @@ public class HomeController {
 			} else {
 				System.out.println("Caught duplicate Username");
 				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-			}	
+			}
 		}
 		List<String> authorities = new ArrayList<>();
 		authorities.add("ROLE_EMPLOYEE");
@@ -278,9 +282,7 @@ public class HomeController {
 		return "employeecreation";
 	}
 
-
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-
 	public String RegisterUser(Model model, @Valid User user, BindingResult result) {
 		System.out.println("Finding errors, " + result.toString());
 		if (result.hasErrors()) {
@@ -292,8 +294,6 @@ public class HomeController {
 		if (uniqueUser == null) {
 			System.out.println(user);
 			user.setIsnewuser(true);
-			// user.setCanlogin(false);
-
 			userService.createUser(user);
 			return "homepage";
 

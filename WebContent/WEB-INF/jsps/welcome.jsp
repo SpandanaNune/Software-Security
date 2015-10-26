@@ -1,4 +1,5 @@
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -29,22 +30,30 @@
 		<div class="span4">
 			<div class="hero-unit">
 				<h1>Hi There</h1>
-
+			
 				<p>
-					
-					<sec:authorize access="hasRole('ROLE_NEW')">					
-					<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/userconfirm">UserConfirmation</a>
+					<sec:authorize access="hasRole('ROLE_NEW')">
+						<a class="btn btn-primary btn-large"
+							href="${pageContext.request.contextPath}/userconfirm">UserConfirmation</a>
 					</sec:authorize>
 
-
+					<sec:authorize access="hasRole('ROLE_USER')">
+						<a class="btn btn-primary btn-large"
+							href="${pageContext.request.contextPath}/createTransaction">Make
+							transactions</a>
+						<a class="btn btn-primary btn-large"
+							href="${pageContext.request.contextPath}/getAccountDetails">Get
+							Account Details</a>
+					</sec:authorize>
 					<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/createTransaction">Make
-						transactions</a> <a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/getAccountDetails">Get
-						Account Details</a> 
-
-
+						href="${pageContext.request.contextPath}/logout">Logout</a>
+						
+						<form method="post"
+						action="${pageContext.request.contextPath}/logout">
+						<input class="control btn btn-info" value = "Logout" type="submit" /> <input
+							type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form>
 			</div>
 		</div>
 		<div class="span4"></div>

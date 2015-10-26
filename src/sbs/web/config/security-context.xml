@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
@@ -12,6 +13,7 @@
 				data-source-ref="dataSource" />
 			<!-- users-by-username-query="select username, password,enabled from users 
 				where username = ?" /> -->
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
 		</security:authentication-provider>
 	</security:authentication-manager>
 
@@ -39,14 +41,17 @@
 			access="PermitAll"/>
 
 
-
 		<security:form-login login-page="/login"
 			login-processing-url="/login" authentication-failure-url="/login?error=true"
 			password-parameter="j_password" username-parameter="j_username" />
-		<security:logout logout-success-url="/loggedout"
-			logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID"/>
+		<security:logout invalidate-session="true"
+			delete-cookies="JSESSIONID" logout-url="/logout"
+			logout-success-url="/loggedout" />
 		<security:session-management invalid-session-url="/sessionTimeout.jsp" session-authentication-error-url="/sessionaccesserror.jsp">
 			<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
 		</security:session-management>
 	</security:http>
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+	</bean>
 </beans>

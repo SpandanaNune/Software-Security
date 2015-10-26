@@ -30,6 +30,7 @@ import sbs.web.utilities.VerifyCaptcha;
 public class LoginController {
 	private static final Logger logger = Logger.getLogger(LoginController.class);
 	private UserService userService;
+	private static int bankerIndex = 0;
 
 	@Autowired
 	public void setUserService(UserService userService) {
@@ -42,9 +43,8 @@ public class LoginController {
 		return "login";
 	}
 
-	@RequestMapping("/logout")
+	@RequestMapping(value="/loggedout")
 	public String showLoggedOut() {
-		System.out.println("login page");
 		return "loggedout";
 	}
 
@@ -67,6 +67,7 @@ public class LoginController {
 	public String resetPassword(Model model, @Valid User user, BindingResult result,
 			@RequestParam("password") String password) throws IOException {
 		List<Users> userlist = userService.getUsersByField("username", user.getUsername());
+
 		Users users = userlist.get(0);
 
 		users.setPassword(password);
@@ -147,7 +148,7 @@ public class LoginController {
 
 	@RequestMapping("/acceptbtn")
 	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
-		long account1 = 0, account2=0;
+		long account1 = 0, account2 = 0;
 
 		User user = userService.getUserProfileByField("username", username).get(0);
 		// User user = userService.getUserregisterbyUsername(username);
@@ -160,6 +161,10 @@ public class LoginController {
 		Users users = new Users();
 		users.setUsername(username);
 		String tempPassword = UtilityController.generatePassword();
+
+		SendMail sendmail = new SendMail();
+		
+		sendmail.sendTempPassword(email, tempPassword, user.getFirstname());
 		/*************************************************************
 		 * SEND**MAIL
 		 **************************************************/
@@ -174,41 +179,44 @@ public class LoginController {
 		users.setQ2(" ");
 		users.setQ3(" ");
 
-//		userService.saveOrUpdateUsers(users);
+		userService.saveOrUpdateUsers(users);
 
 		Authorities auth = new Authorities();
 		auth.setUsername(username);
 		auth.setAuthority("ROLE_NEW");
-//		userService.setAuthority(auth);
-		
-		System.out.println("Creating account Numbers");
-		
+		userService.setAuthority(auth);
 
-		boolean account1IsNotValid=true;
+		System.out.println("Creating account Numbers");
+
+		boolean account1IsNotValid = true;
 		List<Accounts> accountsList1;
-		while(account1IsNotValid){
+		while (account1IsNotValid) {
 			System.out.println("GEtting account 1");
 			account1 = UtilityController.generateAccountNumber();
-			 accountsList1 = userService.getAccountsByField("accountNo", account1);
-			if(accountsList1.size()==0){
+			accountsList1 = userService.getAccountsByField("accountNo", account1);
+			if (accountsList1.size() == 0) {
 				System.out.println("Got account 1");
-				account1IsNotValid=false;
-			}	
-		}	
-		boolean account2IsNotValid=true;
+				account1IsNotValid = false;
+			}
+		}
+		boolean account2IsNotValid = true;
 		List<Accounts> accountsList2;
-		while(account2IsNotValid){
+		while (account2IsNotValid) {
 			System.out.println("Getting account 2");
 			account2 = UtilityController.generateAccountNumber();
-			 accountsList2 = userService.getAccountsByField("accountNo", account2);
-			if(accountsList2.size()==0){
-				account2IsNotValid=false;
+			accountsList2 = userService.getAccountsByField("accountNo", account2);
+			if (accountsList2.size() == 0) {
+				account2IsNotValid = false;
 				System.out.println("Got account 2");
 			}
-			
+
 		}
-		System.out.println("Successfully got two account number :"+ account1 +", "+account2);
-		
+		System.out.println("Successfully got two account number :" + account1 + ", " + account2);
+
+		List<Authorities> authorisedEmployee = userService.getUserAuthoritiesByField("authority", "ROLE_EMPLOYEE");
+		String bankername = authorisedEmployee.get(bankerIndex % authorisedEmployee.size()).getUsername();
+		bankerIndex++;
+
 		Accounts newAccount1 = new Accounts();
 		Accounts newAccount2 = new Accounts();
 
@@ -216,11 +224,11 @@ public class LoginController {
 		newAccount1.setAccount_type(true);
 		newAccount1.setAccountNo(account1);
 		newAccount1.setUsername(username);
-		
+
 		/**********************************************
 		 * Random Banker
 		 ***************************************/
-		newAccount1.setBankername("arjun");
+		newAccount1.setBankername("rohit");
 
 		newAccount2.setBalance(0);
 		newAccount2.setAccount_type(false);
@@ -229,7 +237,7 @@ public class LoginController {
 		/**********************************************
 		 * Random Banker
 		 ***************************************/
-		newAccount2.setBankername("arjun");
+		newAccount2.setBankername("rohit");
 
 		System.out.println(newAccount1);
 		System.out.println(newAccount2);
@@ -244,14 +252,12 @@ public class LoginController {
 
 	@RequestMapping("/viewedituserdetails")
 	public String viewEditUserDetails(Model model) {
+
 		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
 		List<User> userProfileList = new ArrayList<User>();
 		for (Users user : userlist) {
 			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
 		}
-		System.out.println(userlist.size());
-		System.out.println(userlist.get(0).getUsername());
-		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
 		return "viewedituserdetails";
 	}
@@ -267,11 +273,16 @@ public class LoginController {
 
 	@RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
 	public String updateActiveUserDetails(@Valid User user, BindingResult result, Model model) {
+		System.out.println(result.toString());
 
-		if (result.getErrorCount() > 3)
+		if (result.hasErrors()) {
+			System.out.println("It has errors");
 			return "edituser";
-		else {
+		}
 
+		// if (result.getErrorCount() > 4)
+		// return "edituser";
+		else {
 			userService.createUser(user);
 			List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
 			List<User> userProfileList = new ArrayList<User>();
@@ -315,7 +326,6 @@ public class LoginController {
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
 		return "deleteactiveusers";
-
 	}
 
 	// @RequestMapping("/declinebtn")

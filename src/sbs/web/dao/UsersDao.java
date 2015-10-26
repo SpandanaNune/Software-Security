@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,10 @@ import sbs.web.models.Users;
 @Transactional
 @Component("usersDao")
 public class UsersDao {
-
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder ;
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -45,6 +49,7 @@ public class UsersDao {
 	
 	@Transactional
 	public void saveOrUpdateUsers(Users users) {
+		users.setPassword(passwordEncoder.encode(users.getPassword()));
 		session().saveOrUpdate(users);
 	}
 
@@ -135,7 +140,12 @@ public class UsersDao {
 	public void updatePII(PII pii)
 	{
 		session().saveOrUpdate(pii);
-	}	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Authorities> getUserAuthoritiesByField(String field, String value){
+		return session().createQuery("from Authorities where " + field + "=" + value + "").list();	
+	}
 //	public List<User> getAllActiveUsers(){
 //		String hql = "from User ur, Users us where ur.username = us.username and us.enabled = 1";
 //		return session().createQuery(hql).list();	

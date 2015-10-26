@@ -19,7 +19,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-
 	<c:out value="${user.getUsername()}"></c:out>
 
 	<div class="row-fluid">

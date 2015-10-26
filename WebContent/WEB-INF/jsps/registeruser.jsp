@@ -25,7 +25,7 @@
 			<tr>
 				<td class="label">UserName:</td>
 				<td><sf:input class="control" path="username" name="username"
-						type="text" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
+						type="text" value ="123"/><br /> <sf:errors path="username" Class="error"></sf:errors></td>
 			</tr>
 
 			<tr>
