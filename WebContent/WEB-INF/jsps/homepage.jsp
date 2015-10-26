@@ -74,7 +74,8 @@
 						href="${pageContext.request.contextPath}/Sample">Random </a>
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/accountactivation">Verify Account</a>
-						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/edituserprofile">Edit Customer Profile</a>
 						<a href ="<c:url value ='/logout'/>">Log out</a>
 				</p>
 				
