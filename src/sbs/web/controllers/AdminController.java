@@ -144,6 +144,17 @@ public class AdminController {
 		return "pii";
 
 	}
-
+	@RequestMapping("/editadminprofile")
+	public String editManagerProfile(Model model) {
+		User user = userService.getUserregisterbyUsername("swetha2809");
+		model.addAttribute("user", user);
+		return "editadminprofile";
+	}
+	
+	@RequestMapping("/editadminprofiledone")
+	public String editManagerProfileDone(@Valid User user, BindingResult result,Model model) {
+			userService.createUser(user);
+		return "adminhome";
+	}
 
 }

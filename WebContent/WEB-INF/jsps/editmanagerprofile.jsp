@@ -27,7 +27,7 @@
 		<h1>Edit User Details</h1>
 		<br /> <br /> ​
 		<sf:form method="post"
-			action="${pageContext.request.contextPath}/editemployeeprofiledone"
+			action="${pageContext.request.contextPath}/editmanagerprofiledone"
 			commandName="user">
 ​
 			<sf:input class="control form-control" path="username"
