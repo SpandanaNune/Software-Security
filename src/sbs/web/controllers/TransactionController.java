@@ -8,8 +8,10 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -23,11 +25,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itextpdf.text.DocumentException;
 
 import sbs.web.models.Accounts;
+import sbs.web.models.OTP;
 import sbs.web.models.Transaction;
 import sbs.web.models.TransactionDetails;
 import sbs.web.models.TransactionLog;
@@ -37,6 +41,8 @@ import sbs.web.models.User;
 import sbs.web.service.AccountsService;
 
 import sbs.web.service.TransactionService;
+import sbs.web.service.UserService;
+import sbs.web.service.UtilityService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utils.PDFUtils;
 
@@ -46,6 +52,9 @@ public class TransactionController {
 	static int transactionIDCounter = 500;
 	TransactionService transactionService;
 	AccountsService accountService;
+	UtilityService utilityService;
+	private UserService userService;
+	
 	private static String defaultPath = System.getProperty("catalina.home") + "/users_keys/";
 
 	@Autowired
@@ -53,6 +62,15 @@ public class TransactionController {
 		this.transactionService = transactionService;
 	}
 
+	@Autowired
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	@Autowired
+	public void setUtilityService(UtilityService utilityService) {
+		this.utilityService = utilityService;
+	}
+	
 	@Autowired
 	public void setAccountService(AccountsService accountService) {
 		this.accountService = accountService;
@@ -88,11 +106,8 @@ public class TransactionController {
 	try {
 			System.out.println("Checking if " + compositeKey.getAccountNo() + " exists..");
 			//validate account- it valid since it is provied with the drop down
-			
 			//check balance
 			Accounts from = accountService.getAccountForID(accountNumber);
-			
-
 			if(transactionType.equalsIgnoreCase("DEBIT")){
 					//deduct and update
 				if(from.getBalance()-amount<0){
@@ -110,14 +125,100 @@ public class TransactionController {
 			e.printStackTrace();
 		}
 		return "homepage";
-		
 	}
 
+	
+	@RequestMapping(value = "/makePaymentTransaction")
+	public String createPaymentTransactions(Model model, TransactionDetails transactionDetails, HttpServletRequest request) throws IOException {
+		model.addAttribute("transactionDetails", transactionDetails);
+		
+		long fromUserAccount = transactionDetails.getFromAccountNo();
+		long toOtherUserAccount = transactionDetails.getToOtherAccountNo();
+		double amount = transactionDetails.getBalance();
+
+		// transactionDetails
+		// add everything to transaction class and insert into db
+		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
+		fromCompositeKey.setAccountNo(fromUserAccount);
+		fromCompositeKey.setTransactionId(++transactionIDCounter);
+
+		// populate Transaction data
+		Transaction fromTransaction = new Transaction();
+		fromTransaction.setPrimaryKey(fromCompositeKey);
+		fromTransaction.setStatus("APPROVED");
+		fromTransaction.setAmount(amount);
+		fromTransaction.setTransactionType("DEBIT");
+		fromTransaction.setCritical(false);
+		// set status
+		
+		if(amount >1000){
+			fromTransaction.setCritical(true);
+			fromTransaction.setStatus("PENDING");
+		}
+
+		// set same transaction ID for to account
+		Transaction_CompositeKey toCompositeKey = new Transaction_CompositeKey();
+
+		toCompositeKey.setTransactionId(transactionIDCounter);
+		Transaction toTransaction = new Transaction();
+		toTransaction.setPrimaryKey(toCompositeKey);
+		toTransaction.setAmount(amount);
+		toTransaction.setStatus("APPROVED");
+		toTransaction.setTransactionType("CREDIT");
+		toTransaction.setCritical(false);
+
+			System.out.println("Setting other user " + toOtherUserAccount);
+			toCompositeKey.setAccountNo(toOtherUserAccount);
+
+		// set status
+
+		if (amount > 1000) {
+			toTransaction.setCritical(true);
+			toTransaction.setStatus("PENDING");
+		}
+		try {
+
+			// toUserAccount
+				Accounts from = accountService.getAccountForID(fromUserAccount);
+				if (from.getBalance() - amount < 0) {
+					// return a message that insufficient balance
+					return "homepage";
+				}
+
+				System.out.println("To Account exists, Going ahead with the transaction");
+				transactionService.addTransactions(fromTransaction, toTransaction);
+				// if from and to transaction is "approved" then update the
+				// balance for from and to account
+				if (toTransaction.getStatus().equalsIgnoreCase("APPROVED")) {
+					// Accounts from =
+					// accountService.getAccountForID(fromCompositeKey.getAccountNo());
+					Accounts to = accountService.getAccountForID(toCompositeKey.getAccountNo());
+
+					System.out.println("Deducting/Adding account balance for both accounts");
+					// deduct balance in both accounts.
+					from.setBalance(from.getBalance() - amount);
+					System.out.println(to.getBalance());
+					System.out.println(amount);
+					to.setBalance(to.getBalance() + amount);
+					System.out.println("From account details " + from.toString());
+					System.out.println("To account details " + to.toString());
+					accountService.updateAccount(from);
+					accountService.updateAccount(to);
+				}
+			//return an appropriate
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "homepage";
+		
+	}
+	
 	@RequestMapping(value = "/createTransaction")
 	public String createTransactions(Model model, TransactionDetails transactionDetails, HttpServletRequest request) throws IOException {
 		model.addAttribute("transactionDetails", transactionDetails);
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		 String username = principal.toString();
+		 
 		///////
 		System.out.println(request.getContentLength());
 		
@@ -158,7 +259,7 @@ public class TransactionController {
 		
 		if(amount >1000){
 			fromTransaction.setCritical(true);
-			fromTransaction.setStatus("PENDING");
+			fromTransaction.setStatus("OTP");
 		}
 
 		// set same transaction ID for to account
@@ -186,7 +287,7 @@ public class TransactionController {
 
 		if (amount > 1000) {
 			toTransaction.setCritical(true);
-			toTransaction.setStatus("PENDING");
+			toTransaction.setStatus("OTP");
 		}
 		try {
 
@@ -225,14 +326,64 @@ public class TransactionController {
 			} else {
 				// say that the to account number is invalid
 			}
-			// model.addAttribute("transactions", transactions);
+			
+			username="arjun";
+			 User fromUserProfile=userService.getUserregisterbyUsername(username);
+			 sendTransactionOTPMail(fromUserProfile.getFirstname(), fromUserProfile.getEmail());
+			model.addAttribute("email", fromUserProfile.getEmail());
+			model.addAttribute("transactionid", toCompositeKey.getTransactionId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "homepage";
-
+		return "transactionotp";
 	}
-
+	
+	@RequestMapping(value = "/completetransaction", method = RequestMethod.POST)
+	public String completeTransaction(Model model, User user, HttpServletRequest request) {
+		//Get the transaction Id
+		System.out.println("Verify and update Trnasaction status");
+		String email = request.getParameter("email");
+		int transactionid = Integer.parseInt(request.getParameter("transactionid"));
+		String otpValue=request.getParameter("otpValue");
+		
+		System.out.println("transactionid "+transactionid);
+		System.out.println("email "+email);
+		System.out.println("otpValue "+otpValue);
+		System.out.println("Getting user object for user name " + email);
+		
+		User userObj = userService.getUserregisterbyEmail(email);
+		String otpStatus = verifyUserOTP(userObj, otpValue);
+		
+		System.out.println("otpStatus " + otpStatus);
+		List<Transaction> transactionList;
+		Transaction debitTransaction;
+		Transaction creditTransaction;
+		if (otpStatus.equalsIgnoreCase("success")) {
+			
+			//Get transaction objects and set change the status
+			transactionList = transactionService.getTransactions(transactionid);
+			debitTransaction = transactionList.get(0);
+			creditTransaction = transactionList.get(1);
+			
+			debitTransaction.setStatus("PENDING");
+			creditTransaction.setStatus("PENDING");
+			transactionService.updateTransaction(debitTransaction);
+			transactionService.updateTransaction(creditTransaction);
+			
+			//return success message
+			return "transactionotp";
+			
+		} else if (otpStatus.equalsIgnoreCase("attempts")) {
+			// Too many attempts. Refresh and request OTP again
+			System.out.println("Wrong otp, otpStatus " + otpStatus);
+		} else if (otpStatus.equalsIgnoreCase("failure")) {
+			// Wrong OTP
+			System.out.println("FAilure refresh and request OTP, otpStatus " + otpStatus);
+		}
+		
+		return "transactionotp";
+	}
+	
 	@RequestMapping(value = "/transactionlog")
 	public String retrieveTransactionsLog(@Valid TransactionLog transactionLog, BindingResult result, Model model) {
 		System.out.println(transactionLog.getLogFilter());
@@ -283,10 +434,8 @@ public class TransactionController {
 		} catch (FileNotFoundException | DocumentException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -457,6 +606,81 @@ public class TransactionController {
 		
 		model.addAttribute("transactions", transactions);
 		return "bankers";
+	}
+	
+	public static String generatePassword() {
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
+		final int PW_LENGTH = 8;
+		Random rnd = new SecureRandom();
+		StringBuilder pass = new StringBuilder();
+		for (int i = 0; i < PW_LENGTH; i++)
+			pass.append(chars.charAt(rnd.nextInt(chars.length())));
+		return pass.toString();
+	}
+	
+	void sendTransactionOTPMail(String firstName, String mail) {
+		// generate otp
+		String otp = generatePassword();
+		OTP otpObj = new OTP();
+		otpObj.setFirstName(firstName);
+		otpObj.setMailID(mail);
+		otpObj.setOtpValue(otp);
+		// otpObj.setTimeStamp(new Date());
+		try {
+			System.out.println("Sending email. Here");
+			System.out.println("otpObj " + otpObj.toString());
+			utilityService.insertOTP(otpObj);
+			System.out.println("Sending email");
+			SendMail sendMail = new SendMail();
+			sendMail.sendTransactionOTP(otpObj);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e);
+		}
+	}
+
+	public String verifyUserOTP(User user, String otpValue) {
+		System.out.println("showViewUser");
+		// String mail=user.getEmail();
+		String mail = user.getEmail();
+		String firstName = user.getFirstname();
+		OTP otpObj = new OTP();
+		otpObj.setFirstName(firstName);
+		otpObj.setMailID(mail);
+		otpObj.setOtpValue(otpValue);
+		try {
+			OTP dbObj = utilityService.checkOTP(otpObj);
+			if (dbObj == null) {
+				System.out.println("bdObj is null. Go to error page");
+				// Go to error page
+				return "failure";
+			} else {
+				System.out.println(
+						"DB Object " + dbObj.getFirstName() + " " + dbObj.getMailID() + " " + dbObj.getOtpValue());
+				System.out.println("otpObj.getOtpValue() " + otpObj.getOtpValue());
+				if (otpObj.getOtpValue().equals(dbObj.getOtpValue())) {
+					System.out.println("Correct OTP. Navigate to required page");
+					// utilityService.deleteOTP(otpObj);
+					return "success";
+				} else if (dbObj.getAttempts() == 2) {
+					System.out
+							.println("Too many attempts. Deleting the OTP. dbObj.getAttempts() " + dbObj.getAttempts());
+					userService.deleteUserRequest(user.getUsername());
+					utilityService.deleteOTP(otpObj);
+					return "failure";
+				} else {
+					int attempts = dbObj.getAttempts();
+					otpObj.setAttempts(attempts + 1);
+					utilityService.updateOTP(otpObj);
+					return "attempts";
+				}
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Printing stack trace");
+			e.printStackTrace();
+		}
+		return null;
 		
 	}
 }

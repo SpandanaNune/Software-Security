@@ -23,10 +23,12 @@ public class AccountsService {
 	//add this method in account service
 		public List<Accounts> getAccountDetails(String username) {
 			return accountsDao.getAccountDetails(username);
-			
 		}
 
-
+		public Accounts getMerchantAccountDetails(String username) {
+			return accountsDao.getMerchantAccountDetails(username);
+		}
+		
 		public Accounts getAccountForID(long toUserAccount) {
 			return accountsDao.getAccountForID(toUserAccount);
 		}
@@ -39,4 +41,5 @@ public class AccountsService {
 			return accountsDao.getAccountDetailsForBanker(bankerName);
 			
 		}
+
 }

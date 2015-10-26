@@ -56,7 +56,6 @@ public class TransactionDao {
 
 	public void saveTransaction(Transaction transaction) {
 		session().save(transaction);
-		
 	}
 	
 	
@@ -65,9 +64,12 @@ public class TransactionDao {
 	}
 	
 	public Object getTransaction(int transactionId){
-		
 		 return session().createQuery("from Transaction where transactionId="+transactionId).uniqueResult();
-		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Transaction> getTransactions(int transactionid) {
+		return  session().createQuery("from Transaction where transactionId="+transactionid).list();
 	}
 	
 }

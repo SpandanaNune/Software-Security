@@ -1,5 +1,6 @@
 package sbs.web.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,6 @@ public class UserService {
 		return getuser;
 	}
 
-
 	public List<Users> getUsersByField(String field, String value) {
 		return usersDao.getUsersByField(field, value);
 	}
@@ -64,19 +64,15 @@ public class UserService {
 	public List<Users> getUsersByFieldBool(String field, boolean value) {
 		return usersDao.getUsersByFieldBool(field, value);
 	}
-<<<<<<< HEAD
 	
 	public User getUserregisterbyEmail(String mail) {
 		User getuser = (User) usersDao.getUserregisterbyEmail(mail);
 		return getuser;
 		
 	}
-
-=======
 	public Users getUserByFieldBool(String field, boolean value,String username) {
 		return (Users)usersDao.getUserByFieldBool(field, value,username);
 	}
->>>>>>> 4328d59488496bd5db09c6174f658ca2f692cfd1
 
 	public List<Accounts> getAccountsByField(String field, long value) {
 		return usersDao.getAccountsByField(field, value);
@@ -130,10 +126,7 @@ public class UserService {
 	public void addNewAccount(Accounts account){
 		usersDao.addNewAccount(account);
 	}
-<<<<<<< HEAD
 
-	
-=======
 	
 	public List<Authorities> getAllEmployees()
 	{
@@ -150,5 +143,8 @@ public class UserService {
 		usersDao.deleteEmployee(auth);
 	}
 
->>>>>>> 4328d59488496bd5db09c6174f658ca2f692cfd1
+	public List<User> getAllMerchantAccounts() {
+		return usersDao.getAllMerchantAccounts();
+	}
+
 }

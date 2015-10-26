@@ -1,5 +1,6 @@
 package sbs.web.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -36,5 +37,10 @@ public class AccountsDao {
         public void updateAccount(Accounts from) {
              session().saveOrUpdate(from);
         }
+		public Accounts getMerchantAccountDetails(String username) {
+			return (Accounts) session().createQuery("from Accounts where username = '"+username+"'").uniqueResult();
+		}
+        
+       
 		
 }
