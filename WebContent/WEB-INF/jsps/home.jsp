@@ -44,7 +44,8 @@
 								href="${pageContext.request.contextPath}/merchant">As
 									Merchant</a></li>
 						</ul></li>
-					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
+					<li><a 
+						href="${pageContext.request.contextPath}/welcome"><span class="glyphicon glyphicon-log-in"></span>
 							Login</a></li>
 				</ul>
 			</div>

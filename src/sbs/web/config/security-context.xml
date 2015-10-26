@@ -21,7 +21,7 @@
 	<security:http use-expressions="true">
 
 	    <security:intercept-url pattern="/welcome"
-			access="hasAnyRole('ROLE_NEW,ROLE_USER')"/>
+			access="hasAnyRole('ROLE_NEW,ROLE_USER,ROLE_NEWMANAGER,ROLE_MANAGER,,ROLE_NEWMERCHANT,ROLE_MERCHANT,ROLE_EMPLOYEE,ROLE_NEWEMPLOYEE')"/>
 		<security:intercept-url pattern="/random"
 			access="hasRole('ROLE_USER')"/>
 		<security:intercept-url pattern="/userconfirm"
@@ -46,8 +46,10 @@
 			password-parameter="j_password" username-parameter="j_username" />
 		<security:logout invalidate-session="true"
 			delete-cookies="JSESSIONID" logout-url="/logout"
-			logout-success-url="/loggedout" />
-		<security:session-management invalid-session-url="/sessionTimeout.jsp" session-authentication-error-url="/sessionaccesserror.jsp">
+			logout-success-url="/home" />
+		<security:session-management invalid-session-url="/home"
+			session-authentication-error-url="/sessionaccesserror"
+			session-fixation-protection="newSession">
 			<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
 		</security:session-management>
 	</security:http>
