@@ -85,6 +85,30 @@ public String RegisterMerchant(@Valid User user, BindingResult result,Model mode
 	}
 }
 
+
+@RequestMapping(value = "/edituserprofile")
+public String viewEditCustomerProfile(Model model) {
+	User user=userService.getUserregisterbyUsername("arjun");
+	model.addAttribute("user", user);
+	return "edituserprofile";
+}
+
+@RequestMapping(value = "/edituserprofiledone", method = RequestMethod.POST)
+public String viewEditCustomerProfileDone(@Valid User user, BindingResult result,Model model) {
+	User dbUser=userService.getUserregisterbyUsername(user.getUsername());
+	if(dbUser.getSSN() == user.getSSN())
+	{
+	userService.createUser(user);
+	}
+	else
+	{
+		user.setSSN(dbUser.getSSN());
+		userService.createUser(user);
+	}
+	model.addAttribute("user", user);
+
+	return "edituserprofile";
+}
 	
 //@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 //public String RegisterUser(Model model, @Valid User user, BindingResult result) {

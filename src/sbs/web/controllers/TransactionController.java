@@ -372,7 +372,6 @@ public class TransactionController {
 	@RequestMapping(value = "/deletetransactionbtn")
 	public String DeleteTransactionByManager(Model model,@RequestParam("Accept") int transactionId){
 		Transaction t=(Transaction)transactionService.getTransaction(transactionId);
-		System.out.println(t);
 		t.setStatus("DECLINED");
 		transactionService.updateTransaction(t);
 		List<Transaction> transction = transactionService.getAllCriticalTransaction();
@@ -400,8 +399,6 @@ public class TransactionController {
 		model.addAttribute("transactions", transactions);
 		return "bankers";
 	}
-
-
 
 @RequestMapping("/accepttransaction")
 	public String approveTransaction(Model model, @RequestParam("Accept") int transactionId) {

@@ -247,41 +247,6 @@ public class HomeController {
 			System.out.println(e);
 		}
 	}
-	//
-	// @RequestMapping(value = "/employeecreation")
-	// public String createEmployee(@Valid UserProfile user, BindingResult
-	// result, Model model) {
-	// if (user != null && user.getUsername() != null) {
-	// System.out.println(user);
-	// UserProfile uniqueUser =
-	// (userService.getUserregisterbyUsername(user.getUsername()));
-	// if (uniqueUser == null) {
-	// System.out.println(user);
-	// user.setIsnewuser(true);
-	// user.setCanlogin(false);
-	//
-	// userService.createUser(user);
-	// return "employeecreation";
-	// } else {
-	// System.out.println("Caught duplicate Username");
-	// result.rejectValue("username", "DuplicateKeyException.user.username",
-	// "Username already exists.");
-	// return "employeecreation";
-	// }
-	// }
-	// List<String> authorities = new ArrayList<>();
-	// authorities.add("ROLE_USER");
-	// authorities.add("ROLE_MANAGER");
-	// model.addAttribute("roles", authorities);
-	// model.addAttribute("user", new UserProfile());
-	// return "employeecreation";
-	// }
-	
-	
-	
-
-
-	
 	
 	@RequestMapping(value = "/registerbtn2", method = RequestMethod.POST )
 	public String RegisterUserComplete(Model model,User user, HttpServletRequest request) {
