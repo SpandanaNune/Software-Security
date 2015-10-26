@@ -33,7 +33,7 @@ public class PKIUtil {
 			user_pki.deletePrivateKey(keyPath);
 	}
 	
-	public boolean validateKeyPairs(User user, String message)
+	public static boolean validateKeyPairs(User user, String message)
 	{
 		String keyPath = System.getProperty("catalina.home") + "/users_keys/" + user.getUsername() + "/";
 		MTBCPKIUtility user_pki = new MTBCPKIUtility();

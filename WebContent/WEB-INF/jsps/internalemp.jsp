@@ -33,7 +33,7 @@
 				
 				<p>					
 						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/editprofileemployee">Edit Profile</a>							
+						href="${pageContext.request.contextPath}/editemployeeprofile">Edit Profile</a>							
 				</p>
 				
 

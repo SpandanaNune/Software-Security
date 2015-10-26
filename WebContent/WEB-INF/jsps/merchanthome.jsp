@@ -34,9 +34,8 @@ function disableclick(event)
   <div class="container">
 	<H1>Merchant Home</H1>
   <h3> Hi <c:out value="${user.getUsername()}"></c:out> ! </h3>
-  <div id="border" style="border:2px solid black; border-radius: 25px;">
+  <div id="border" class="well">
     <center>
-​
       <h4> What would you like to do??</h4> <br>
 			<a class="btn btn-info btn-large"
 				href="${pageContext.request.contextPath}/transactionhistory">View

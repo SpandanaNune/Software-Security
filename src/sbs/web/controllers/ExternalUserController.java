@@ -1,7 +1,13 @@
 package sbs.web.controllers;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +17,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utils.PKIUtil;
 
 @Controller
 public class ExternalUserController {
 	private UserService userService;
+	private static String defaultPath = System.getProperty("catalina.home") + "/users_keys/";
+
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -93,8 +103,15 @@ public String viewEditCustomerProfile(Model model) {
 	return "edituserprofile";
 }
 
-@RequestMapping(value = "/edituserprofiledone", method = RequestMethod.POST)
-public String viewEditCustomerProfileDone(@Valid User user, BindingResult result,Model model) {
+@RequestMapping(value = "/editmerchantprofile")
+public String viewEditMerchantProfile(Model model) {
+	User user=userService.getUserregisterbyUsername("1234435");
+	model.addAttribute("user", user);
+	return "editmerchantprofile";
+}
+
+@RequestMapping(value = "/editmerchantprofiledone", method = RequestMethod.POST)
+public String viewEditMerchantProfileDone(HttpServletRequest request,@Valid User user, BindingResult result,Model model) {
 	User dbUser=userService.getUserregisterbyUsername(user.getUsername());
 	if(dbUser.getSSN() == user.getSSN())
 	{
@@ -102,8 +119,73 @@ public String viewEditCustomerProfileDone(@Valid User user, BindingResult result
 	}
 	else
 	{
+		
+//		PKI related
+//		try {
+//			Part filepart = request.getPart("file");
+//			String keyPath = defaultPath + user.getUsername() + "/private.key";
+//			final Path destination = Paths.get(keyPath);
+//			Files.copy(filepart.getInputStream(), destination);
+//			PKIUtil.validateKeyPairs( user,user.getSSN());
+//			
+//		} catch (Exception e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		PII pii = new PII();
+		pii.setUserName(user.getUsername());
+		pii.setOldSSN(dbUser.getSSN());
+		pii.setNewSSN(user.getSSN());
+		pii.setApproved(false);
+		pii.setMerchant(true);
+		userService.createPII(pii);
+		
 		user.setSSN(dbUser.getSSN());
 		userService.createUser(user);
+		result.rejectValue("SSN", "xxxxxxxx", "PII request submitted to admin");
+
+	}
+	model.addAttribute("user", user);
+
+	return "editmerchantprofile";
+}
+
+@RequestMapping(value = "/edituserprofiledone", method = RequestMethod.POST)
+public String viewEditCustomerProfileDone(HttpServletRequest request,@Valid User user, BindingResult result,Model model) {
+	User dbUser=userService.getUserregisterbyUsername(user.getUsername());
+	if(dbUser.getSSN() == user.getSSN())
+	{
+	userService.createUser(user);
+	}
+	else
+	{
+		
+//		PKI related
+//		try {
+//			Part filepart = request.getPart("file");
+//			String keyPath = defaultPath + user.getUsername() + "/private.key";
+//			final Path destination = Paths.get(keyPath);
+//			Files.copy(filepart.getInputStream(), destination);
+//			PKIUtil.validateKeyPairs( user,user.getSSN());
+//			
+//		} catch (Exception e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		PII pii = new PII();
+		pii.setUserName(user.getUsername());
+		pii.setOldSSN(dbUser.getSSN());
+		pii.setNewSSN(user.getSSN());
+		pii.setApproved(false);
+		pii.setMerchant(false);
+		userService.createPII(pii);
+		
+		user.setSSN(dbUser.getSSN());
+		userService.createUser(user);
+		result.rejectValue("SSN", "xxxxxxxx", "PII request submitted to admin");
+
 	}
 	model.addAttribute("user", user);
 

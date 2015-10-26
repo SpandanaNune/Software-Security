@@ -59,7 +59,7 @@ public class RegularEmployeeController {
 		return "viewedituserdetails_employee";
 	}
 	
-	@RequestMapping("/editprofileemployee")
+	@RequestMapping("/editemployeeprofile")
 	public String editEmployeeProfile(Model model) {
 		System.out.println("Edit Button Operation");
 		User user = userService.getUserregisterbyUsername("banker");
@@ -68,7 +68,7 @@ public class RegularEmployeeController {
 		return "editemployeeprofile";
 	}
 	
-	@RequestMapping("/editemployeeprofile")
+	@RequestMapping("/editemployeeprofiledone")
 	public String editEmployeeProfileDone(@Valid User user, BindingResult result,Model model) {
 			System.out.println(user.toString());
 			userService.createUser(user);

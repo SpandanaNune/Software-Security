@@ -15,11 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import sbs.web.models.Authorities;
 import sbs.web.models.OTP;
-import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
@@ -53,7 +51,11 @@ public class HomeController {
 		System.out.println("showhome");
 		return "home";
 	}
-
+	@RequestMapping("/sessionTimeout")
+	public String showSessionTimeOut(Model model) {
+		return "sessionTimeout";
+	}
+	
 	@RequestMapping("/Sample")
 	public String showRandom() {
 		System.out.println("random page");

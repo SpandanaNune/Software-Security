@@ -96,10 +96,17 @@ public class UserService {
 		pii.setApproved(true);
 		usersDao.updatePII(pii);
 	}
-
-	public List<PII> getAllPIIs() {
+	
+	public void createPII(PII pii)
+	{
+		usersDao.updatePII(pii);
+	}
+	
+	public List<PII> getAllPIIs()
+	{
 		return usersDao.getAllPIIRequests();
 	}
+
 
 	public PII getPII(String username) {
 		return (PII) usersDao.getPII(username);

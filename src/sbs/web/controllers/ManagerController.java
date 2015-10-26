@@ -18,9 +18,11 @@ import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utilities.SendMail;
 
 @Controller
 public class ManagerController {
+	private static int bankerIndex = 0; 
 	private UserService userService;
 	@Autowired
 	public void setUserService(UserService userService) {
@@ -53,10 +55,9 @@ public class ManagerController {
 		return "usersignuprequest";
 
 	}
-
 	@RequestMapping("/acceptbtn")
 	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
-		long account1 = 0, account2=0;
+		long account1 = 0, account2 = 0;
 
 		User user = userService.getUserProfileByField("username", username).get(0);
 		// User user = userService.getUserregisterbyUsername(username);
@@ -69,9 +70,10 @@ public class ManagerController {
 		Users users = new Users();
 		users.setUsername(username);
 		String tempPassword = UtilityController.generatePassword();
-		/*************************************************************
-		 * SEND**MAIL
-		 **************************************************/
+
+		SendMail sendmail = new SendMail();
+		sendmail.sendTempPassword(email, tempPassword, user.getFirstname());
+		
 		users.setPassword(tempPassword);
 		users.setEnabled(true);
 		users.setAccountNonExpired(true);
@@ -83,41 +85,44 @@ public class ManagerController {
 		users.setQ2(" ");
 		users.setQ3(" ");
 
-//		userService.saveOrUpdateUsers(users);
+		userService.saveOrUpdateUsers(users);
 
 		Authorities auth = new Authorities();
 		auth.setUsername(username);
 		auth.setAuthority("ROLE_NEW");
-//		userService.setAuthority(auth);
-		
-		System.out.println("Creating account Numbers");
-		
+		userService.setAuthority(auth);
 
-		boolean account1IsNotValid=true;
+		System.out.println("Creating account Numbers");
+
+		boolean account1IsNotValid = true;
 		List<Accounts> accountsList1;
-		while(account1IsNotValid){
+		while (account1IsNotValid) {
 			System.out.println("GEtting account 1");
 			account1 = UtilityController.generateAccountNumber();
-			 accountsList1 = userService.getAccountsByField("accountNo", account1);
-			if(accountsList1.size()==0){
+			accountsList1 = userService.getAccountsByField("accountNo", account1);
+			if (accountsList1.size() == 0) {
 				System.out.println("Got account 1");
-				account1IsNotValid=false;
-			}	
-		}	
-		boolean account2IsNotValid=true;
+				account1IsNotValid = false;
+			}
+		}
+		boolean account2IsNotValid = true;
 		List<Accounts> accountsList2;
-		while(account2IsNotValid){
+		while (account2IsNotValid) {
 			System.out.println("Getting account 2");
 			account2 = UtilityController.generateAccountNumber();
-			 accountsList2 = userService.getAccountsByField("accountNo", account2);
-			if(accountsList2.size()==0){
-				account2IsNotValid=false;
+			accountsList2 = userService.getAccountsByField("accountNo", account2);
+			if (accountsList2.size() == 0) {
+				account2IsNotValid = false;
 				System.out.println("Got account 2");
 			}
-			
+
 		}
-		System.out.println("Successfully got two account number :"+ account1 +", "+account2);
-		
+		System.out.println("Successfully got two account number :" + account1 + ", " + account2);
+
+		List<Authorities> authorisedEmployee = userService.getUserAuthoritiesByField("authority", "ROLE_EMPLOYEE");
+		String bankername = authorisedEmployee.get(bankerIndex % authorisedEmployee.size()).getUsername();
+		bankerIndex++;
+
 		Accounts newAccount1 = new Accounts();
 		Accounts newAccount2 = new Accounts();
 
@@ -125,11 +130,11 @@ public class ManagerController {
 		newAccount1.setAccount_type(true);
 		newAccount1.setAccountNo(account1);
 		newAccount1.setUsername(username);
-		
+
 		/**********************************************
 		 * Random Banker
 		 ***************************************/
-		newAccount1.setBankername("arjun");
+		newAccount1.setBankername(bankername);
 
 		newAccount2.setBalance(0);
 		newAccount2.setAccount_type(false);
@@ -138,7 +143,7 @@ public class ManagerController {
 		/**********************************************
 		 * Random Banker
 		 ***************************************/
-		newAccount2.setBankername("arjun");
+		newAccount2.setBankername(bankername);
 
 		System.out.println(newAccount1);
 		System.out.println(newAccount2);
@@ -149,8 +154,7 @@ public class ManagerController {
 		List<User> updateduser = userService.getAllNewUsers();
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
-	}
-	
+	}	
 	@RequestMapping("/viewedituserdetails")
 	public String viewEditUserDetails(Model model) {
 		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
@@ -226,5 +230,20 @@ public class ManagerController {
 		return "deleteactiveusers";
 
 	}
+	
+	@RequestMapping("/editmanagerprofile")
+	public String editManagerProfile(Model model) {
+		User user = userService.getUserregisterbyUsername("dewded");
+		model.addAttribute("user", user);
+		return "editmanagerprofile";
+	}
+	
+	@RequestMapping("/editmanagerprofiledone")
+	public String editManagerProfileDone(@Valid User user, BindingResult result,Model model) {
+			userService.createUser(user);
+		
+		return "managerhome";
+	}
+	
 
 }

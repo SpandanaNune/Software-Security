@@ -21,6 +21,8 @@
 			<TH>User Name</TH>
 			<TH>Old SSN</TH>
 			<TH>New SSN</TH>
+			<TH>User Type</TH>
+			
 			<TH>Approve / Decline</TH>
       <TH></TH>
 		</TR>
@@ -31,6 +33,12 @@
 				<TD><c:out
 						value="${pii.getOldSSN()}" /></TD>
 				<TD><c:out value="${pii.getNewSSN()}" /></TD>
+				<c:if test="${pii.isMerchant()==true}">
+								<TD>MERCHANT</TD>
+				</c:if>
+				<c:if test="${pii.isMerchant()==false}">
+								<TD>CUSTOMER</TD>
+				</c:if>
 				<td><form method="post"
 						action="${pageContext.request.contextPath}/acceptpii">
 						<input type="hidden" name="Accept" value="${pii.getUserName()}" />
