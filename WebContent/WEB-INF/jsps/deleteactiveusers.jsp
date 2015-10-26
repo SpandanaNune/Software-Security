@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -15,8 +14,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	User SignUp Requests
-
+	View/Edit User details.
 	<table class="offers">
 		<tr>
 			<td>UserName</td>
@@ -25,34 +23,24 @@
 			<td>Email</td>
 			<td>Action</td>
 		</tr>
-
 		<c:forEach var="user" items="${user}">
 			<tr>
 
 				<td><c:out value="${user.getUsername()}"></c:out></td>
-
 				<td><c:out value="${user.getFirstname()}"></c:out></td>
-
 				<td><c:out value="${user.getLastname()}"></c:out></td>
-
 				<td><c:out value="${user.getEmail()}"></c:out></td>
 				<td><form method="post"
-						action="${pageContext.request.contextPath}/acceptbtn">
-						<input type="hidden" name="Accept" value="${user.getUsername()}" />
-						<input class="control" value = "Accept" type="submit" /> <input
-							type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
-					</form></td>
-				<td><form method="post"
-						action="${pageContext.request.contextPath}/declinebtn">
-						<input type="hidden" name="Decline" value="${user.getUsername()}" />
-						<input class="control" value = "Decline" type="submit" /> <input
-							type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+						action="${pageContext.request.contextPath}/deleteuser">
+						<input type="hidden" name="Delete"
+							value="${user.getUsername()}" /> <input class="control"
+							value="Delete" type="submit" /> <input type="hidden"
+							name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form></td>
 			</tr>
 		</c:forEach>
 	</table>
+
 </body>
 </html> --%>
 
@@ -66,13 +54,11 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <link href="${pageContext.request.contextPath}/static/css/main.css"
 	rel="stylesheet" type="text/css" />
-​
-<title>User Sign up Request</title>
+<title>Delete Active Users</title>
 </head>
 <body>
   <div class="container">
-	<h1>User Sign Up Requests</h1>
-​
+	<h1>Delete Active Users</h1>
 	<table class="offers table table-hover">
 		<tr>
 			<th>UserName</th>
@@ -80,41 +66,24 @@
 			<th>LastName</th>
 			<th>Email</th>
 			<th>Action</th>
-      <th></th>
-		</tr>
 ​
+		</tr>
 		<c:forEach var="user" items="${user}">
 			<tr>
-​
 				<td><c:out value="${user.getUsername()}"></c:out></td>
-​
 				<td><c:out value="${user.getFirstname()}"></c:out></td>
-​
 				<td><c:out value="${user.getLastname()}"></c:out></td>
-​
 				<td><c:out value="${user.getEmail()}"></c:out></td>
 				<td><form method="post"
-						action="${pageContext.request.contextPath}/acceptbtn">
-						<input type="hidden" name="Accept" value="${user.getUsername()}" />
-						<input class="control btn btn-success" value = "Accept" type="submit" /> <input
-							type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
-					</form>
-        </td>
-​
-          <td>
-				<form method="post"
-						action="${pageContext.request.contextPath}/declinebtn">
-						<input type="hidden" name="Decline" value="${user.getUsername()}" />
-						<input class="control btn btn-danger" value = "Decline" type="submit" /> <input
-							type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+						action="${pageContext.request.contextPath}/deleteuser">
+						<input type="hidden" name="Delete"
+							value="${user.getUsername()}" /> <input class="control btn btn-danger"
+							value="Delete" type="submit" /> <input type="hidden"
+							name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form></td>
-​
-			</tr>
+						</tr>
 		</c:forEach>
 	</table>
 </div>
 </body>
-
 </html>

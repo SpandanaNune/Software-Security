@@ -27,6 +27,7 @@ public class TransactionDao {
 		session().save(transaction);
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	public List<Transaction> getAllTransactions(long accountNo){
 		return session().createQuery("from Transaction where accountNo="+accountNo).list();
@@ -34,12 +35,17 @@ public class TransactionDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<Transaction> getAllTransactions(String date){
-		return session().createQuery("from Transaction where DATE(createdDate)="+date).list();
+		return session().createQuery("from Transaction where DATE(createdDate)='"+date+"'").list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Transaction> getAllCriticalTransaction(){
-		return session().createQuery("from Transaction where isCritical = 1").list();
+		return session().createQuery("from Transaction where isCritical = 1 and status='PENDING'").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Transaction> getAllCriticalTransactionForAccount(long accountNo){
+		return session().createQuery("from Transaction where isCritical = 1 and status='PENDING' and accountNo="+accountNo).list();
 	}
 
 	//check if we need to add transactional
@@ -50,6 +56,17 @@ public class TransactionDao {
 
 	public void saveTransaction(Transaction transaction) {
 		session().save(transaction);
+		
+	}
+	
+	
+	public void updateTransaction(Transaction transaction){
+		session().saveOrUpdate(transaction);
+	}
+	
+	public Object getTransaction(int transactionId){
+		
+		 return session().createQuery("from Transaction where transactionId="+transactionId).uniqueResult();
 		
 	}
 	

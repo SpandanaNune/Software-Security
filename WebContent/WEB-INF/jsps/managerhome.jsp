@@ -34,11 +34,13 @@
 				SignUp Request</a><br /> <br /> <a class="btn btn-primary btn-large"
 				href="${pageContext.request.contextPath}/viewedituserdetails">View/Edit User
 				Details</a><br /> <br /> <a class="btn btn-primary btn-large"
-				href="${pageContext.request.contextPath}/sendOTP">Delete User</a><br /> <br />
+				href="${pageContext.request.contextPath}/deleteactiveusers">Delete User</a><br /> <br />
 				<a class="btn btn-primary btn-large"
 				href="${pageContext.request.contextPath}/approvetransaction">Approve Transaction</a><br /> <br /> 
 		</p>
 	</div>
 
 </body>
+
+
 </html>

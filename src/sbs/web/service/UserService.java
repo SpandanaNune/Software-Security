@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sbs.web.dao.UsersDao;
-
-import sbs.web.models.User;
-
+import sbs.web.models.Accounts;
 import sbs.web.models.Authorities;
-import sbs.web.models.OTP;
+import sbs.web.models.PII;
+import sbs.web.models.User;
 import sbs.web.models.Users;
 
 @Service("userService")
@@ -28,6 +27,10 @@ public class UserService {
 
 	public void createUser(User user) {
 		usersDao.createUser(user);
+	}
+	
+	public void updateUser(User user) {
+		usersDao.updateUser(user);
 	}
 
 	public void setAuthority(Authorities auth) {
@@ -49,9 +52,17 @@ public class UserService {
 		return getuser;
 	}
 
-	public Users getUserbyField(String field, String value) {
-		Users getuser = (Users) usersDao.getUserbyField(field, value);
-		return getuser;
+
+	public List<Users> getUsersByField(String field, String value) {
+		return usersDao.getUsersByField(field, value);
+	}
+	
+	public List<User> getUserProfileByField(String field, String value) {
+		return usersDao.getUserProfileByField(field, value);
+	}
+	
+	public List<Users> getUsersByFieldBool(String field, boolean value) {
+		return usersDao.getUsersByFieldBool(field, value);
 	}
 	
 	public User getUserregisterbyEmail(String mail) {
@@ -61,6 +72,38 @@ public class UserService {
 	}
 
 
+	public List<Accounts> getAccountsByField(String field, long value) {
+		return usersDao.getAccountsByField(field, value);
+	}
+	
+	
+	public User getUserProfilebyField(String field, String value) {
+		User getuser = (User) usersDao.getUserProfilebyField(field, value);
+		return getuser;
+	}
+
+	public void deletePII(String username)
+	{
+		usersDao.deletePIIRequest(username);
+	}
+	
+	public void approvePII(String username)
+	{
+		PII pii = (PII)usersDao.getPII(username);
+		pii.setApproved(true);
+		usersDao.updatePII(pii);
+	}
+	
+	public List<PII> getAllPIIs()
+	{
+		return usersDao.getAllPIIRequests();
+	}
+
+	
+	public PII getPII(String username)
+	{
+		return (PII)usersDao.getPII(username);
+	}
 	public List<User> getAllNewUsers() {
 		return usersDao.getAllNewUsers();
 	}
@@ -72,9 +115,14 @@ public class UserService {
 	public void deleteUserRequest(String username) {
 		usersDao.deleteUserRequest(username);
 	}
+	
 
-	public void userActivation(Users users) {
-		usersDao.userActivation(users);
+	public void saveOrUpdateUsers(Users users) {
+		usersDao.saveOrUpdateUsers(users);
+	}
+	
+	public void addNewAccount(Accounts account){
+		usersDao.addNewAccount(account);
 	}
 
 	

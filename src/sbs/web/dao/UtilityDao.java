@@ -19,7 +19,6 @@ public class UtilityDao {
 	}
 
 	public void insertOTP(OTP otp) {
-		System.out.println("\n\n"+otp.toString());
 		session().saveOrUpdate(otp);
 	}
 	
@@ -45,7 +44,6 @@ public class UtilityDao {
 		org.hibernate.Query query = session().createQuery(hql);
 		query.setParameter("mailID",  otpObj.getMailID());
 		query.executeUpdate();
-
 	}
 	
 }

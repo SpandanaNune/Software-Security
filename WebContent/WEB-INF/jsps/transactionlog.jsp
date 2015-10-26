@@ -7,65 +7,118 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
+
+
 </head>
 <body>
-	Transaction Log
-	<h2>Filter Logs by</h2>
+	<div class="container">
+		<h1>Transaction Log</h1>
+		<br> <br> <br>
+		<h3>Filter Logs by</h3>
 
-	<sf:form method="POST" action="${pageContext.request.contextPath}/transactionlog" commandName="transactionLog" >
-		<sf:errors path="*" cssClass="errorblock" element="div" />
-		<table>
-			<tr>
-				<td><sf:radiobutton class="control" path="logFilter" value="date" name="By Date"/>By Date 
-				<sf:radiobutton
-						path="logFilter" class="control" value="account" name="By AccountNo"/>By AccountNo
-						<sf:radiobutton
-						path="logFilter" class="control" value="name" name ="By Name"/>By Name</td>
-				<td><sf:errors class="control" path="logFilter" cssClass="error" /></td>
-			</tr>
-			<tr>
-				<td class="label">Date: (MM/DD/YYYY)</td>
-				<td><sf:input class="control" path="date" name="date"
-						type="text" /><br /> <sf:errors path="date" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td class="label">Account No:</td>
-				<td><sf:input class="control" path="accountNo" name="accountNo"
-						type="text" /><br /> <sf:errors path="accountNo" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td class="label">User Name:</td>
-				<td><sf:input class="control" path="name" name="name"
-						type="text" /><br /> <sf:errors path="accountNo" Class="error"></sf:errors></td>
-			</tr>
-			<tr>
-				<td colspan="3"><input class="control" type="submit" /></td>
-			</tr>
+		<sf:form method="POST"
+			action="${pageContext.request.contextPath}/transactionlog"
+			commandName="transactionLog">
+			<sf:errors path="*" cssClass="errorblock" element="div" />
+			<table>
+				<tr>
+					<td><sf:radiobutton path="logFilter" class="control radio"
+							id="radioaccount" checked="checked" value="account" name="Filter"
+							onchange="radiofn()" /><font style="color: black">By
+							AccountNo</font></td>
+					<td><sf:radiobutton class="control radio" id="radiodate"
+							path="logFilter" value="date" name="Filter" onchange="radiofn()" /><font
+						style="color: black">By Date</font></td>
+					<td><sf:radiobutton path="logFilter" class="control radio"
+							id="radioname" value="name" name="Filter" onchange="radiofn()" /><font
+						style="color: black">By Name</font></td>
+					<td><sf:errors class="control" path="logFilter"
+							cssClass="error" /></td>
+				</tr>
 
-		</table>
+				<tr>
+					<td class="label" id="radiolabel">
+							Account No: 
+						</td>
+					<td><div id="radiotext">
+							<sf:input class="control form-control" path="input" name="input"
+								type="text" />
+							<br />
+						</div></td>
+
+					<td><sf:errors path="input" Class="error"></sf:errors></td>
+				</tr>
+
+
+
+
+			</table>
+			<script type="text/javascript">
+	function radiofn() {
+		/* document.getElementById('byaccount').style.visibility = 'hidden';
+		document.getElementById('byname').style.visibility = 'hidden';
+		document.getElementById('byaccountlabel').style.visibility = 'hidden';
+		document.getElementById('bynamelabel').style.visibility = 'hidden';
+		document.getElementById('bydate').style.visibility = 'visible';
 		
-		<TABLE BORDER="1">
-		<TR>
-			<TH>Transaction Id</TH>
-			<TH>Account No</TH>
-			<TH>Transaction Type</TH>
-			<TH>Amount</TH>
-			<TH>Status</TH>
-		</TR>
-		<c:forEach items="${transactions}" var="transaction">
-			<TR>
-				<TD><c:out
-						value="${transaction.getPrimaryKey().getTransactionId()}" /></TD>
-				<TD><c:out
-						value="${transaction.getPrimaryKey().getAccountNo()}" /></TD>
-				<TD><c:out value="${transaction.getAmount()}" /></TD>
-				<TD><c:out value="${transaction.getTransactionType()}" /></TD>
-				<TD><c:out value="${transaction.getStatus()}" /></TD>
 
-			</TR>
-		</c:forEach>
+		document.getElementById('bydatelabel').style.visibility = 'visible'; */
+		if (document.getElementById('radioaccount').checked) {
+			document.getElementById('radiolabel').innerHTML = 'Account No :';
+		} else if (document.getElementById('radiodate').checked) {
 
-	</TABLE>
-	</sf:form>
+			document.getElementById('radiolabel').innerHTML = 'Date :';
+		} else if (document.getElementById('radioname').checked) {
+			document.getElementById('radiolabel').innerHTML = 'Name :';
+		}
+
+	}
+</script>
+			<br>
+			<br>
+			<center>
+				<input class="control btn btn-info" type="submit" />
+			</center>
+
+
+
+			<br>
+			<br>
+			<br>
+			<center>
+				<TABLE BORDER="1">
+					<TR>
+						<TH>Transaction Id</TH>
+						<TH>Account No</TH>
+						<TH>Transaction Type</TH>
+						<TH>Amount</TH>
+						<TH>Status</TH>
+					</TR>
+					<div id="outputtable">
+						<c:forEach items="${transactions}" var="transaction">
+							<TR>
+								<TD><c:out
+										value="${transaction.getPrimaryKey().getTransactionId()}" /></TD>
+								<TD><c:out
+										value="${transaction.getPrimaryKey().getAccountNo()}" /></TD>
+								<TD><c:out value="${transaction.getAmount()}" /></TD>
+								<TD><c:out value="${transaction.getTransactionType()}" /></TD>
+								<TD><c:out value="${transaction.getStatus()}" /></TD>
+
+							</TR>
+						</c:forEach>
+					</div>
+				</TABLE>
+			</center>
+		</sf:form>
+	</div>
+</body>
 </html>

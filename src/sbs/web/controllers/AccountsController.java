@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import sbs.web.models.Accounts;
 import sbs.web.models.TransactionDetails;
 import sbs.web.service.AccountsService;
-import sbs.web.service.TransactionService;
 
 @Controller
 public class AccountsController {

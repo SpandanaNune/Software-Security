@@ -35,5 +35,8 @@ public class AccountsService {
 		public void updateAccount(Accounts from) {
 			 accountsDao.updateAccount(from);
 		}
-
+		public List<Accounts> getAccountsForBanker(String bankerName) {
+			return accountsDao.getAccountDetailsForBanker(bankerName);
+			
+		}
 }

@@ -8,49 +8,58 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 <link href="${pageContext.request.contextPath}/static/css/main.css"
 	rel="stylesheet" type="text/css" />
 
-<title>Insert title here</title>
+<title>Approve Transactions</title>
 </head>
 <body>
-	User SignUp Requests
+  <div class="container">
+	<h1>Approve Transactions</h1>
 
-	<table class="offers">
+	<table class="offers table table-hover">
 		<tr>
-			<td>Account Number</td>
-			<td>Transaction Type</td>
-			<td>Amount</td>
-			<td>Action</td>
+		<TH>Transaction Id</TH>
+			<TH>Account No</TH>
+			<TH>Transaction Type</TH>
+			<TH>Amount</TH>
+			<TH>Approve</TH>
+      <th></th>
 		</tr>
 
 		<c:forEach var="transaction" items="${transaction}">
 			<tr>
-
-				<td><c:out value="${transaction.getPrimaryKey()}"></c:out></td>
-
-				<td><c:out value="${transaction.getTransactionType()}"></c:out></td>
-
-				<td><c:out value="${transaction.getAmount()}"></c:out></td>
+			<TD><c:out
+						value="${transaction.getPrimaryKey().getTransactionId()}" /></TD>
+				<TD><c:out
+						value="${transaction.getPrimaryKey().getAccountNo()}" /></TD>
+										<TD><c:out value="${transaction.getTransactionType()}" /></TD>
+					
+				<TD><c:out value="${transaction.getAmount()}" /></TD>
 
 				<td><form method="post"
-						action="${pageContext.request.contextPath}/editbtn">
-						<input type="hidden" name="Approve" value="ok" />
-						<input class="control" value="View/Edit" type="submit" /> <input
+						action="${pageContext.request.contextPath}/accepttransactionbtn">
+						<input type="hidden" name="Accept" value="${transaction.getPrimaryKey().getTransactionId()}" />
+						<input class="control btn btn-success" value="Accept" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 					</form></td>
-				<%-- <td><form method="post"
-						action="${pageContext.request.contextPath}/deletebtn">
-						<input type="hidden" name="Edit" value="${user.getUsername()}" />
-						<input class="control" value="Delete" type="submit" /> <input
+				<td><form method="post"
+						action="${pageContext.request.contextPath}/deletetransactionbtn">
+						<input type="hidden" name="Decline" value="${transaction.getPrimaryKey().getTransactionId()}" />
+						<input class="control btn btn-danger" value="Decline" type="submit" /> <input
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
-					</form></td> --%>
+					</form></td>
 
 			</tr>
 		</c:forEach>
 	</table>
-
+</div>
 </body>
 </html>
