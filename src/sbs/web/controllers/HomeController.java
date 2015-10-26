@@ -1,14 +1,13 @@
 package sbs.web.controllers;
 
 import java.security.Principal;
-
 import java.security.SecureRandom;
-
 import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +20,9 @@ import sbs.web.models.OTP;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
-import sbs.web.utils.PKIUtil;
 import sbs.web.service.UtilityService;
 import sbs.web.utilities.SendMail;
+import sbs.web.utils.PKIUtil;
 
 @Controller
 public class HomeController {
@@ -40,22 +39,17 @@ public class HomeController {
 		this.utilityService = utilityService;
 	}
 
-	// @RequestMapping("/")
-	// public String showhome(Model model) {
-	// System.out.println("showhome");
-	// return "homepage";
-	// }
-
 	@RequestMapping("/")
 	public String showhome(Model model) {
 		System.out.println("showhome");
 		return "home";
 	}
+
 	@RequestMapping("/sessionTimeout")
 	public String showSessionTimeOut(Model model) {
 		return "sessionTimeout";
 	}
-	
+
 	@RequestMapping("/Sample")
 	public String showRandom() {
 		System.out.println("random page");
@@ -156,7 +150,9 @@ public class HomeController {
 	// }
 
 	@RequestMapping(value = "/welcome")
-	public String showWelcome() {
+	public String showWelcome(Model model, Principal principal) {
+		String uname = principal.getName();
+		model.addAttribute("uname", uname);
 		System.out.println("SHOW WELCOME");
 		return "welcome";
 	}
@@ -189,7 +185,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/adminhome")
 	public String adminHome(Model model) {
-
 		System.out.println("Admin Home");
 		return "adminhome";
 	}
@@ -197,63 +192,34 @@ public class HomeController {
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result) {
 		System.out.println("Finding errors, " + result.toString());
-		if (result.hasErrors()) {
+//		if (result.hasErrors()) {
+//			return "registeruser";
+//		}
+		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+		if (uniqueUser == null) {
+			user.setIsnewuser(true);
+			user.setIsmerchant(false);
+			sendOTPMail(user.getFirstname(), user.getEmail());
+			System.out.println("Inserting USer into database");
+			userService.createUser(user);
+			model.addAttribute("mail", user.getEmail());
+			return "completeregistration";
+
+		} else {
+			System.out.println("Caught duplicate Username");
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			return "registeruser";
 		}
-		user.setIsmerchant(false);
-		sendOTPMail(user.getFirstname(), user.getEmail());
-		System.out.println("Inserting USer into database");
-		userService.createUser(user);
-		model.addAttribute("mail", user.getEmail());
-		return "completeregistration";
-	}
 
-	public static String generatePassword() {
-		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
-		final int PW_LENGTH = 8;
-		Random rnd = new SecureRandom();
-		StringBuilder pass = new StringBuilder();
-		for (int i = 0; i < PW_LENGTH; i++)
-			pass.append(chars.charAt(rnd.nextInt(chars.length())));
-		return pass.toString();
-	}
+		// check if username and email already exist
 
-	void sendOTPMail(String firstName, String mail) {
-
-		// generate otp
-		String otp = generatePassword();
-
-		OTP otpObj = new OTP();
-		otpObj.setFirstName(firstName);
-		otpObj.setMailID(mail);
-		otpObj.setOtpValue(otp);
-		// otpObj.setTimeStamp(new Date());
-
-		try {
-			System.out.println("Sending email. Here");
-			System.out.println("otpObj " + otpObj.toString());
-			utilityService.insertOTP(otpObj);
-			System.out.println("Sending email");
-			SendMail sendMail = new SendMail();
-			sendMail.sendOTP(otpObj);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e);
-		}
 	}
 
 	@RequestMapping(value = "/registerbtn2", method = RequestMethod.POST)
 	public String RegisterUserComplete(Model model, User user, HttpServletRequest request) {
-		// @RequestParam("otpvalue") String otpValue
-		// I need Mail ID, first name and OTP
-		// I need the whole user object
-		// Check OTP- if exists then insert
 
-		System.out.println("Final stage");
 		String mail = request.getParameter("mail");
 		String otpValue = request.getParameter("otpValue");
-		// user
-		System.out.println("GEtting user object for user name " + mail);
 		User userObj = userService.getUserregisterbyEmail(mail);
 
 		String otpStatus = verifyUserOTP(userObj, otpValue);
@@ -266,7 +232,7 @@ public class HomeController {
 			userObj.setIsnewuser(true);
 			System.out.println(userObj.toString());
 			userService.createUser(userObj);
-			return "homepage";
+			return "home";
 			// } else {
 			// System.out.println("Caught duplicate Username");
 			// result.rejectValue("username",
@@ -280,10 +246,11 @@ public class HomeController {
 			System.out.println("Wrong otp, otpStatus " + otpStatus);
 		} else if (otpStatus.equalsIgnoreCase("failure")) {
 			// Wrong OTP
+			// delete userprofile and redirect again to registration.
 			System.out.println("FAilure refresh and request OTP, otpStatus " + otpStatus);
 		}
 		// DELETE THIS LATER
-		return "homepage";
+		return "home";
 	}
 
 	// @RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
@@ -376,4 +343,39 @@ public class HomeController {
 		// return "registeruser";
 		// }
 	}
+
+	public static String generatePassword() {
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
+		final int PW_LENGTH = 8;
+		Random rnd = new SecureRandom();
+		StringBuilder pass = new StringBuilder();
+		for (int i = 0; i < PW_LENGTH; i++)
+			pass.append(chars.charAt(rnd.nextInt(chars.length())));
+		return pass.toString();
+	}
+
+	void sendOTPMail(String firstName, String mail) {
+
+		// generate otp
+		String otp = generatePassword();
+
+		OTP otpObj = new OTP();
+		otpObj.setFirstName(firstName);
+		otpObj.setMailID(mail);
+		otpObj.setOtpValue(otp);
+		// otpObj.setTimeStamp(new Date());
+
+		try {
+			System.out.println("Sending email. Here");
+			System.out.println("otpObj " + otpObj.toString());
+			utilityService.insertOTP(otpObj);
+			System.out.println("Sending email");
+			SendMail sendMail = new SendMail();
+			sendMail.sendOTP(otpObj);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e);
+		}
+	}
+
 }

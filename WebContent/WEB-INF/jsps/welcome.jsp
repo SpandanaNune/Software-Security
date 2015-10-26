@@ -35,7 +35,7 @@
 		<H1>Welcome to MTBC</H1>
 		<h3>
 			Hi
-			<c:out value="${user.getUsername()}"></c:out>
+			<c:out value="${uname}"></c:out>
 			!
 		</h3>
 		<div id="border" class="well">
@@ -53,42 +53,43 @@
 				</sec:authorize>
 
 				<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
-					<a class="btn btn-primary btn-large"
+					<a class="btn btn-info btn-large"
 						href="${pageContext.request.contextPath}/viewedituserdetails_employee">View/Edit
 						Customer Details</a>
 					<br />
 					<br />
-					<a class="btn btn-primary btn-large"
+					<a class="btn btn-info btn-large"
 						href="${pageContext.request.contextPath}/bankers">View
 						Transactions</a>
 					<br />
 					<br />
-					<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/editprofileemployee">Edit
+					<a class="btn btn-info btn-large"
+						href="${pageContext.request.contextPath}/editemployeeprofile">Edit
 						Profile</a>
+					<br />
+					<br />
 				</sec:authorize>
 
 				<sec:authorize access="hasRole('ROLE_MANAGER')">
 
 					<a class="btn btn-info btn-large"
-						href="${pageContext.request.contextPath}/usersignuprequest">User
-						SignUp Request</a>
+						href="${pageContext.request.contextPath}/usersignuprequest">User SignUp Request</a>
 					<br />
 					<br />
 					<a class="btn btn-info btn-large"
-						href="${pageContext.request.contextPath}/viewedituserdetails">View/Edit
-						Customer Details</a>
+						href="${pageContext.request.contextPath}/viewedituserdetails">View/Edit Customer Details</a>
 					<br />
 					<br />
 					<a class="btn btn-info btn-large"
-						href="${pageContext.request.contextPath}/deleteactiveusers">Block
-						Active Customer</a>
+						href="${pageContext.request.contextPath}/deleteactiveusers">Block Active Customer</a>
 					<br />
 					<br />
 					<a class="btn btn-info btn-large"
-						href="${pageContext.request.contextPath}/approvetransaction">View
-						Transaction</a>
-
+						href="${pageContext.request.contextPath}/approvetransaction">View Transaction</a>
+					<br />
+					<br />
+					<a class="btn btn-info btn-large"
+						href="${pageContext.request.contextPath}/editmanagerprofile">Edit Profile</a><br /> <br />
 					</p>
 
 				</sec:authorize>

@@ -1,13 +1,11 @@
 package sbs.web.controllers;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.List;
 
-import javax.servlet.ServletException;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
-import sbs.web.utils.PKIUtil;
 
 @Controller
 public class ExternalUserController {
@@ -51,10 +48,6 @@ public class ExternalUserController {
 		System.out.println(user);
 		return "merchanthome";
   }
-  
-  
-  
-  
   
 @RequestMapping(value = "/updatemerchantbtn", method = RequestMethod.POST)
 public String UpdaterMerchantUser(@Valid User user, BindingResult result, Model model) {

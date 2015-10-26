@@ -3,13 +3,19 @@ package sbs.web.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
 public class Users {
 
 	@Id
+	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
+	@NotNull
 	private String username;
+	@Size(min = 5, max = 45, message = "Password must be atleast 5 characters")
+	@NotNull
 	private String password;
 
 	private String email;
@@ -18,8 +24,14 @@ public class Users {
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
+	@Size(min = 5, max = 45, message = "Answer1 must be atleast 5 characters")
+	@NotNull
 	private String q1;
+	@Size(min = 5, max = 45, message = "Answer2 must be atleast 5 characters")
+	@NotNull
 	private String q2;
+	@Size(min = 5, max = 45, message = "Answer3 must be atleast 5 characters")
+	@NotNull
 	private String q3;
 
 	public String getQ1() {

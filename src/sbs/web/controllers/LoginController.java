@@ -2,8 +2,8 @@ package sbs.web.controllers;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.Principal;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import sbs.web.models.Accounts;
 import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
@@ -48,7 +47,8 @@ public class LoginController {
 	
 
 	@RequestMapping("/login")
-	public String showLogin( HttpServletRequest request) {
+	public String showLogin( HttpServletRequest request,Principal principal,Model model) {
+
 		logger.info("In the login controller");
 		return "login";
 	}

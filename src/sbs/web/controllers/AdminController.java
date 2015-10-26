@@ -1,5 +1,6 @@
 package sbs.web.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,39 +22,42 @@ import sbs.web.service.UserService;
 @Controller
 public class AdminController {
 	private UserService userService;
+
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+
 	@RequestMapping("/getinternalusers")
-	public String viewInternalUsers( Model model) {
+	public String viewInternalUsers(Model model) {
 		List<Authorities> employees = userService.getAllEmployees();
 		List<User> userProfileList = new ArrayList<User>();
 		List<String> roles = new ArrayList<String>();
 
-		for(Authorities auth:employees)
-		{
+		for (Authorities auth : employees) {
 			userProfileList.add(userService.getUserregisterbyUsername(auth.getUsername()));
 			roles.add(auth.getAuthority());
 		}
 		model.addAttribute("user", userProfileList);
 		model.addAttribute("roles", roles);
-
 		return "vieweditinternalusers";
 	}
-	
+
 	@RequestMapping("/editemployee")
 	public String editemployee(Model model, @RequestParam("View/Edit") String username) {
 		User user = userService.getUserregisterbyUsername(username);
 		model.addAttribute("user", user);
 		return "employeeUpdation";
 	}
+
 	@RequestMapping("/employeeupdationdone")
 	public String employeeUpdate(@Valid User eUser, BindingResult result) {
+		if(result.hasErrors())
+			return "employeeUpdation";
 		userService.createUser(eUser);
 		return "adminhome";
 	}
-	
+
 	@RequestMapping("/deleteemployee")
 	public String deleteEmployee(Model model, @RequestParam("Decline") String username) {
 
@@ -61,7 +65,7 @@ public class AdminController {
 		user.setIsnewuser(false);
 		user.setIs_deleted(true);
 		userService.createUser(user);
-		
+
 		Authorities employee = userService.getEmployee(username);
 		userService.deleteEmployee(employee);
 
@@ -69,8 +73,7 @@ public class AdminController {
 		List<User> userProfileList = new ArrayList<User>();
 		List<String> roles = new ArrayList<String>();
 
-		for(Authorities auth:employees)
-		{
+		for (Authorities auth : employees) {
 			userProfileList.add(userService.getUserregisterbyUsername(auth.getUsername()));
 			roles.add(auth.getAuthority());
 		}
@@ -80,19 +83,18 @@ public class AdminController {
 		return "vieweditinternalusers";
 
 	}
-	
+
 	@RequestMapping(value = "/employeecreation")
-	public String createEmployee(HttpServletRequest rqst, @Valid User user,BindingResult result,Model model) {
-		if(user!=null && user.getUsername() != null)
-		{	
+	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model) {
+		if (user != null && user.getUsername() != null) {
 			String role = rqst.getParameter("role");
 			System.out.println(user);
 			User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
 			if (uniqueUser == null) {
 				System.out.println(user);
-				user.setIsnewuser(true);				
+				user.setIsnewuser(true);
 				userService.createUser(user);
-				
+
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority(role);
@@ -100,7 +102,7 @@ public class AdminController {
 			} else {
 				System.out.println("Caught duplicate Username");
 				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-			}	
+			}
 		}
 		List<String> authorities = new ArrayList<>();
 		authorities.add("ROLE_EMPLOYEE");
@@ -109,51 +111,51 @@ public class AdminController {
 		model.addAttribute("user", new User());
 		return "employeecreation";
 	}
-	
+
 	@RequestMapping(value = "/pii")
-	public String listPIIs(Model model)
-	{
+	public String listPIIs(Model model) {
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);
 		return "pii";
 	}
-	
+
 	@RequestMapping("/acceptpii")
 	public String acceptUserPII(Model model, @RequestParam("Accept") String username) {
-		User user=userService.getUserregisterbyUsername(username);
+		User user = userService.getUserregisterbyUsername(username);
 		PII pii = userService.getPII(username);
-		if(pii.getOldSSN().equalsIgnoreCase(user.getSSN()))
-		{
-		user.setSSN(pii.getNewSSN());
-		userService.updateUser(user);
-		userService.approvePII(pii.getUserName());
-		}
-		else
-		{
-			//error SSN not matched
+		if (pii.getOldSSN().equalsIgnoreCase(user.getSSN())) {
+			user.setSSN(pii.getNewSSN());
+			userService.updateUser(user);
+			userService.approvePII(pii.getUserName());
+		} else {
+			// error SSN not matched
 		}
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);
 		return "pii";
 	}
+
 	@RequestMapping("/declinepii")
-	public String declineUserPII(Model model, @RequestParam("Decline")String username) {
+	public String declineUserPII(Model model, @RequestParam("Decline") String username) {
 		userService.deletePII(username);
 		List<PII> piis = userService.getAllPIIs();
 		model.addAttribute("piis", piis);
 		return "pii";
-
 	}
+
 	@RequestMapping("/editadminprofile")
-	public String editManagerProfile(Model model) {
-		User user = userService.getUserregisterbyUsername("swetha2809");
+	public String editManagerProfile(Model model,Principal principal) {
+		String uname = principal.getName();
+		User user = userService.getUserregisterbyUsername(uname);
 		model.addAttribute("user", user);
 		return "editadminprofile";
 	}
-	
+
 	@RequestMapping("/editadminprofiledone")
-	public String editManagerProfileDone(@Valid User user, BindingResult result,Model model) {
-			userService.createUser(user);
+	public String editManagerProfileDone(@Valid User user, BindingResult result, Model model) {
+		if(result.hasErrors())
+			return "editadminprofile";
+		userService.createUser(user);
 		return "adminhome";
 	}
 
