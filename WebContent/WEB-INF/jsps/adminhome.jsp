@@ -29,6 +29,10 @@
          <br>
          <a class="btn btn-info btn-large"
                  href="${pageContext.request.contextPath}/pii">Approve PII</a>
+                  <br><br>
+         <br>
+         <a class="btn btn-info btn-large"
+                 href="${pageContext.request.contextPath}/editadminprofile">Edit Profile</a>
                  
                  </body>
          <br><br>

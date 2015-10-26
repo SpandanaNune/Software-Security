@@ -27,7 +27,7 @@
 		<h1>Edit Profile</h1>
 		​
 		<sf:form method="post"
-			action="${pageContext.request.contextPath}/edituserprofiledone"
+			action="${pageContext.request.contextPath}/editmerchantprofiledone"
 			commandName="user" enctype="multipart/form-data">
 ​
 			<sf:input class="control form-control" path="username"
@@ -44,16 +44,15 @@
 			<table>
 
 				<tr>
-					<td class="label"><h4 style="color: black">FirstName:</h4></td>
+					<td class="label"><h4 style="color: black">CompanyName:</h4></td>
 					<td><sf:input class="control form-control" path="firstname"
 							name="firstname" type="text" /><br /> <sf:errors
 							path="firstname" Class="error"></sf:errors></td>
 
 				</tr>
 				<tr>
-					<td class="label"><h4 style="color: black">LastName:</h4></td>
 					<td><sf:input class="control form-control" path="lastname"
-							name="lastname" type="text" /><br /> <sf:errors path="lastname"
+							name="lastname" type="hidden" /><br /> <sf:errors path="lastname"
 							Class="error"></sf:errors></td>
 				</tr>
 				
@@ -99,7 +98,7 @@
 				</tr>
 				
 				<tr>
-					<td class="label"><h4 style="color: black">SSN: </h4></td>
+					<td class="label"><h4 style="color: black">TIN: </h4></td>
 					<td><sf:input class="control form-control" path="SSN" name="SSN"
 				type="text" /></td>
 				</tr>

@@ -230,5 +230,20 @@ public class ManagerController {
 		return "deleteactiveusers";
 
 	}
+	
+	@RequestMapping("/editmanagerprofile")
+	public String editManagerProfile(Model model) {
+		User user = userService.getUserregisterbyUsername("dewded");
+		model.addAttribute("user", user);
+		return "editmanagerprofile";
+	}
+	
+	@RequestMapping("/editmanagerprofiledone")
+	public String editManagerProfileDone(@Valid User user, BindingResult result,Model model) {
+			userService.createUser(user);
+		
+		return "managerhome";
+	}
+	
 
 }

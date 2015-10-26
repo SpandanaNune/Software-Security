@@ -51,7 +51,7 @@
       </tr>
 			</table>
 
-				<input class="control btn btn-info" value="Register" type="submit" />
+				<input class="control btn btn-info" value="Reset" type="submit" />
 
 
 
