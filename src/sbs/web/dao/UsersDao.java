@@ -63,6 +63,16 @@ public class UsersDao {
 		return query.uniqueResult();
 	//	return null;
 	}
+	
+	public Object getUserActivatebyUsername(String username) {
+		org.hibernate.Query query = session().createQuery("from Authorities where username = '" + username + "'");
+		return query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewMerchants() {
+		return session().createQuery("from User where ismerchant = 1 and isnewuser=1").list();
+	}
 
 	public Object getUserbyUsername(String username) {
 		org.hibernate.Query query = session().createQuery("from Users where username = '" + username + "'");

@@ -38,6 +38,9 @@
 				<a class="btn btn-primary btn-large"
 				href="${pageContext.request.contextPath}/approvetransaction">Approve Transaction</a><br /> <br /> 
 				<a class="btn btn-primary btn-large"
+				href="${pageContext.request.contextPath}/merchantsignuprequest">Merchant Sign Up Request</a><br /> <br />
+				<br /> 
+				<a class="btn btn-primary btn-large"
 				href="${pageContext.request.contextPath}/editmanagerprofile">Edit Profile</a><br /> <br /> 
 		</p>
 	</div>
