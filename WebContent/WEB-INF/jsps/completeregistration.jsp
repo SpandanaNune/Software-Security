@@ -39,5 +39,3 @@
 	</sf:form>
 </body>
 </html>
-
-

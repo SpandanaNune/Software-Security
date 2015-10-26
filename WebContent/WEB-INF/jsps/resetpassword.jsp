@@ -7,13 +7,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-
+<title>Reset Password</title>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://www.google.com/jsapi" type="text/javascript"></script>
 <link href="${pageContext.request.contextPath}/static/css/main.css"
-	rel="stylesheet" type="text/css" />	
+	rel="stylesheet" type="text/css" />
 </head>
 <body>
-	Forgot Password page
+  <center>
+    <br><br>
+  <div class="container">
+	<h1>Reset Password</h1>
 	<br />
 
 	<sf:form method="post"
@@ -22,22 +28,35 @@
 
 		<table class="formtable">
 			<tr>
-				<td class="label">New Password:</td>
-				<td><sf:input class="control" path="password" name="password"
+				<td class="label"><h4 style="color:black">New Password:</h4></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+				<td><sf:input class="control form-control" path="password" name="password"
 						type="text" value=""/><br /> <sf:errors path="password" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
-				<td class="label">Confirm Password:</td>
-				<td><input class="control"  name="confirmpassword"
+				<td class="label"><h4 style="color:black">Confirm Password:</h4></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+				<td><input class="control form-control"  name="confirmpassword"
 						type="text" /><br /></td>
 			</tr>
-			<tr>
-				<td class="label"></td>
-				<td><input class="control" value="Register" type="submit" /></td>
-			</tr>
-		</table>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+			</table>
+
+				<input class="control btn btn-info" value="Reset" type="submit" />
+
+
 
 	</sf:form>
-
+</div>
+</center>
 </body>
 </html>

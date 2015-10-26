@@ -31,7 +31,7 @@ public class PKIUtil {
 		}
 	}
 	
-	public boolean validateKeyPairs(User user, String message)
+	public static boolean validateKeyPairs(User user, String message)
 	{
 		MTBCPKIUtility user_pki = new MTBCPKIUtility();
 		try{

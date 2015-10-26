@@ -19,7 +19,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-
 	<c:out value="${user.getUsername()}"></c:out>
 
 	<div class="row-fluid">
@@ -78,7 +77,10 @@
 						href="${pageContext.request.contextPath}/Sample">Random </a>
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/accountactivation">Verify Account</a>
-						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/edituserprofile">Edit Customer Profile</a>
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/editmerchantprofile">Edit Merchant Profile</a>
 						<a href ="<c:url value ='/logout'/>">Log out</a>
 				</p>
 				
@@ -88,7 +90,8 @@
 		<div class="span4"></div>
 	</div>
 
-
+		<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 
 	<%-- <a href = "${pageContext.request.contextPath}/viewuser">Click Here to Login</a>
  --%>

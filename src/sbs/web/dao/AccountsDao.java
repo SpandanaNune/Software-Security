@@ -26,6 +26,13 @@ public class AccountsDao {
 		public List<Accounts> getAccountDetails(String username) {
 			return session().createQuery("from Accounts where username = '"+username+"'").list();
 		}
+		
+		
+		public Object getAccountsbyUsername(String username) {
+			org.hibernate.Query query = session().createQuery("from accounts where username = '" + username + "'");
+			return query.uniqueResult();
+		}
+		
 		@SuppressWarnings("unchecked")
 		public List<Accounts> getAccountDetailsForBanker(String bankerName) {
 			return session().createQuery("from Accounts where bankername = '"+bankerName+"'").list();

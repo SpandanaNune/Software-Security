@@ -59,9 +59,7 @@ public class AccountsController {
 			String username;
 //			username=principal.getName();
 			username="arjun";
-			
 			model.addAttribute("transactionDetails", new TransactionDetails());
-			
 			try{
 				
 				ArrayList<Accounts> accounts = (ArrayList<Accounts>)accountsService.getAccountDetails(username);
@@ -116,4 +114,25 @@ public class AccountsController {
 			System.out.println("Go to Make Payment Page");
 			return "makepayment";
 		}
+
+		@RequestMapping(value="/openMerchantTransaction")
+	    public String openMerchantTransaction(Model model, Principal principal){
+	        String username;
+//	        username=principal.getName();
+	        username="arjun";
+	        
+	        model.addAttribute("transactionDetails", new TransactionDetails());
+	        
+	        try{
+	            
+	        	ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountsService.getAccountDetails(username);
+	              model.addAttribute("accounts",accounts);
+	            
+	        }catch ( Exception e) {
+	            e.printStackTrace();
+	        }
+	        System.out.println("Go to Make Transaction Page");
+	        return "merchanttransaction";
+	    }
+		
 }

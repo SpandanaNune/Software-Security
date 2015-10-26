@@ -15,6 +15,18 @@ public class PII {
 	private String newSSN;
 	
 	private boolean isApproved;
+	
+	private boolean isMerchant;
+	
+	
+
+	public boolean isMerchant() {
+		return isMerchant;
+	}
+
+	public void setMerchant(boolean isMerchant) {
+		this.isMerchant = isMerchant;
+	}
 
 	public String getUserName() {
 		return userName;

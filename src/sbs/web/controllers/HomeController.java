@@ -22,6 +22,7 @@ import sbs.web.service.UserService;
 import sbs.web.service.UtilityService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utils.PKIUtil;
+
 @Controller
 public class HomeController {
 	private UserService userService;
@@ -30,17 +31,17 @@ public class HomeController {
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	@Autowired
 	public void setUtilityService(UtilityService utilityService) {
 		this.utilityService = utilityService;
 	}
-	
 	@RequestMapping("/")
 	public String showhome(Model model) {
 		System.out.println("showhome");
 		return "homepage";
 	}
+
 	@RequestMapping("/Sample")
 	public String showRandom() {
 		System.out.println("random page");
@@ -61,18 +62,21 @@ public class HomeController {
 		model.addAttribute("user", new User());
 		return "registeruser";
 	}
+
 	@RequestMapping(value = "/mylogin")
 	public String loginUser(Model model) {
 		System.out.println("loginUser");
 		model.addAttribute("userlogin", new User());
 		return "mylogin";
 	}
+
 	@RequestMapping(value = "/merchant")
 	public String showMerchantUser(Model model) {
 		System.out.println("showRegisterMerchant");
 		model.addAttribute("user", new User());
 		return "merchant";
 	}
+
 	@RequestMapping(value = "/userconfirm")
 	public String showUserConfirmation(Model model) {
 		System.out.println("User Confirmation");
@@ -92,6 +96,7 @@ public class HomeController {
 		// if (result.hasErrors()) {
 		// return "userconfirmation";
 		// }
+		Authorities authority = userService.getUserActivatebyUsername(uname);
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);
 		users.setAccountNonLocked(true);
@@ -100,7 +105,14 @@ public class HomeController {
 		users.setSiteKeyID(1);
 		Authorities auth = new Authorities();
 		auth.setUsername(uname);
-		auth.setAuthority("ROLE_USER");
+		if ("ROLE_NEWMERCHANT".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_MERCHANT");
+		} else if ("ROLE_NEWMANAGER".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_MANAGER");
+		} else if ("ROLE_NEWEMPLOYEE".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_EMPLOYEE");
+		} else
+			auth.setAuthority("ROLE_USER");
 		userService.setAuthority(auth);
 		userService.saveOrUpdateUsers(users);
 		User user_profile = userService.getUserProfilebyField("username", uname);
@@ -113,6 +125,7 @@ public class HomeController {
 		System.out.println("Admin Home");
 		return "adminhome";
 	}
+
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result) {
 		System.out.println("Finding errors, " + result.toString());
@@ -144,6 +157,7 @@ public class HomeController {
 		model.addAttribute("mail", user.getEmail());
 		return "completeregistration";
 	}
+
 	public static String generatePassword() {
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
 		final int PW_LENGTH = 8;
@@ -153,14 +167,19 @@ public class HomeController {
 			pass.append(chars.charAt(rnd.nextInt(chars.length())));
 		return pass.toString();
 	}
+
+
 	void sendOTPMail(String firstName, String mail) {
+
 		// generate otp
 		String otp = generatePassword();
+
 		OTP otpObj = new OTP();
 		otpObj.setFirstName(firstName);
 		otpObj.setMailID(mail);
 		otpObj.setOtpValue(otp);
 		// otpObj.setTimeStamp(new Date());
+
 		try {
 			System.out.println("Sending email. Here");
 			System.out.println("otpObj " + otpObj.toString());
@@ -173,24 +192,31 @@ public class HomeController {
 			System.out.println(e);
 		}
 	}
+
+
 	@RequestMapping(value = "/registerbtn2", method = RequestMethod.POST)
 	public String RegisterUserComplete(Model model, User user, HttpServletRequest request) {
-	
+		// @RequestParam("otpvalue") String otpValue
+		// I need Mail ID, first name and OTP
+		// I need the whole user object
+		// Check OTP- if exists then insert
+
 		System.out.println("Final stage");
 		String mail = request.getParameter("mail");
 		String otpValue = request.getParameter("otpValue");
 		// user
 		System.out.println("GEtting user object for user name " + mail);
 		User userObj = userService.getUserregisterbyEmail(mail);
+
 		String otpStatus = verifyUserOTP(userObj, otpValue);
 		System.out.println("otpStatus " + otpStatus);
+
 		if (otpStatus.equalsIgnoreCase("success")) {
-	
 			userObj.setIsnewuser(true);
 			System.out.println(userObj.toString());
 			userService.createUser(userObj);
 			return "homepage";
-	
+
 		} else if (otpStatus.equalsIgnoreCase("attempts")) {
 			// Too many attempts. Refresh and request OTP again
 			System.out.println("Wrong otp, otpStatus " + otpStatus);
@@ -201,13 +227,13 @@ public class HomeController {
 		// DELETE THIS LATER
 		return "homepage";
 	}
-	
-	
+
 	public String verifyUserOTP(User user, String otpValue) {
 		System.out.println("showViewUser");
 		// String mail=user.getEmail();
 		String mail = user.getEmail();
 		String firstName = user.getFirstname();
+
 		OTP otpObj = new OTP();
 		otpObj.setFirstName(firstName);
 		otpObj.setMailID(mail);
@@ -245,6 +271,30 @@ public class HomeController {
 			e.printStackTrace();
 		}
 		return null;
-		
+	}
+	
+	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
+	public String RegisterMerchant(@Valid User user, BindingResult result,Model model) {
+
+		if (result.hasErrors()) {
+			return "merchant";
+		}
+
+		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+		if (uniqueUser == null) {
+			System.out.println(user);
+				user.setIsnewuser(false);
+				user.setIsmerchant(true);
+				user.setLastname("Merchant");
+			userService.createUser(user);
+			sendOTPMail(user.getFirstname(), user.getEmail());
+			model.addAttribute("mail", user.getEmail());
+
+			return "completeregistration";
+		} else {
+			System.out.println("Caught duplicate Username");
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+			return "merchant";
+		}
 	}
 }
