@@ -28,7 +28,12 @@
 				
 					<p>					
 						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/bankers">View Transactions</a>							
+						href="${pageContext.request.contextPath}/viewedituserdetails_employee">View/Edit Customer Details</a>							
+				</p>
+				
+				<p>					
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/editprofileemployee">Edit Profile</a>							
 				</p>
 				
 

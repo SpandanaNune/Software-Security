@@ -44,7 +44,6 @@ public class UtilityDao {
 		org.hibernate.Query query = session().createQuery(hql);
 		query.setParameter("mailID",  otpObj.getMailID());
 		query.executeUpdate();
-
 	}
 	
 }

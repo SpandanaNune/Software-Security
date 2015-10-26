@@ -83,6 +83,9 @@ public class UsersDao {
 	public List<Users> getUsersByFieldBool(String field, boolean value) {
 		return session().createQuery("from Users where " + field + "=" + value + "").list();	
 	}
+	public Object getUserByFieldBool(String field, boolean value,String userName) {
+		return session().createQuery("from Users where username='"+userName+"' and " + field + "=" + value + "").uniqueResult();	
+	}
 	
 	public Object getUserProfilebyField(String field, String value) {
 		org.hibernate.Query query = session().createQuery("from User where " + field + "='" + value + "'");
@@ -90,7 +93,7 @@ public class UsersDao {
 	}
 	
 	public Object getUserregisterbyUsername(String username) {
-		org.hibernate.Query query = session().createQuery("from User where username = '" + username + "'");
+		org.hibernate.Query query = session().createQuery("from User where username = '" + username + "' and is_deleted=0");
 		return query.uniqueResult();
 	}
 
@@ -126,6 +129,11 @@ public class UsersDao {
 	public List<PII> getAllPIIRequests(){
 		return session().createQuery("from PII where isApproved = 0").list();	
 	}
+
+	public Object getUserregisterbyEmail(String mail) {
+		org.hibernate.Query query = session().createQuery("from User where email = '" + mail + "'");
+		return query.uniqueResult();
+	}
 	
 	public Object getPII(String userName)
 	{
@@ -145,6 +153,23 @@ public class UsersDao {
 	@SuppressWarnings("unchecked")
 	public List<Authorities> getUserAuthoritiesByField(String field, String value){
 		return session().createQuery("from Authorities where " + field + "=" + value + "").list();	
+
+	}	
+	@SuppressWarnings("unchecked")
+	public List<Authorities> getAllEmployees()
+	{
+		return session().createQuery("from Authorities where authority ='ROLE_EMPLOYEE' OR authority='ROLE_MANAGER'").list();
+	}
+	
+	public Object getEmployee(String username)
+	{
+		return session().createQuery("from Authorities where username='"+username+"'").uniqueResult();
+	}
+	
+	public void deleteEmployee(Authorities auth)
+	{
+		 session().delete(auth);
+
 	}
 //	public List<User> getAllActiveUsers(){
 //		String hql = "from User ur, Users us where ur.username = us.username and us.enabled = 1";

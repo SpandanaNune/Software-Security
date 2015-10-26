@@ -36,9 +36,18 @@
 						href="${pageContext.request.contextPath}/mylogin">LoginAgain</a>
 							 <a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/sendOTP">Send OTP [Arjun]</a>
+
 							 <a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/verifyOTP">Verify OTP [Arjun]</a>
-
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/merchanthome">Merchant Home</a>
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/managerhome">Manager Home</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/merchant">Merchant Register</a>
+						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/signup">LoginAgain</a>
 						
@@ -56,7 +65,10 @@
 						href="${pageContext.request.contextPath}/openTransaction">Open transactions [Arjun]</a>
 						
 						<a class="btn btn-primary btn-large"
-						href="${pageContext.request.contextPath}/getAccountDetails">Get Account Details</a>
+						href="${pageContext.request.contextPath}/openDebitCreditTransaction">Debit credit your account [Arjun]</a>
+						
+						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/random">Random </a>
 						
 						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/Sample">Random </a>

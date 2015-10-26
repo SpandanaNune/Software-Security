@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -22,13 +23,13 @@
 		var divv = document.getElementById("mainform");
 		var value = select.value;
 		if (value == "self") {
-			toAppend = "";
-			divv.innerHTML = toAppend;
+			document.getElementById('accountdropdown').style.visibility = 'visible';
+			document.getElementById('accounttext').style.visibility = 'hidden';
 			return;
 		}
 		if (value == "other") {
-			toAppend = "";
-			divv.innerHTML = toAppend;
+			document.getElementById('accountdropdown').style.visibility = 'hidden';
+			document.getElementById('accounttext').style.visibility = 'visible';
 			return;
 		}
 	}
@@ -37,7 +38,8 @@
 <body>
 	<sf:form method="post"
 		action="${pageContext.request.contextPath}/createTransaction"
-		commandName="transactionDetails" htmlEscape="true">
+		commandName="transactionDetails" htmlEscape="true" enctype="multipart/form-data">
+		
 		<div class="container">
 			<h1>Transfer Funds</h1>
 			<h3>
@@ -49,21 +51,27 @@
 					<option  value="${account.getAccountNo()}">${account.getAccountNo()}</option>
 				</c:forEach>
 			</sf:select> <br> Who do you want to send money to? <br>
-			 <select
+			
+			 <sf:select path='account_type'
 				class="form-control" id="sendoptions" onchange="change();">
 				<option value="self">Your Own Account</option>
 				<option value="other">Other Account</option>
-			</select> <br /> <br />
-			<div id="mainform">
-			Select Your Account: <br> <sf:select class='form-control' id='accountnumbersreceive' path='toAccountNo'> <c:forEach var='account' items='${accounts}'><option value='${account.getAccountNo()}'>${account.getAccountNo()}</option></c:forEach> </sf:select> <br>
+			</sf:select> <br /> <br />
+			<div id="accountdropdown">
+			Select Your Account: <br> <sf:select path='toMyAccountNo' class='form-control' > <c:forEach var='account' items='${accounts}'><option value='${account.getAccountNo()}'>${account.getAccountNo()}</option></c:forEach> </sf:select> <br>
 			
-			<!--  Enter The Account Number: <sf:input type='textbox' class='form-control' path='toAccountNo'/> <br>-->
-			
+			</div>  
+			<div id="accounttext"  style="visibility:hidden">
+			  Enter The Account Number: <sf:input path='toOtherAccountNo' type='text' class='form-control' /> <br>
 			</div>
 		</div>
 		<br> Enter the amount <br /> 
 		<sf:input type='textbox' class='form-control' path='balance'/> <br>
 		<button type="submit" class="btn btn-default">Send Money</button>
+		<input type="file" name="file" />
+		<input type="hidden"
+    name="${_csrf.parameterName}"
+    value="${_csrf.token}"/>
 	</sf:form>
 </body>
 </html>

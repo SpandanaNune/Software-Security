@@ -25,19 +25,18 @@ public class AccountsService {
 			return accountsDao.getAccountDetails(username);
 			
 		}
-		
+
+
+		public Accounts getAccountForID(long toUserAccount) {
+			return accountsDao.getAccountForID(toUserAccount);
+		}
+
+
+		public void updateAccount(Accounts from) {
+			 accountsDao.updateAccount(from);
+		}
 		public List<Accounts> getAccountsForBanker(String bankerName) {
 			return accountsDao.getAccountDetailsForBanker(bankerName);
 			
 		}
-		
-		public Accounts getAccountForID(long toUserAccount) {
-            return accountsDao.getAccountForID(toUserAccount);
-        }
-
-
-        public void updateAccount(Accounts from) {
-             accountsDao.updateAccount(from);
-        }
-
 }

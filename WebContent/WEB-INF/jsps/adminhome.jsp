@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-\<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-=======
->>>>>>> 9af758e48dcd07f965862062a8775d4f98e0b2ac
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -24,13 +21,16 @@
 
                <a class="btn btn-info btn-large"
                  href="${pageContext.request.contextPath}/employeecreation">Add Employee</a></body> <br> <br><br>
-
+ <a class="btn btn-info btn-large"
+                 href="${pageContext.request.contextPath}/getinternalusers">View/Edit Employee</a><br> <br><br>
                  <a class="btn btn-info btn-large"
                  href="${pageContext.request.contextPath}/transactionlog">Transaction Logs</a></body>
          <br><br>
          <br>
          <a class="btn btn-info btn-large"
-                 href="${pageContext.request.contextPath}/pii">Approve PII</a></body>
+                 href="${pageContext.request.contextPath}/pii">Approve PII</a>
+                 
+                 </body>
          <br><br>
        </center>
        </div>

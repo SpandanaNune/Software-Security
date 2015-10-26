@@ -19,6 +19,7 @@
 ​
 </head>
 <body>
+
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -40,7 +41,7 @@
 								href="${pageContext.request.contextPath}/registeruser">As
 									Customer</a></li>
 							<li><a
-								href="${pageContext.request.contextPath}/registeruser">As
+								href="${pageContext.request.contextPath}/merchant">As
 									Merchant</a></li>
 						</ul></li>
 					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
@@ -58,7 +59,8 @@
 			<h4>
 				<i>A smarter way to bank!</i>
 			</H4>
-			<br> <img src="mtbclogo.png"></img> ​ <br> <br>
+			<br><img src="${pageContext.request.contextPath}/static/images/mtbclogo.png"></img>
+ ​ <br> <br>
 			<p>At MTBC, we understand your banking needs.</p>
 			<br> <br>
 			<button type="submit" class="btn btn-info">

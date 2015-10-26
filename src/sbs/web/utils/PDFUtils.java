@@ -58,8 +58,9 @@ public class PDFUtils {
 		// Lets write a big header
 		preface.add(new Paragraph("Money Tree Banking Corporation", catFont));
 		addEmptyLine(preface, 4);
+		String logo = System.getProperty("catalina.home") +"\\images\\mtbclogo.png";
 
-		String logo = "images/mtbclogo.png";
+		//String logo = ";
 		Image img;
 
 		img = Image.getInstance(logo);

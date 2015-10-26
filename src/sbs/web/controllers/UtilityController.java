@@ -1,7 +1,6 @@
 package sbs.web.controllers;
 
 import java.security.SecureRandom;
-import java.util.Date;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ public class UtilityController {
 		return Long.parseLong(pass.toString());
 	}
 
-	
 	public static String generatePassword() {
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
 
@@ -48,19 +46,17 @@ public class UtilityController {
 
 	@RequestMapping("/sendOTP")
 	public String verifyUserMailID(User user, Model model) {
-		System.out.println("showViewUser");
-		// String mail=user.getEmail();
-		String mail = "Mallikarjunbpbp@gmail.com";
+
 		String firstName = "Mallikarjun";
+		String mail = "";
 		// generate otp
 		String otp = generatePassword();
-		System.out.println("otp " + otp);
-
 		OTP otpObj = new OTP();
 		otpObj.setFirstName(firstName);
 		otpObj.setMailID(mail);
 		otpObj.setOtpValue(otp);
 		// otpObj.setTimeStamp(new Date());
+
 		try {
 			utilityService.insertOTP(otpObj);
 			SendMail sendMail = new SendMail();
@@ -68,7 +64,8 @@ public class UtilityController {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return "homepage";
+		model.addAttribute("user", new User());
+		return "registeruser";
 
 	}
 
