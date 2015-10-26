@@ -124,6 +124,11 @@ public class UsersDao {
 	public List<PII> getAllPIIRequests(){
 		return session().createQuery("from PII where isApproved = 0").list();	
 	}
+
+	public Object getUserregisterbyEmail(String mail) {
+		org.hibernate.Query query = session().createQuery("from User where email = '" + mail + "'");
+		return query.uniqueResult();
+	}
 	
 	public Object getPII(String userName)
 	{

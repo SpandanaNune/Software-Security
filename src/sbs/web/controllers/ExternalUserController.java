@@ -86,28 +86,27 @@ public String RegisterMerchant(@Valid User user, BindingResult result,Model mode
 }
 
 	
-@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-
-public String RegisterUser(Model model, @Valid User user, BindingResult result) {
-	System.out.println("Finding errors, " + result.toString());
-	if (result.hasErrors()) {
-		System.out.println("It has errors");
-		return "registeruser";
-	}
-
-	User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-	if (uniqueUser == null) {
-		System.out.println(user);
-		user.setIsnewuser(true);
-		// user.setCanlogin(false);
-
-		userService.createUser(user);
-		return "homepage";
-
-	} else {
-		System.out.println("Caught duplicate Username");
-		result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-		return "registeruser";
-	}
-}
+//@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
+//public String RegisterUser(Model model, @Valid User user, BindingResult result) {
+//	System.out.println("Finding errors, " + result.toString());
+//	if (result.hasErrors()) {
+//		System.out.println("It has errors");
+//		return "registeruser";
+//	}
+//
+//	User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+//	if (uniqueUser == null) {
+//		System.out.println(user);
+//		user.setIsnewuser(true);
+//		// user.setCanlogin(false);
+//
+//		userService.createUser(user);
+//		return "homepage";
+//
+//	} else {
+//		System.out.println("Caught duplicate Username");
+//		result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+//		return "registeruser";
+//	}
+//}
 }

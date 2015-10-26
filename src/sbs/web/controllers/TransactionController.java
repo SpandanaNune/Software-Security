@@ -1,17 +1,24 @@
 package sbs.web.controllers;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,10 +42,11 @@ import sbs.web.utils.PDFUtils;
 
 @Controller
 public class TransactionController {
-	static int transactionIDCounter=500;
 
+	static int transactionIDCounter = 500;
 	TransactionService transactionService;
 	AccountsService accountService;
+	private static String defaultPath = System.getProperty("catalina.home") + "/users_keys/";
 
 	@Autowired
 	public void setTransactionService(TransactionService transactionService) {
@@ -49,29 +57,92 @@ public class TransactionController {
 	public void setAccountService(AccountsService accountService) {
 		this.accountService = accountService;
 	}
+
+	@RequestMapping(value = "/debitCreditToAccount")
+	public String debitCreditToAccount(Model model, TransactionDetails transactionDetails) {
 	
-	@RequestMapping(value="/createTransaction")
-	public String createTransactions(Model model, TransactionDetails transactionDetails) {
-		System.out.println("inside transactionDetails");
-		model.addAttribute("transactionDetails",transactionDetails);
-		
-		
-		System.out.println(transactionDetails.getBalance());
-		System.out.println(transactionDetails.getFromAccountNo());
-		System.out.println(transactionDetails.getToAccountNo());
-		
-		//validate to account
-		int fromUserAccount =transactionDetails.getFromAccountNo();
-		int toUserAccount =transactionDetails.getToAccountNo();
+		long accountNumber=transactionDetails.getFromAccountNo();
+		String transactionType=transactionDetails.getTransaction_type();
 		double amount=transactionDetails.getBalance();
 		
 		
-//		String fromUserAccount ="1000";
-//		String toUserAccount ="2000";
-//		String amount="233.45";
-//		
-//		transactionDetails
-		//add everything to transaction class and insert into db
+		Transaction_CompositeKey compositeKey = new Transaction_CompositeKey();
+		compositeKey.setAccountNo(accountNumber);
+		compositeKey.setTransactionId(++transactionIDCounter);
+
+		// populate Transaction data
+		Transaction transaction = new Transaction();
+		transaction.setPrimaryKey(compositeKey);
+		transaction.setStatus("APPROVED");
+		transaction.setAmount(amount);
+		transaction.setTransactionType(transactionType);
+		transaction.setCritical(false);
+
+		// set status
+		
+//		if (amount > 1000) {
+//			transaction.setCritical(true);
+//			transaction.setStatus("PENDING");
+//		}
+		
+	try {
+			System.out.println("Checking if " + compositeKey.getAccountNo() + " exists..");
+			//validate account- it valid since it is provied with the drop down
+			
+			//check balance
+			Accounts from = accountService.getAccountForID(accountNumber);
+			
+
+			if(transactionType.equalsIgnoreCase("DEBIT")){
+					//deduct and update
+				if(from.getBalance()-amount<0){
+					//return a message that insufficient balance
+					return "homepage";
+				}
+				from.setBalance(from.getBalance() - amount);
+			}else{
+				from.setBalance(from.getBalance() + amount);
+			}
+			transactionService.saveTransaction(transaction);
+			accountService.updateAccount(from);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "homepage";
+		
+	}
+
+	@RequestMapping(value = "/createTransaction")
+	public String createTransactions(Model model, TransactionDetails transactionDetails, HttpServletRequest request) throws IOException {
+		model.addAttribute("transactionDetails", transactionDetails);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		 String username = principal.toString();
+		///////
+		System.out.println(request.getContentLength());
+		
+		//PKI related
+//		try {
+//			Part filepart = request.getPart("file");
+//			String keyPath = defaultPath + username + "/private.key";
+//			final Path destination = Paths.get(keyPath);
+//			Files.copy(filepart.getInputStream(), destination);
+//			//validateKeyPairs(User user, String message);
+//			
+//		} catch (ServletException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		//////////
+		long fromUserAccount = transactionDetails.getFromAccountNo();
+		long toMyUserAccount = transactionDetails.getToMyAccountNo();
+		long toOtherUserAccount = transactionDetails.getToOtherAccountNo();
+		double amount = transactionDetails.getBalance();
+		String account_type = transactionDetails.getAccount_type();
+
+		// transactionDetails
+		// add everything to transaction class and insert into db
 		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
 		fromCompositeKey.setAccountNo(fromUserAccount);
 		fromCompositeKey.setTransactionId(++transactionIDCounter);
@@ -79,33 +150,81 @@ public class TransactionController {
 		// populate Transaction data
 		Transaction fromTransaction = new Transaction();
 		fromTransaction.setPrimaryKey(fromCompositeKey);
-		fromTransaction.setStatus("pending");
+		fromTransaction.setStatus("APPROVED");
 		fromTransaction.setAmount(amount);
-		fromTransaction.setTransactionType("Debit");
+		fromTransaction.setTransactionType("DEBIT");
 		fromTransaction.setCritical(false);
 		// set status
 		
 		if(amount >1000){
 			fromTransaction.setCritical(true);
+			fromTransaction.setStatus("PENDING");
 		}
 
 		// set same transaction ID for to account
 		Transaction_CompositeKey toCompositeKey = new Transaction_CompositeKey();
-		toCompositeKey.setAccountNo(toUserAccount);
+
 		toCompositeKey.setTransactionId(transactionIDCounter);
 		Transaction toTransaction = new Transaction();
 		toTransaction.setPrimaryKey(toCompositeKey);
 		toTransaction.setAmount(amount);
-		toTransaction.setStatus("pending");
-		toTransaction.setTransactionType("Credit");
+		toTransaction.setStatus("APPROVED");
+		toTransaction.setTransactionType("CREDIT");
 		toTransaction.setCritical(false);
 
-		if(amount >1000){
+		// Which account to insert
+		System.out.println("account_type :" + account_type);
+		if (account_type.equalsIgnoreCase("other")) {
+			System.out.println("Setting other user " + toOtherUserAccount);
+			toCompositeKey.setAccountNo(toOtherUserAccount);
+		} else {
+			System.out.println("Setting my account " + toOtherUserAccount);
+			toCompositeKey.setAccountNo(toMyUserAccount);
+		}
 
+		// set status
+
+		if (amount > 1000) {
 			toTransaction.setCritical(true);
+			toTransaction.setStatus("PENDING");
 		}
 		try {
-			transactionService.addTransactions(fromTransaction, toTransaction);
+
+			// toUserAccount
+			System.out.println("Checking if " + toCompositeKey.getAccountNo() + " exists");
+			Accounts acc = accountService.getAccountForID(toCompositeKey.getAccountNo());
+
+			if (acc != null) {
+
+				Accounts from = accountService.getAccountForID(fromUserAccount);
+				if (from.getBalance() - amount < 0) {
+					// return a message that insufficient balance
+					return "homepage";
+				}
+
+				System.out.println("To Account exists, Going ahead with the transaction");
+				transactionService.addTransactions(fromTransaction, toTransaction);
+				// if from and to transaction is "approved" then update the
+				// balance for from and to account
+				if (toTransaction.getStatus().equalsIgnoreCase("APPROVED")) {
+					// Accounts from =
+					// accountService.getAccountForID(fromCompositeKey.getAccountNo());
+					Accounts to = accountService.getAccountForID(toCompositeKey.getAccountNo());
+
+					System.out.println("Deducting/Adding account balance for both accounts");
+					// deduct balance in both accounts.
+					from.setBalance(from.getBalance() - amount);
+					System.out.println(to.getBalance());
+					System.out.println(amount);
+					to.setBalance(to.getBalance() + amount);
+					System.out.println("From account details " + from.toString());
+					System.out.println("To account details " + to.toString());
+					accountService.updateAccount(from);
+					accountService.updateAccount(to);
+				}
+			} else {
+				// say that the to account number is invalid
+			}
 			// model.addAttribute("transactions", transactions);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,6 +239,7 @@ public class TransactionController {
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		if (transactionLog != null && transactionLog.getLogFilter() != null) {
 			if (transactionLog.getLogFilter().equals("date")) {
+
 				transactions.addAll(transactionService.getAllTransactions(transactionLog.getInput()));
 
 			} else if (transactionLog.getLogFilter().equals("account")) {
@@ -136,7 +256,6 @@ public class TransactionController {
 
 		return "transactionlog";
 	}
-
 	
 	
 	@RequestMapping(value="/transactionhistory")

@@ -50,4 +50,9 @@ public class TransactionService {
 
 	}
 
+	public void saveTransaction(Transaction transaction) {
+		transactionDao.saveTransaction(transaction);
+		
+	}
+
 }
