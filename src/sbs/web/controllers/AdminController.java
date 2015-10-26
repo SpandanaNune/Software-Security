@@ -103,8 +103,8 @@ public class AdminController {
 			}	
 		}
 		List<String> authorities = new ArrayList<>();
-		authorities.add("ROLE_EMPLOYEE");
-		authorities.add("ROLE_MANAGER");
+		authorities.add("ROLE_NEW_EMPLOYEE");
+		authorities.add("ROLE_NEW_MANAGER");
 		model.addAttribute("roles", authorities);
 		model.addAttribute("user", new User());
 		return "employeecreation";
