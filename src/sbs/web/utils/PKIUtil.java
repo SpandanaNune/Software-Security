@@ -29,10 +29,13 @@ public class PKIUtil {
 		catch(Exception e){
 			logger.error("Error sending keypair to user:"+user.getUsername());
 		}
+		if (keyPath != null || "".equals(keyPath))
+			user_pki.deletePrivateKey(keyPath);
 	}
 	
 	public boolean validateKeyPairs(User user, String message)
 	{
+		String keyPath = System.getProperty("catalina.home") + "/users_keys/" + user.getUsername() + "/";
 		MTBCPKIUtility user_pki = new MTBCPKIUtility();
 		try{
 			KeyPair new_pair = user_pki.LoadKeyPair(user.getUsername()); 
@@ -42,6 +45,7 @@ public class PKIUtil {
 		catch (Exception e){
 			logger.error("Error validating keypair for user:"+user.getUsername());
 		}
+		user_pki.deletePrivateKey(keyPath);
 		return false;
 	}
 }

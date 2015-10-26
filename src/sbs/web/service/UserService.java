@@ -135,5 +135,28 @@ public class UserService {
 	{
 		usersDao.deleteEmployee(auth);
 	}
+	// Return users with Role_NEW and isnewuser=1
+	public List<User> getAllNewRoleUsers() {
+		return usersDao.getAllNewRoleUsers();
+	}
+	
+	// Return merchants with Role_NEWMERCHANT and isnewuser=1
+	public List<User> getAllNewRoleMerchants() {
+		return usersDao.getAllNewRoleMerchants();
+	}
+	
+	// Return internal employees with Role_NEWEMPLOYEE
+	public List<User> getAllNewRoleEmployees() {
+		return usersDao.getAllNewRoleEmployees();
+	}
 
+	// Return internal managers with Role_NEWManager
+	public List<User> getAllNewRoleManagers() {
+		return usersDao.getAllNewRoleEmployees();
+	}
+	
+	//Returns all active merchants  
+	public List<User> getAllMerchants(){
+		return usersDao.getAllNewRoleEmployees();
+	}
 }

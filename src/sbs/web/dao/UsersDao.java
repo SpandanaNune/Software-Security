@@ -96,7 +96,31 @@ public class UsersDao {
 	public List<User> getAllNewUsers() {
 		return session().createQuery("from User where isnewuser = 1").list();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleUsers() {
+		return session().createQuery("select * from User user, Authorities auth where user.isnewuser=1 and user.username = auth.username and auth.authority in ('ROLE_NEW')").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleMerchants() {
+		return session().createQuery("select * from User user, Authorities auth where user.isnewuser=1 and user.ismerchant=1 and user.username = auth.username and auth.authority in ('ROLE_NEWMERCHANT')").list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleEmployees() {
+		return session().createQuery("select * from User user, Authorities auth where user.username = auth.username and auth.authority in ('ROLE_NEWEMPLOYEE')").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleManagers() {
+		return session().createQuery("select * from User user, Authorities auth where user.username = auth.username and auth.authority in ('ROLE_NEWMANAGER')").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllActiveMerchants() {
+		return session().createQuery("select * from User user, Authorities auth where user.username = auth.username and auth.authority in ('ROLE_MERCHANT')").list();
+	}
+	
 	public void deleteUserRequest(String username) {
 		
 		User user = (User)getUserregisterbyUsername(username);
