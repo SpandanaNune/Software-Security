@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
+import sbs.web.service.AccountsService;
 import sbs.web.service.UserService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utilities.VerifyCaptcha;
@@ -29,8 +30,9 @@ import sbs.web.utilities.VerifyCaptcha;
 public class LoginController {
 	private static final Logger logger = Logger.getLogger(LoginController.class);
 	private UserService userService;
+	private static int bankerIndex = 0;
+	private AccountsService accountService;
 
-//	private AccountsService accountService;
 
 	@Autowired
 	public void setUserService(UserService userService) {
@@ -58,29 +60,50 @@ public class LoginController {
 
 		String token = request.getParameter("token");
 		if (token == null || "".equals(token)) {
-			return "login";
+			return "redirect:/login";
 		}
-		User user = userService.getUserProfilebyField("reset_pass_token", token);
+		User user_profile = userService.getUserProfilebyField("reset_pass_token", token);
+		Users user = userService.getUserbyUsername(user_profile.getUsername());
 		if (user != null) {
 			model.addAttribute("users", user);
 			return "resetpassword";
 		}
-		return "login";
+		return "redirect:/login";
 	}
 
 	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
-	public String resetPassword(Model model, @Valid User user, BindingResult result,
-			@RequestParam("password") String password) throws IOException {
-		List<Users> userlist = userService.getUsersByField("username", user.getUsername());
-
-		Users users = userlist.get(0);
-
-		users.setPassword(password);
-		userService.saveOrUpdateUsers(users);
-		User user_profile = userService.getUserProfilebyField("username", user.getUsername());
-		user_profile.setReset_pass_token(null);
-		userService.updateUser(user);
-		return "homepage";
+	public String resetPassword(Model model, @Valid Users users, BindingResult result, @RequestParam("password") String password,
+			@RequestParam("confirmpassword") String password1, @RequestParam("q1") String q1, @RequestParam("q2") String q2, @RequestParam("q3") String q3 
+			) throws IOException {
+		List<User> userlist = userService.getUserProfileByField("username", users.getUsername());
+		if (userlist.size() > 1)
+		{
+			logger.error("Multiple Objects Returned for the same username");
+		}
+		User user_profile = userlist.get(0);
+		Users dbuser = userService.getUserbyUsername(users.getUsername());
+		boolean ans1 = dbuser.getQ1().equals(q1);
+		boolean ans2 = dbuser.getQ2().equals(q1);
+		boolean ans3 = dbuser.getQ3().equals(q1);
+		boolean pass = password.equals(password1);
+		if ( pass && ans1 && ans2 && ans3){
+//			users.setUsername(users.getUsername());
+//			users.setQ1(dbuser.getQ1());
+//			users.setQ2(dbuser.getQ2());
+//			users.setQ3(dbuser.getQ3());
+//			users.setAccountNonExpired(true);
+//			users.setAccountNonLocked(true);
+//			users.setEnabled(true);
+//			users.setCredentialsNonExpired(true);
+//			users.setSiteKeyID(1);
+			dbuser.setPassword(password);
+//			users.setEmail(user_profile.getEmail());
+			userService.saveOrUpdateUsers(dbuser);
+			user_profile.setReset_pass_token(null);
+			userService.updateUser(user_profile);
+			return "redirect:/home";
+		}
+		return "redirect:/resetpassword?token="+user_profile.getReset_pass_token()+"&error=true";
 	}
 
 	@RequestMapping("/forgotpass")
@@ -108,10 +131,10 @@ public class LoginController {
 				mail.resetPasswordLink(user, url);
 				return "forgotPassEmailSuccess";
 			} else {
-				return "forgotpass";
+				return "redirect:/forgotpass";
 			}
 		}
-		return "forgotpass";
+		return "redirect:/forgotpass";
 	}
 
 	@RequestMapping("/accountactivation")

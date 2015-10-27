@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -319,19 +320,20 @@ public class TransactionController {
 		///////
 		System.out.println(request.getContentLength());
 
-		// PKI related
-		// try {
-		// Part filepart = request.getPart("file");
-		// String keyPath = defaultPath + username + "/private.key";
-		// final Path destination = Paths.get(keyPath);
-		// Files.copy(filepart.getInputStream(), destination);
-		// //validateKeyPairs(User user, String message);
-		//
-		// } catch (ServletException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
-
+		
+		//PKI related
+//		try {
+//			Part filepart = request.getPart("file");
+//			FilenameUtils util = new FilenameUtils();
+//			String priKeyPath = util.separatorsToSystem(defaultPath + username + "/private.key");
+//			final Path destination = Paths.get(priKeyPath);
+//			Files.copy(filepart.getInputStream(), destination);
+//			//validateKeyPairs(User user, String message);
+//			
+//		} catch (ServletException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		//////////
 		long fromUserAccount = transactionDetails.getFromAccountNo();
 		long toMyUserAccount = transactionDetails.getToMyAccountNo();

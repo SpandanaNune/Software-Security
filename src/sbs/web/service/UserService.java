@@ -159,7 +159,7 @@ public class UserService {
 		return usersDao.getAllNewRoleUsers();
 	}
 	
-	// Return merchants with Role_NEWMERCHANT and isnewuser=1
+	// Return merchants with Role_NEWMERCHANT and isnewuser=1 and is_merchant=1
 	public List<User> getAllNewRoleMerchants() {
 		return usersDao.getAllNewRoleMerchants();
 	}
@@ -171,16 +171,29 @@ public class UserService {
 
 	// Return internal managers with Role_NEWManager
 	public List<User> getAllNewRoleManagers() {
-		return usersDao.getAllNewRoleEmployees();
+		return usersDao.getAllNewRoleManagers();
 	}
 	
 	//Returns all active merchants  
-	public List<User> getAllMerchants(){
-		return usersDao.getAllNewRoleEmployees();
-	}
 	
 	public List<User> getAllMerchantAccounts() {
 		return usersDao.getAllMerchantAccounts();
+	}
+	
+	public List<User> getAllActiveMerchants(){
+		return usersDao.getAllActiveMerchants();
+	}
+	
+	public List<Users> getAllExternalUsersByFieldBool(String field, boolean value) {
+		return usersDao.getAllExternalUsersByFieldBool(field, value);	
+	}
+	
+	public List<Users> getAllInternalUsersByFieldBool(String field, boolean value) {
+		return usersDao.getAllInternalUsersByFieldBool(field, value);	
+	}
+	
+	public Authorities getAuthorityByField(String field, String value){
+		return (Authorities)usersDao.getAuthorityByField(field, value);
 	}
 
 }

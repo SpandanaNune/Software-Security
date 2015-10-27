@@ -50,6 +50,7 @@ public class HomeController {
 	
 	@RequestMapping("/homepage")
 	public String showhomepage(Model model) {
+		System.out.println("showhome");
 		return "homepage";
 	}
 

@@ -7,56 +7,97 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Reset Password</title>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+<title>Reset Password Page</title>
+
 <link href="${pageContext.request.contextPath}/static/css/main.css"
 	rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/static/script/jquery.js"></script>
+<script type="text/javascript">
+	function onLoad() {
+		$("#password").keyup(checkPasswordMatch);
+		$("#confirmpassword").keyup(checkPasswordMatch);
+		$("$details").submit(canSubmit);
+	}
+	function canSubmit() {
+
+		var password = $("#password").val();
+		var confirmpassword = $("#confirmpassword").val();
+		if (password != confirmpassword) {
+			alert("Password do not match!");
+			return false;
+		} else {
+			return true;
+		}
+	}
+	function checkPasswordMatch() {
+		var password = $("#password").val();
+		var confirmpassword = $("#confirmpassword").val();
+		if (password.length > 3 || confirmpassword.length > 3) {
+
+			if (password == confirmpassword) {
+				$("#matchpass").text("paasswords match");
+				$("#matchpass").addClass("valid");
+				$("#matchpass").removeClass("error");
+
+			} else {
+				$("#matchpass").text("paasswords do not match");
+				$("#matchpass").addClass("error");
+				$("#matchpass").removeClass("valid");
+
+			}
+		}
+
+	}
+	$(document).ready(onLoad);
+</script>
+<meta content="Content-Type" content="text/html; charset-US-ASCII">
 </head>
 <body>
-  <center>
-    <br><br>
-  <div class="container">
-	<h1>Reset Password</h1>
+	Reset My Password
 	<br />
 
-	<sf:form method="post"
+	<sf:form id="details" method="post"
 		action="${pageContext.request.contextPath}/resetpasswordbtn"
 		commandName="users">
-
+		<c:if test="${param.error != null}">
+				<p class="error">Login failed. Check your Login credentials.</p>
+			</c:if>
 		<table class="formtable">
 			<tr>
-				<td class="label"><h4 style="color:black">New Password:</h4></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-				<td><sf:input class="control form-control" path="password" name="password"
-						type="text" value=""/><br /> <sf:errors path="password" Class="error"></sf:errors></td>
+				<td><sf:input class="control" path="username" name="username"
+						type="hidden" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
 			</tr>
 			<tr>
-				<td class="label"><h4 style="color:black">Confirm Password:</h4></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-				<td><input class="control form-control"  name="confirmpassword"
-						type="text" /><br /></td>
+				<td class="label">New Password:</td>
+				<td><input id="password" class="control"
+						name="password" type="password" /><br /> 
 			</tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-			</table>
-
-				<input class="control btn btn-info" value="Reset" type="submit" />
-
-
-
+			<tr>
+				<td class="label">Confirm Password:</td>
+				<td><input id="confirmpassword" class="control"
+					name="confirmpassword" type="password" />
+					<div id="matchpass"></div></td>
+			</tr>
+			<tr>
+				<td class="label">Q1:What is your mother's maiden name:</td>
+				<td><input class="control"  name="q1" type="text" /><br />
+			</tr>
+			<tr>
+				<td class="label">Q2:Name of your Highschool:</td>
+				<td><input class="control" name="q2" type="text" /><br />
+			</tr>
+			<tr>
+				<td class="label">Q3:Name your favourite colour:</td>
+				<td><input class="control" name="q3" type="text" /><br />
+			</tr>
+			<tr>
+				<td class="label"></td>
+				<td><input class="control" value="Reset Password" type="submit" /></td>
+			</tr>
+		</table>
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
 	</sf:form>
-</div>
-</center>
 </body>
 </html>
