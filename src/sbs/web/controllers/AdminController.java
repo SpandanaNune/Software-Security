@@ -56,6 +56,11 @@ public class AdminController {
 	public String employeeUpdate(@Valid User eUser, BindingResult result) {
 		if(result.hasErrors())
 			return "employeeUpdation";
+		
+		User user = userService.getUserregisterbyUsername(eUser.getUsername());
+		eUser.setSSN(user.getSSN());
+		eUser.setEmail(user.getEmail());
+		eUser.setDob(user.getDob());
 		userService.createUser(eUser);
 		return "adminhome";
 	}
@@ -185,10 +190,15 @@ public class AdminController {
 	}
 
 	@RequestMapping("/editadminprofiledone")
-	public String editManagerProfileDone(@Valid User user, BindingResult result, Model model) {
+	public String editManagerProfileDone(@Valid User eUser, BindingResult result, Model model) {
 		if(result.hasErrors())
 			return "editadminprofile";
-		userService.createUser(user);
+		User user = userService.getUserregisterbyUsername(eUser.getUsername());
+		eUser.setSSN(user.getSSN());
+		eUser.setEmail(user.getEmail());
+		eUser.setDob(user.getDob());
+
+		userService.createUser(eUser);
 		return "adminhome";
 	}
 	

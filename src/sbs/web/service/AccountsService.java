@@ -22,12 +22,7 @@ public class AccountsService {
 		return accountsDao.getAccountDetails(username);
 	}
 
-	// Pankaj Merchant
-	public Accounts getAccountsbyUsername(String username) {
-		Accounts getuser = (Accounts) accountsDao.getAccountsbyUsername(username); // Pankaj
-																					// change
-		return getuser;
-	}
+
 
 	public Accounts getMerchantAccountDetails(String username) {
 		return accountsDao.getMerchantAccountDetails(username);

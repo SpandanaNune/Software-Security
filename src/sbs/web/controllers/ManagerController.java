@@ -99,15 +99,15 @@ public class ManagerController {
 		users.setCredentialsNonExpired(true);
 		users.setEmail(email);
 		users.setSiteKeyID(1);
-		users.setQ1(" ");
-		users.setQ2(" ");
-		users.setQ3(" ");
+		users.setQ1("xxxxx");
+		users.setQ2("xxxxx");
+		users.setQ3("xxxxx");
 
 		userService.saveOrUpdateUsers(users);
-		Authorities auth = new Authorities();
-		auth.setUsername(username);
-		auth.setAuthority("ROLE_NEW");
-		userService.setAuthority(auth);
+//		Authorities auth = new Authorities();
+//		auth.setUsername(username);
+//		auth.setAuthority("ROLE_NEW");
+//		userService.setAuthority(auth);
 
 		System.out.println("Creating account Numbers");
 
@@ -207,7 +207,11 @@ public class ManagerController {
 		if (result.hasErrors())
 			return "edituser";
 		else {
+			User dbUser = userService.getUserregisterbyUsername(user.getUsername());
 
+			user.setSSN(dbUser.getSSN());
+			user.setEmail(dbUser.getEmail());
+			user.setDob(dbUser.getDob());
 			userService.createUser(user);
 			//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
 			List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
@@ -275,11 +279,15 @@ public class ManagerController {
 	}
 
 	@RequestMapping("/editmanagerprofiledone")
-	public String editManagerProfileDone(@Valid User user, BindingResult result, Model model) {
+	public String editManagerProfileDone(@Valid User eUser, BindingResult result, Model model) {
 		if (result.hasErrors())
 			return "editmanagerprofile";
 		else {
-			userService.createUser(user);
+			User user = userService.getUserregisterbyUsername(eUser.getUsername());
+			eUser.setSSN(user.getSSN());
+			eUser.setEmail(user.getEmail());
+			eUser.setDob(user.getDob());
+			userService.createUser(eUser);
 			return "welcome";
 		}
 	}
