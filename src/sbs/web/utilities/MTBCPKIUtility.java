@@ -1,7 +1,6 @@
 
 package sbs.web.utilities;
 
-import java.util.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,8 +18,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
-
 
 public class MTBCPKIUtility {
 	private static final Logger logger = Logger.getLogger(MTBCPKIUtility.class);
@@ -50,8 +50,9 @@ public class MTBCPKIUtility {
 			Signature sign = Signature.getInstance(SignatureAlgo);
 			sign.initSign(privateKey);
 			sign.update(message.getBytes("UTF-8"));
-			return "";
-		 //	return new String(Base64.getEncoder().encodeToString(sign.sign()));
+			// return new
+			// String(Base64.getEncoder().encodeToString(sign.sign()));
+			return new String(Base64.encodeBase64(sign.sign()));
 		} catch (Exception ex) {
 			throw new SignatureException(ex);
 		}
@@ -63,8 +64,9 @@ public class MTBCPKIUtility {
 			Signature sign = Signature.getInstance(SignatureAlgo);
 			sign.initVerify(publicKey);
 			sign.update(message.getBytes("UTF-8"));
-			return true;
-			//return sign.verify(Base64.getDecoder().decode(encryptedMessage.getBytes("UTF-8")));
+			// return
+			// sign.verify(Base64.getDecoder().decode(encryptedMessage.getBytes("UTF-8")));
+			return sign.verify(Base64.decodeBase64(encryptedMessage.getBytes("UTF-8")));
 		} catch (Exception ex) {
 			throw new SignatureException(ex);
 		}
@@ -76,15 +78,18 @@ public class MTBCPKIUtility {
 
 		String keyPath = createDir(username);
 
+		FilenameUtils util = new FilenameUtils();
+		String priKeyPath = FilenameUtils.separatorsToSystem(keyPath + "/private.key");
+		String pubKeyPath = FilenameUtils.separatorsToSystem(keyPath + "/public.key");
 		// Store Public Key.
 		X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKey.getEncoded());
-		FileOutputStream newFileOpStream = new FileOutputStream(keyPath + "public.key");
+		FileOutputStream newFileOpStream = new FileOutputStream(pubKeyPath);
 		newFileOpStream.write(x509EncodedKeySpec.getEncoded());
 		newFileOpStream.close();
 
 		// Store Private Key.
 		PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privateKey.getEncoded());
-		newFileOpStream = new FileOutputStream(keyPath + "private.key");
+		newFileOpStream = new FileOutputStream(priKeyPath);
 		newFileOpStream.write(pkcs8EncodedKeySpec.getEncoded());
 		newFileOpStream.close();
 
@@ -92,8 +97,12 @@ public class MTBCPKIUtility {
 	}
 
 	public boolean deletePrivateKey(String keyPath) {
-		File filePrivateKey = new File(keyPath + "private.key");
+		logger.info("Deleting Private Key");
+		FilenameUtils util = new FilenameUtils();
+		String priKeyPath = FilenameUtils.separatorsToSystem(keyPath);
+		File filePrivateKey = new File(priKeyPath);
 		if (filePrivateKey.delete()) {
+			logger.info("Deleted Private Key successfully");
 			return true;
 		}
 		return false;
@@ -102,15 +111,18 @@ public class MTBCPKIUtility {
 	public KeyPair LoadKeyPair(String username) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 		// Read Public Key.
 		String keyPath = defaultPath + username;
-		File filePublicKey = new File(keyPath + "public.key");
-		FileInputStream newFileIpStream = new FileInputStream(keyPath + "public.key");
+		FilenameUtils util = new FilenameUtils();
+		String priKeyPath = FilenameUtils.separatorsToSystem(keyPath + "/private.key");
+		String pubKeyPath = FilenameUtils.separatorsToSystem(keyPath + "/public.key");
+		File filePublicKey = new File(pubKeyPath);
+		FileInputStream newFileIpStream = new FileInputStream(pubKeyPath);
 		byte[] encodedPublicKey = new byte[(int) filePublicKey.length()];
 		newFileIpStream.read(encodedPublicKey);
 		newFileIpStream.close();
 
 		// Read Private Key.
-		File filePrivateKey = new File(keyPath + "private.key");
-		newFileIpStream = new FileInputStream(keyPath + "private.key");
+		File filePrivateKey = new File(priKeyPath);
+		newFileIpStream = new FileInputStream(priKeyPath);
 		byte[] encodedPrivateKey = new byte[(int) filePrivateKey.length()];
 		newFileIpStream.read(encodedPrivateKey);
 		newFileIpStream.close();
@@ -126,8 +138,9 @@ public class MTBCPKIUtility {
 		return new KeyPair(publicKey, privateKey);
 	}
 
-	private String createDir(String userID) {
-		String keyPath = defaultPath + userID;
+	private String createDir(String username) {
+		FilenameUtils util = new FilenameUtils();
+		String keyPath = FilenameUtils.separatorsToSystem(defaultPath + username);
 		File new_dir = new File(keyPath);
 		if (!new_dir.exists()) {
 			if (new_dir.mkdirs()) {

@@ -191,5 +191,17 @@ public class AdminController {
 		userService.createUser(user);
 		return "adminhome";
 	}
+	
+	private boolean check_if_authorised_to_delete(String myRole, String userRole)
+	{
+		if ("ROLE_ADMIN".equals(myRole))
+		{
+			if ("ROLE_ADMIN".equals(userRole) || "ROLE_USER".equals(userRole) || "ROLE_MERCHANT".equals(userRole))
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
 
 }

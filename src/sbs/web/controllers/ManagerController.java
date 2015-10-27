@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,13 +25,15 @@ import sbs.web.utilities.SendMail;
 
 @Controller
 public class ManagerController {
-	private static int bankerIndex = 0;
+	private static int bankerIndex = 0; 
+	private static final Logger logger = Logger.getLogger(ManagerController.class);
 	private UserService userService;
-
+	
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+
 
 //	@RequestMapping("/manager")
 //	public String showManagerHome(Model model) {
@@ -38,23 +41,34 @@ public class ManagerController {
 //		// model.addAttribute("user", user);
 //		return "managerhome";
 //	}
-
+	
 	@RequestMapping("/usersignuprequest")
 	public String showUserSignUpRequest(Model model) {
-		List<User> user = userService.getAllNewUsers();
-		model.addAttribute("user", user);
+		logger.info("Listing Signup Requests for new users");
+		try{
+			//List<User> user = userService.getAllNewUsers();
+			List<User> user_list = userService.getAllNewRoleUsers();
+			List<User> user = new ArrayList<User>();
+			user.addAll(user_list);
+			model.addAttribute("user", user);
+		}
+		catch (Exception e){
+			logger.error("Error Fetching new users from the db");
+		}
 		return "usersignuprequest";
 	}
 	
 	@RequestMapping("/declinebtn")
 	public String declineUserSignUp(Model model, @RequestParam("Decline") String username) {
-		
 		User user = userService.getUserProfileByField("username", username).get(0);
 		user.setIsnewuser(false);
 		user.setIs_deleted(true);
 		userService.createUser(user);
 
-		List<User> updateduser = userService.getAllNewUsers();
+		//List<User> updateduser = userService.getAllNewUsers();
+		List<User> user_list = userService.getAllNewRoleUsers();
+		List<User> updateduser = new ArrayList<User>(); 
+		updateduser.addAll(user_list);
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
 	}
@@ -153,15 +167,20 @@ public class ManagerController {
 
 		userService.addNewAccount(newAccount1);
 		userService.addNewAccount(newAccount2);
-
-		List<User> updateduser = userService.getAllNewUsers();
+		
+		List<User> user_list = userService.getAllNewRoleUsers();
+		List<User> updateduser = new ArrayList<User>(); 
+		updateduser.addAll(user_list);
+		
+		//List<User> updateduser = userService.getAllNewUsers();
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
 	}
 
 	@RequestMapping("/viewedituserdetails")
 	public String viewEditUserDetails(Model model) {
-		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+		//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+		List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
 		List<User> userProfileList = new ArrayList<User>();
 		for (Users user : userlist) {
 			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
@@ -190,7 +209,8 @@ public class ManagerController {
 		else {
 
 			userService.createUser(user);
-			List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+			//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+			List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
 			List<User> userProfileList = new ArrayList<User>();
 			for (Users listofuser : userlist) {
 
@@ -204,7 +224,8 @@ public class ManagerController {
 
 	@RequestMapping("/deleteactiveusers")
 	public String showActiveUsersforDelete(Model model) {
-		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+		//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+		List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
 		List<User> userProfileList = new ArrayList<User>();
 		for (Users user : userlist) {
 
@@ -218,21 +239,31 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
-	public String deleteActiveUser(Model model, @RequestParam("Delete") String username) {
-		Users users = userService.getUsersByField("username", username).get(0);
-		users.setEnabled(false);
-		userService.saveOrUpdateUsers(users);
+	public String deleteActiveUser(Model model, @RequestParam("Delete") String username, Principal principal) {
+		
+		Authorities logged_in_user_auth = userService.getAuthorityByField("username", principal.getName());
+		Authorities edited_user_auth = userService.getAuthorityByField("username", username);
+		
+		boolean canDelete = check_if_authorised_to_delete(logged_in_user_auth.getAuthority(), edited_user_auth.getAuthority());
+		if (canDelete)
+		{
+			Users users = userService.getUsersByField("username", username).get(0);
+		
+			users.setEnabled(false);
+			userService.saveOrUpdateUsers(users);
 
-		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
-		List<User> userProfileList = new ArrayList<User>();
-		for (Users user : userlist) {
-
-			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
+			//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+			List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
+			List<User> userProfileList = new ArrayList<User>();
+			for (Users user : userlist) {
+				userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
+			}
+			//List<User> userlist = userService.getAllActiveUsers();
+			model.addAttribute("user", userProfileList);
+			return "deleteactiveusers";
 		}
-		// List<User> userlist = userService.getAllActiveUsers();
-		model.addAttribute("user", userProfileList);
-		return "viewedituserdetails";
-
+		//TODO Add a page for error showing user cannot be deleted.
+		return "error";
 	}
 
 	@RequestMapping("/editmanagerprofile")
@@ -252,5 +283,16 @@ public class ManagerController {
 			return "welcome";
 		}
 	}
-
+	
+	private boolean check_if_authorised_to_delete(String myRole, String userRole)
+	{
+		if ("ROLE_MANAGER".equals(myRole))
+		{
+			if ("ROLE_MANAGER".equals(userRole) || "ROLE_EMPLOYEE".equals(userRole) || "ROLE_ADMIN".equals(userRole))
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
 }

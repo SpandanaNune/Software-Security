@@ -2,6 +2,7 @@ package sbs.web.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +113,46 @@ public class UsersDao {
 	public List<User> getAllNewUsers() {
 		return session().createQuery("from User where isnewuser = 1").list();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleUsers() {
+		return session().createQuery("from User where isnewuser=1 and username = (select username from Authorities where authority in ('ROLE_NEW'))").list();		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleMerchants() {
+		return session().createQuery("from User where isnewuser=1 and ismerchant=1 and username = (select username from Authorities where authority in ('ROLE_NEWMERCHANT'))").list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleEmployees() {
+		return session().createQuery("from User where username = (select username from Authorities where authority in ('ROLE_NEWEMPLOYEE'))").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllNewRoleManagers() {
+		return session().createQuery("from User where username =(select username from Authorities authority in ('ROLE_NEWMANAGER'))").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllActiveMerchants() {
+		return session().createQuery("from User where is_merchant=1 and username = (select username from Authorities where authority in ('ROLE_MERCHANT'))").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Users> getAllExternalUsersByFieldBool(String field, boolean value) {
+		return session().createQuery("from Users where username = (select username from Authorities where authority in ('ROLE_USER', 'ROLE_MERCHANT')) and " + field + "=" + value + "").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Users> getAllInternalUsersByFieldBool(String field, boolean value) {
+		return session().createQuery("from Users where username = (select username from Authorities where authority in ('ROLE_EMPLOYEE', 'ROLE_MANAGER')) and " + field + "=" + value + "").list();	
+	}
+	///Authority Specific Queries
+	public Object getAuthorityByField(String field, String value) {
+		org.hibernate.Query query = session().createQuery("from Authorities where " + field + "='" + value + "'");
+		return query.uniqueResult();
+	}
+	
 	public void deleteUserRequest(String username) {
 		
 		User user = (User)getUserregisterbyUsername(username);
