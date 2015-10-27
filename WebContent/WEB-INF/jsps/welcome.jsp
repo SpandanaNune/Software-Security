@@ -54,7 +54,7 @@
 
 				<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
 					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/viewedituserdetails_employee">View/Edit
+						href="${pageContext.request.contextPath}/viewedituserdetails_employee" target="_blank">View/Edit
 						Customer Details</a>
 					<br />
 					<br />
@@ -128,6 +128,11 @@
 					<br />
 					<br />
 					
+					
+					<a class="btn btn-info btn-large" style="width:300px"
+						href="${pageContext.request.contextPath}/transactionhistory">View Transactions</a>
+					<br />
+					<br />
 					<a class="btn btn-info btn-large" style="width:300px"
 						href="${pageContext.request.contextPath}/edituserprofile">Edit Profile</a>
 					<br />

@@ -32,26 +32,26 @@ public class PDFUtils {
 	private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
 	private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 
-	public static void generatePDF(ArrayList<Transaction> transactions, String filePath)
+	public static void generatePDF(ArrayList<Transaction> transactions, String filePath,User user)
 			throws DocumentException, MalformedURLException, IOException {
 
 		FILE = filePath;
 
 		System.out.println(FILE);
-		String USER_PASS = "abc";
-		String OWNER_PASS = "abc";
+		String USER_PASS = user.getDob();
+		String OWNER_PASS = user.getDob();
 		Document document = new Document();
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(FILE));
 		writer.setEncryption(USER_PASS.getBytes(), OWNER_PASS.getBytes(), PdfWriter.ALLOW_PRINTING,
 				PdfWriter.ENCRYPTION_AES_128);
 		document.open();
-		addTitlePage(document, 1234, "Swetha");
+		addTitlePage(document, user.getFirstname());
 		addDetails(document, transactions);
 		document.close();
 
 	}
 
-	private static void addTitlePage(Document document, int accountNo, String userName)
+	private static void addTitlePage(Document document,String userName)
 			throws DocumentException, MalformedURLException, IOException {
 		Paragraph preface = new Paragraph();
 		addEmptyLine(preface, 1);
@@ -74,8 +74,7 @@ public class PDFUtils {
 
 		addEmptyLine(preface, 1);
 		preface.add(new Paragraph("Name: " + userName, smallBold));
-		addEmptyLine(preface, 1);
-		preface.add(new Paragraph("Account No: " + accountNo, smallBold));
+		
 
 		addEmptyLine(preface, 3);
 
@@ -126,46 +125,6 @@ public class PDFUtils {
 		}
 	}
 	
-	public static void main(String[] args)
-	{
-		
-		System.out.println("Mail Transaction History");
-		ArrayList<Transaction> transactions = null;
-			//	(ArrayList<Transaction>)transactionService.getAllTransactions(1234);
-		try {
-
-			User user = new User();
-				user.setEmail("sswetha2809@gmail.com");
-				user.setFirstname("swetha");
-				user.setLastname("swaminathan");
-//				user.setUsername("sswetha2809");
-				// saving the generated pdf to a temp folder for e-mailing
-				PDFUtils.generatePDF(transactions,"C:\\temp\\swetha.pdf");
-
-			//	SendMail.sendStatement(user,path);
-				
-				// delete the temp file after sending e-mail
-				
-//				File file = new File(path);
-//				if(file.delete()){
-//	    			System.out.println(file.getName() + " is deleted!");
-//	    		}else{
-//	    			System.out.println("Delete operation is failed.");
-//	    		}
-
-		} catch (FileNotFoundException | DocumentException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-
-
 	
-	}
 
 }
