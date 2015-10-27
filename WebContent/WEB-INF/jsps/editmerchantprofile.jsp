@@ -108,10 +108,7 @@
 			
 ​
 				<br>
-				<input type="file" name="file" />
-		<input type="hidden"
-    name="${_csrf.parameterName}"
-    value="${_csrf.token}"/>
+				
 			<center>
 				<input class="control btn btn-info" value="Update" type="submit" />
 				<br /><br>

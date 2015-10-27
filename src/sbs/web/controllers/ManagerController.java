@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -25,39 +24,48 @@ import sbs.web.utilities.SendMail;
 
 @Controller
 public class ManagerController {
-	private static int bankerIndex = 0; 
+	private static int bankerIndex = 0;
 	private static final Logger logger = Logger.getLogger(ManagerController.class);
 	private UserService userService;
-	
+
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 
+	// @RequestMapping("/manager")
+	// public String showManagerHome(Model model) {
+	// // List<User> user = userService.getAllNewUsers();
+	// // model.addAttribute("user", user);
+	// return "managerhome";
+	// }
 
-//	@RequestMapping("/manager")
-//	public String showManagerHome(Model model) {
-//		// List<User> user = userService.getAllNewUsers();
-//		// model.addAttribute("user", user);
-//		return "managerhome";
-//	}
-	
 	@RequestMapping("/usersignuprequest")
 	public String showUserSignUpRequest(Model model) {
 		logger.info("Listing Signup Requests for new users");
-		try{
-			//List<User> user = userService.getAllNewUsers();
+		try {
+			// List<User> user = userService.getAllNewUsers();
 			List<User> user_list = userService.getAllNewRoleUsers();
 			List<User> user = new ArrayList<User>();
 			user.addAll(user_list);
 			model.addAttribute("user", user);
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			logger.error("Error Fetching new users from the db");
 		}
 		return "usersignuprequest";
 	}
-	
+
+	@RequestMapping("/merchantsignuprequest")
+	public String showMerchantSignUpRequest(Model model) {
+
+		List<User> user_list = userService.getAllNewRoleMerchants();
+		List<User> user = new ArrayList<User>();
+		user.addAll(user_list);
+		model.addAttribute("user", user);
+
+		return "merchantsignuprequest";
+	}
+
 	@RequestMapping("/declinebtn")
 	public String declineUserSignUp(Model model, @RequestParam("Decline") String username) {
 		User user = userService.getUserProfileByField("username", username).get(0);
@@ -65,12 +73,94 @@ public class ManagerController {
 		user.setIs_deleted(true);
 		userService.createUser(user);
 
-		//List<User> updateduser = userService.getAllNewUsers();
+		// List<User> updateduser = userService.getAllNewUsers();
 		List<User> user_list = userService.getAllNewRoleUsers();
-		List<User> updateduser = new ArrayList<User>(); 
+		List<User> updateduser = new ArrayList<User>();
 		updateduser.addAll(user_list);
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
+	}
+
+	@RequestMapping("/declinemerchantbtn")
+	public String declineMerchantSignUp(Model model, @RequestParam("DeclineMerchant") String username) {
+
+		User user = userService.getUserProfileByField("username", username).get(0);
+		user.setIsnewuser(false);
+		user.setIs_deleted(true);
+		userService.createUser(user);
+
+		List<User> user_list = userService.getAllNewRoleMerchants();
+		List<User> usermerchant = new ArrayList<User>();
+		usermerchant.addAll(user_list);
+		model.addAttribute("user", usermerchant);
+
+		return "merchantsignuprequest";
+
+	}
+
+	@RequestMapping("/acceptmerchantbtn")
+	public String acceptMerchantSignUp(Model model, @RequestParam("AcceptMerchant") String username) {
+		long account1 = 0;
+
+		User user = userService.getUserProfileByField("username", username).get(0);
+		// User user = userService.getUserregisterbyUsername(username);
+		// user.setCanlogin(true);
+		user.setIsnewuser(false);
+		String email = user.getEmail();
+		// System.out.println("hello" + user);
+
+		Users users = new Users();
+		users.setUsername(username);
+		String tempPassword = UtilityController.generatePassword();
+
+		users.setPassword(tempPassword);
+		users.setEnabled(true);
+		users.setAccountNonExpired(true);
+		users.setAccountNonLocked(true);
+		users.setCredentialsNonExpired(true);
+		users.setEmail(email);
+		users.setSiteKeyID(1);
+		users.setQ1("xxxxx");
+		users.setQ2("xxxxx");
+		users.setQ3("xxxxx");
+
+		System.out.println("Creating account Numbers");
+
+		boolean account1IsNotValid = true;
+		List<Accounts> accountsList1;
+		while (account1IsNotValid) {
+			System.out.println("GEtting account 1");
+			account1 = UtilityController.generateAccountNumber();
+			accountsList1 = userService.getAccountsByField("accountNo", account1);
+			if (accountsList1.size() == 0) {
+				System.out.println("Got account 1");
+				account1IsNotValid = false;
+			}
+		}
+		List<Authorities> authorisedEmployee = userService.getUserAuthoritiesByField("authority", "ROLE_EMPLOYEE");
+		String bankername = authorisedEmployee.get(bankerIndex % authorisedEmployee.size()).getUsername();
+		bankerIndex++;
+
+		Accounts newAccount1 = new Accounts();
+		newAccount1.setBalance(0);
+		newAccount1.setAccount_type(true);
+		newAccount1.setAccountNo(account1);
+		newAccount1.setUsername(username);
+		newAccount1.setBankername(bankername);
+
+		List<User> user_list = userService.getAllNewRoleMerchants();
+		List<User> usermerchant = new ArrayList<User>();
+		usermerchant.addAll(user_list);
+		model.addAttribute("user", usermerchant);
+
+		userService.createUser(user);
+		userService.saveOrUpdateUsers(users);
+		userService.addNewAccount(newAccount1);
+
+		SendMail sendmail = new SendMail();
+		sendmail.sendTempPassword(email, tempPassword, user.getFirstname());
+
+		return "merchantsignuprequest";
 	}
 
 	@RequestMapping("/acceptbtn")
@@ -82,7 +172,6 @@ public class ManagerController {
 		// user.setCanlogin(true);
 		user.setIsnewuser(false);
 		String email = user.getEmail();
-		userService.createUser(user);
 		// System.out.println("hello" + user);
 
 		Users users = new Users();
@@ -99,15 +188,9 @@ public class ManagerController {
 		users.setCredentialsNonExpired(true);
 		users.setEmail(email);
 		users.setSiteKeyID(1);
-		users.setQ1(" ");
-		users.setQ2(" ");
-		users.setQ3(" ");
-
-		userService.saveOrUpdateUsers(users);
-		Authorities auth = new Authorities();
-		auth.setUsername(username);
-		auth.setAuthority("ROLE_NEW");
-		userService.setAuthority(auth);
+		users.setQ1("xxxxx");
+		users.setQ2("xxxxx");
+		users.setQ3("xxxxx");
 
 		System.out.println("Creating account Numbers");
 
@@ -165,21 +248,25 @@ public class ManagerController {
 		System.out.println(newAccount1);
 		System.out.println(newAccount2);
 
+		List<User> user_list = userService.getAllNewRoleUsers();
+		List<User> updateduser = new ArrayList<User>();
+		updateduser.addAll(user_list);
+
+		// List<User> updateduser = userService.getAllNewUsers();
+		model.addAttribute("user", updateduser);
+
+		userService.createUser(user);
+		userService.saveOrUpdateUsers(users);
 		userService.addNewAccount(newAccount1);
 		userService.addNewAccount(newAccount2);
-		
-		List<User> user_list = userService.getAllNewRoleUsers();
-		List<User> updateduser = new ArrayList<User>(); 
-		updateduser.addAll(user_list);
-		
-		//List<User> updateduser = userService.getAllNewUsers();
-		model.addAttribute("user", updateduser);
+
 		return "usersignuprequest";
 	}
 
 	@RequestMapping("/viewedituserdetails")
 	public String viewEditUserDetails(Model model) {
-		//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+		// List<Users> userlist = userService.getUsersByFieldBool("enabled",
+		// true);
 		List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
 		List<User> userProfileList = new ArrayList<User>();
 		for (Users user : userlist) {
@@ -209,7 +296,8 @@ public class ManagerController {
 		else {
 
 			userService.createUser(user);
-			//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
+			// true);
 			List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
 			List<User> userProfileList = new ArrayList<User>();
 			for (Users listofuser : userlist) {
@@ -224,7 +312,8 @@ public class ManagerController {
 
 	@RequestMapping("/deleteactiveusers")
 	public String showActiveUsersforDelete(Model model) {
-		//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+		// List<Users> userlist = userService.getUsersByFieldBool("enabled",
+		// true);
 		List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
 		List<User> userProfileList = new ArrayList<User>();
 		for (Users user : userlist) {
@@ -240,29 +329,30 @@ public class ManagerController {
 
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
 	public String deleteActiveUser(Model model, @RequestParam("Delete") String username, Principal principal) {
-		
+
 		Authorities logged_in_user_auth = userService.getAuthorityByField("username", principal.getName());
 		Authorities edited_user_auth = userService.getAuthorityByField("username", username);
-		
-		boolean canDelete = check_if_authorised_to_delete(logged_in_user_auth.getAuthority(), edited_user_auth.getAuthority());
-		if (canDelete)
-		{
+
+		boolean canDelete = check_if_authorised_to_delete(logged_in_user_auth.getAuthority(),
+				edited_user_auth.getAuthority());
+		if (canDelete) {
 			Users users = userService.getUsersByField("username", username).get(0);
-		
+
 			users.setEnabled(false);
 			userService.saveOrUpdateUsers(users);
 
-			//List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
+			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
+			// true);
 			List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
 			List<User> userProfileList = new ArrayList<User>();
 			for (Users user : userlist) {
 				userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
 			}
-			//List<User> userlist = userService.getAllActiveUsers();
+			// List<User> userlist = userService.getAllActiveUsers();
 			model.addAttribute("user", userProfileList);
 			return "deleteactiveusers";
 		}
-		//TODO Add a page for error showing user cannot be deleted.
+		// TODO Add a page for error showing user cannot be deleted.
 		return "error";
 	}
 
@@ -270,6 +360,7 @@ public class ManagerController {
 	public String editManagerProfile(Model model, Principal principal) {
 		String uname = principal.getName();
 		User user = userService.getUserregisterbyUsername(uname);
+		model.addAttribute("uname", uname);
 		model.addAttribute("user", user);
 		return "editmanagerprofile";
 	}
@@ -283,11 +374,9 @@ public class ManagerController {
 			return "welcome";
 		}
 	}
-	
-	private boolean check_if_authorised_to_delete(String myRole, String userRole)
-	{
-		if ("ROLE_MANAGER".equals(myRole))
-		{
+
+	private boolean check_if_authorised_to_delete(String myRole, String userRole) {
+		if ("ROLE_MANAGER".equals(myRole)) {
 			if ("ROLE_MANAGER".equals(userRole) || "ROLE_EMPLOYEE".equals(userRole) || "ROLE_ADMIN".equals(userRole))
 				return false;
 			else

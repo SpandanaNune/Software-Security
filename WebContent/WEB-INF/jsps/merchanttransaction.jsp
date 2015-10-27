@@ -37,10 +37,12 @@
 			</sf:select>
 		
 	 	<br> Enter the account number <br /> 
-		<sf:input type='textbox' class='form-control' path='toOtherAccountNo'/> <br> 
+		<sf:input type='textbox' class='form-control' path='toOtherAccountNo'/>
+		<sf:errors path="toOtherAccountNo" Class="error"></sf:errors> 
 		
 		<br> Enter the amount <br /> 
-		<sf:input type='textbox' class='form-control' path='balance'/> <br>
+		<sf:input type='textbox'  class='form-control' path='balance'/>
+		<sf:errors path="balance" class="error"></sf:errors> 
 		<button type="submit" class="btn btn-default">Send Money</button>
 		
 		</div>

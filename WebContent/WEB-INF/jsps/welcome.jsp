@@ -132,23 +132,19 @@
 				<sec:authorize access="hasRole('ROLE_MERCHANT')">
 
 					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/openMerchantTransaction">Make
-						Transaction</a>
+						href="${pageContext.request.contextPath}/openMerchantTransaction">Make Transaction</a>
 					<br />
 					<br />
 					<a class="btn btn-info btn-large" style="width:300px" 
-						href="${pageContext.request.contextPath}/transactionhistory">View
-						Statement</a>
+						href="${pageContext.request.contextPath}/transactionhistory">View Statement</a>
 					<br />
 					<br />
 					<br>
 					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/editmerchant">View/Edit
-						User Details</a>
+						href="${pageContext.request.contextPath}/editmerchantprofile">Edit Profile</a>
 					<br />
 					<br />
 					<br />
-
 				</sec:authorize>
 
 

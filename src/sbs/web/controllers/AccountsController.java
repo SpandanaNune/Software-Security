@@ -126,7 +126,7 @@ public class AccountsController {
 	        try{
 	            
 	        	ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountsService.getAccountDetails(username);
-	              model.addAttribute("accounts",accounts);
+	            model.addAttribute("accounts",accounts);
 	            
 	        }catch ( Exception e) {
 	            e.printStackTrace();

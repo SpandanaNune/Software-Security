@@ -38,40 +38,64 @@
 <body>
 	<sf:form method="post"
 		action="${pageContext.request.contextPath}/createTransaction"
-		commandName="transactionDetails" htmlEscape="true" enctype="multipart/form-data">
-		
+		commandName="transactionDetails" htmlEscape="true"
+		enctype="multipart/form-data">
+
 		<div class="container">
 			<h1>Transfer Funds</h1>
 			<h3>
-				Hi <c:out value="${user.getUsername()}"></c:out>!
+
+				Hi
+				<c:out value="${user.getUsername()}"></c:out>
+				!
 			</h3>
 			<br> Select Your Account <br /> <br />
-			 <sf:select class="form-control" id="accountnumbers" path="fromAccountNo" >
+			<sf:select class="form-control" id="accountnumbers"
+				path="fromAccountNo">
 				<c:forEach var="account" items="${accounts}">
-					<option  value="${account.getAccountNo()}">${account.getAccountNo()}</option>
+					<option value="${account.getAccountNo()}">${account.getAccountNo()}</option>
 				</c:forEach>
-			</sf:select> <br> Who do you want to send money to? <br>
-			
-			 <sf:select path='account_type'
-				class="form-control" id="sendoptions" onchange="change();">
+			</sf:select>
+			<br />
+			<sf:errors path="fromAccountNo" Class="error"></sf:errors>
+			<br> Who do you want to send money to? <br>
+
+			<sf:select path='account_type' class="form-control" id="sendoptions"
+				onchange="change();">
 				<option value="self">Your Own Account</option>
 				<option value="other">Other Account</option>
-			</sf:select> <br /> <br />
+			</sf:select>
+			<br />
+			<sf:errors path="account_type" Class="error"></sf:errors>
+			<br /> <br />
 			<div id="accountdropdown">
-			Select Your Account: <br> <sf:select path='toMyAccountNo' class='form-control' > <c:forEach var='account' items='${accounts}'><option value='${account.getAccountNo()}'>${account.getAccountNo()}</option></c:forEach> </sf:select> <br>
-			
-			</div>  
-			<div id="accounttext"  style="visibility:hidden">
-			  Enter The Account Number: <sf:input path='toOtherAccountNo' type='text' class='form-control' /> <br>
+				Select Your Account: <br>
+				<sf:select path='toMyAccountNo' class='form-control'>
+					<c:forEach var='account' items='${accounts}'>
+						<option value='${account.getAccountNo()}'>${account.getAccountNo()}</option>
+					</c:forEach>
+				</sf:select>
+				<sf:errors path="toMyAccountNo" Class="error"></sf:errors>
+			</div>
+			<div id="accounttext" style="visibility: hidden">
+				Enter The Account Number:
+				<sf:input path='toOtherAccountNo' type='text' class='form-control' />
+				<sf:errors path="toOtherAccountNo" Class="error"></sf:errors>
+				<br>
 			</div>
 		</div>
-		<br> Enter the amount <br /> 
-		<sf:input type='textbox' class='form-control' path='balance'/> <br>
+		<br> Enter the amount <br />
+		<sf:input type='textbox' class='form-control' path='balance' />
+		<br />
+		<sf:errors path="balance" Class="error"></sf:errors>
+		<br>
+
 		
-		<button type="submit" class="btn btn-default">Send Money</button>
 		<input type="file" name="file" />
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
+			<c:out value="${PKIMessage}"></c:out>
+		<button type="submit" class="btn btn-default">Send Money</button>
 	</sf:form>
 </body>
 </html>

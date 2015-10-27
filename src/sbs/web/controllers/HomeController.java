@@ -62,15 +62,15 @@ public class HomeController {
 		return "welcome";
 	}
 
-	@RequestMapping(value = "/useractivated")
-	public String showCompleteActivation(Model model, Principal principal) {
-		String uname = principal.getName();
-		model.addAttribute("uname", uname);
-		return "useractivated";
-	}
+	// @RequestMapping(value = "/useractivated")
+	// public String showCompleteActivation(Model model, Principal principal) {
+	// String uname = principal.getName();
+	// model.addAttribute("uname", uname);
+	// return "useractivated";
+	// }
 
 	@RequestMapping(value = "/adminhome")
-	public String adminHome(Model model,Principal principal) {
+	public String adminHome(Model model, Principal principal) {
 		String uname = principal.getName();
 		model.addAttribute("uname", uname);
 		return "adminhome";
@@ -79,8 +79,11 @@ public class HomeController {
 	@RequestMapping("/customerrorpage")
 	public String showCustomError(Model model, HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null)
+		System.out.println(auth);
+		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
+
+		}
 		return "customerrorpage";
 	}
 
@@ -120,8 +123,14 @@ public class HomeController {
 		}
 
 		user.setIsmerchant(false);
-		userService.createUser(user);
+		Authorities auth = new Authorities();
+		auth.setUsername(user.getUsername());
+		auth.setAuthority("ROLE_NEW");
+
 		sendOTPMail(user.getFirstname(), user.getEmail());
+
+		userService.createUser(user);
+		userService.setAuthority(auth);
 
 		model.addAttribute("mail", user.getEmail());
 		return "completeregistration";
@@ -150,9 +159,14 @@ public class HomeController {
 
 		user.setIsmerchant(true);
 		user.setLastname("Merchant");
-		userService.createUser(user);
+
+		Authorities auth = new Authorities();
+		auth.setUsername(user.getUsername());
+		auth.setAuthority("ROLE_NEWMERCHANT");
 		sendOTPMail(user.getFirstname(), user.getEmail());
 
+		userService.createUser(user);
+		userService.setAuthority(auth);
 		model.addAttribute("mail", user.getEmail());
 		return "completeregistration";
 
@@ -192,12 +206,14 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/activateuser", method = RequestMethod.POST)
-	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal,HttpServletRequest req,HttpServletResponse res) {
+	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal, HttpServletRequest req,
+			HttpServletResponse res, Model model) {
 		String uname = principal.getName();
 		System.out.println(uname);
-		// if (result.hasErrors()) {
-		// return "userconfirmation";
-		// }
+//
+//		if (result.hasErrors()) {
+//			return "userconfirm";
+//		}
 		Authorities authority = userService.getUserActivatebyUsername(uname);
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);
@@ -221,12 +237,11 @@ public class HomeController {
 		PKIUtil pki = new PKIUtil();
 		pki.sendPrivateKey(user_profile);
 		Authentication auth1 = SecurityContextHolder.getContext().getAuthentication();
-	     if (auth1 != null){    
-	        new SecurityContextLogoutHandler().logout(req, res, auth1);
-//	        new PersistentTokenBasedRememberMeServices().logout(request, response, auth);
-	     }
-
-		// Implement a logout button here.
+		if (auth1 != null) {
+			new SecurityContextLogoutHandler().logout(req, res, auth1);
+			// new PersistentTokenBasedRememberMeServices().logout(request,
+			// response, auth);
+		}
 		return "home";
 	}
 

@@ -62,12 +62,12 @@
 		commandName="users">
 
 		<table class="formtable">
-			<%-- <tr>
+			<tr>
 				<td class="label">UserName:</td>
-				<td><sf:input class="control" path="username" name="username"
-						type="text" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
+				<td><sf:input class ="control" path="username" name="username"
+						type="hidden" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
 			</tr>
- --%>
+
 			<tr>
 				<td class="label">New Password:</td>
 				<td><sf:input id="password" class="control" path="password"

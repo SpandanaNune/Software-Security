@@ -17,26 +17,37 @@
 		<div class="container">
 			<h1>Transfer Funds</h1>
 			<h3>
-				Hi <c:out value="${user.getUsername()}"></c:out>!
+				Hi
+				<c:out value="${user.getUsername()}"></c:out>
+				!
 			</h3>
 			<br> Select Your Account <br /> <br />
-			 <sf:select class="form-control" id="accountnumbers" path="fromAccountNo" >
+			<sf:select class="form-control" id="accountnumbers"
+				path="fromAccountNo">
 				<c:forEach var="account" items="${accounts}">
-					<option  value="${account.getAccountNo()}">${account.getAccountNo()}</option>
+					<option value="${account.getAccountNo()}">${account.getAccountNo()}</option>
 				</c:forEach>
-			</sf:select>  <br>
-			
-			 <sf:select path='transaction_type'
-				class="form-control" id="sendoptions" >
+			</sf:select>
+			<sf:errors path="fromAccountNo" Class="error"></sf:errors>
+			<br>
+
+			<sf:select path='transaction_type' class="form-control"
+				id="sendoptions">
 				<option value="DEBIT">Debit</option>
 				<option value="CREDIT">Credit</option>
-			</sf:select> <br /> <br />
-			
-			
+			</sf:select>
+			<sf:errors path="transaction_type" Class="error"></sf:errors>
+			<br /> <br />
+
+
 		</div>
-		<br> Enter the amount <br /> 
-		<sf:input type='textbox' class='form-control' path='balance'/> <br>
-		<button type="submit" class="btn btn-default">Make Transaction</button>
+		<br> Enter the amount <br />
+		<sf:input type='textbox' class='form-control' path='balance' />
+		<br>
+		<sf:errors path="balance" Class="error"></sf:errors>
+
+		<button type="submit" class="btn btn-default">Make
+			Transaction</button>
 	</sf:form>
 </body>
 </html>
