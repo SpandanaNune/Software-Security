@@ -2,7 +2,6 @@ package sbs.web.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,6 @@ public class TransactionDao {
 
 	public void saveTransaction(Transaction transaction) {
 		session().save(transaction);
-		
 	}
 	
 	
@@ -65,9 +63,12 @@ public class TransactionDao {
 	}
 	
 	public Object getTransaction(int transactionId){
-		
 		 return session().createQuery("from Transaction where transactionId="+transactionId).uniqueResult();
-		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Transaction> getTransactions(int transactionid) {
+		return  session().createQuery("from Transaction where transactionId="+transactionid).list();
 	}
 	
 }

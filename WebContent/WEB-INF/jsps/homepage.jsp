@@ -68,6 +68,9 @@
 						href="${pageContext.request.contextPath}/openDebitCreditTransaction">Debit credit your account [Arjun]</a>
 						
 						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/openMakePayment">MakePayment [Arjun]</a>
+						
+						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/random">Random </a>
 						
 						<a class="btn btn-primary btn-large"
@@ -87,7 +90,8 @@
 		<div class="span4"></div>
 	</div>
 
-
+		<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 
 	<%-- <a href = "${pageContext.request.contextPath}/viewuser">Click Here to Login</a>
  --%>

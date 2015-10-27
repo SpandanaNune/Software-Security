@@ -4,21 +4,16 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpServerErrorException;
 
 import sbs.web.models.Accounts;
 import sbs.web.models.Authorities;
@@ -51,17 +46,9 @@ public class ManagerController {
 		return "usersignuprequest";
 	}
 	
-	@RequestMapping("/customerrorpage")
-	public String showCustomError(Model model,HttpServletRequest request, HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null)   
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-		return "customerrorpage";
-	}
-
 	@RequestMapping("/declinebtn")
 	public String declineUserSignUp(Model model, @RequestParam("Decline") String username) {
-
+		
 		User user = userService.getUserProfileByField("username", username).get(0);
 		user.setIsnewuser(false);
 		user.setIs_deleted(true);
@@ -70,7 +57,6 @@ public class ManagerController {
 		List<User> updateduser = userService.getAllNewUsers();
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
-
 	}
 
 	@RequestMapping("/acceptbtn")
@@ -245,7 +231,7 @@ public class ManagerController {
 		}
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
-		return "deleteactiveusers";
+		return "viewedituserdetails";
 
 	}
 
@@ -263,7 +249,7 @@ public class ManagerController {
 			return "editmanagerprofile";
 		else {
 			userService.createUser(user);
-			return "managerhome";
+			return "welcome";
 		}
 	}
 

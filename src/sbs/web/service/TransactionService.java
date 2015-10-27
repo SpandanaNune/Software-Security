@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sbs.web.dao.TransactionDao;
-import sbs.web.models.Accounts;
 import sbs.web.models.Transaction;
 
 @Service("transactionService")
@@ -42,7 +41,6 @@ public class TransactionService {
 
 	public Object getTransaction(int transactionId) {
 		return transactionDao.getTransaction(transactionId);
-
 	}
 
 	public void updateTransaction(Transaction t) {
@@ -53,6 +51,10 @@ public class TransactionService {
 	public void saveTransaction(Transaction transaction) {
 		transactionDao.saveTransaction(transaction);
 		
+	}
+
+	public List<Transaction> getTransactions(int transactionid) {
+		return transactionDao.getTransactions(transactionid);
 	}
 
 }

@@ -71,7 +71,7 @@
 				<th>LastName</th>
 				<th>Email</th>
 				<th>Action</th>
-				
+				<th></th>
 			</tr>
 			​
 			<c:forEach var="user" items="${user}">
@@ -87,6 +87,14 @@
 							type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 					</form></td>
+					<td><form method="post"
+						action="${pageContext.request.contextPath}/deleteuser">
+						<input type="hidden" name="Delete"
+							value="${user.getUsername()}" /> <input class="control btn btn-danger"
+							value="Delete" type="submit" /> <input type="hidden"
+							name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</form></td>
+					
 				
 				</tr>
 			</c:forEach>

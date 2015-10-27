@@ -33,6 +33,13 @@ public class UserService {
 		usersDao.updateUser(user);
 	}
 
+	public Authorities getUserActivatebyUsername(String username) {
+		Authorities getuser = (Authorities) usersDao.getUserActivatebyUsername(username);  //Pankaj change
+		return getuser;
+	}
+	public List<User> getAllNewMerchants() {
+		return usersDao.getAllNewMerchants();
+	}
 	public void setAuthority(Authorities auth) {
 		usersDao.setAuthority(auth);
 	}
@@ -146,6 +153,10 @@ public class UserService {
 	public void deleteEmployee(Authorities auth)
 	{
 		usersDao.deleteEmployee(auth);
+	}
+	
+	public List<User> getAllMerchantAccounts() {
+		return usersDao.getAllMerchantAccounts();
 	}
 
 }

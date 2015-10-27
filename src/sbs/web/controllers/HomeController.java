@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,177 +45,117 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public String showhome(Model model) {
-		System.out.println("showhome");
 		return "home";
 	}
-
-	@RequestMapping("/sessionTimeout")
-	public String showSessionTimeOut(Model model) {
-		return "sessionTimeout";
+	
+	@RequestMapping("/homepage")
+	public String showhomepage(Model model) {
+		return "homepage";
 	}
-
-	@RequestMapping("/Sample")
-	public String showRandom() {
-		System.out.println("random page");
-		return "Sample";
-	}
-
-	@RequestMapping("/viewuser")
-	public String showViewUser(Model model) {
-		System.out.println("showViewUser");
-		List<User> users = userService.getAllUsers();
-		model.addAttribute("user", users);
-		return "viewuser";
-	}
-
-	// @RequestMapping(value = "/mylogin")
-	// public String loginUser(Model model) {
-	// System.out.println("loginUser");
-	// model.addAttribute("userlogin", new User());
-	// return "mylogin";
-	// }
-
-	// @RequestMapping(value = "/loginbtn")
-	// public String loginbtn(Model model, User user) {
-	// System.out.println("loginbtn");
-	// User validatedUser = userService.validateUser(user);
-	//
-	// if (validatedUser != null)
-	//
-	// {
-	// String[] splits = validatedUser.getPassword().split(",");
-	// String storedHash = splits[0];
-	// String salt = splits[1];
-	//
-	// String hashedPwd = Utilities.hash_SHA(user.getPassword() + salt);
-	//
-	// System.out.println("validatedUser " + validatedUser);
-	// if (hashedPwd.equalsIgnoreCase(storedHash)) {
-	// System.out.println("Validated");
-	// model.addAttribute("loggeduser", user);
-	// return "viewuser";
-	// }
-	// }
-	// model.addAttribute("userlogin", new User());
-	// return "mylogin";
-	// }
-
-	@RequestMapping(value = "/registeruser")
-	public String showRegisterUser(Model model) {
-
-		System.out.println("showRegisterUser");
-		model.addAttribute("user", new User());
-		return "registeruser";
-	}
-
-	@RequestMapping(value = "/mylogin")
-	public String loginUser(Model model) {
-		System.out.println("loginUser");
-		model.addAttribute("userlogin", new User());
-		return "mylogin";
-	}
-
-	@RequestMapping(value = "/merchant")
-	public String showMerchantUser(Model model) {
-		System.out.println("showRegisterMerchant");
-		model.addAttribute("user", new User());
-		return "merchant";
-	}
-
-	@RequestMapping(value = "/userconfirm")
-	public String showUserConfirmation(Model model) {
-		System.out.println("User Confirmation");
-		model.addAttribute("users", new Users());
-		return "userconfirm";
-	}
-
-	// @RequestMapping(value = "/activateuser", method = RequestMethod.POST)
-	// public String ActivateUser(@Valid Users users, BindingResult result,
-	// Principal principal) {
-	// String uname = principal.getName();
-	// System.out.println(uname);
-	// // if (result.hasErrors()) {
-	// // // model.addAttribute("user", user);
-	// // return "userconfirmation";
-	// // }
-	// users.setUsername(uname);
-	// users.setAccountNonExpired(true);
-	// users.setAccountNonLocked(true);
-	// users.setEnabled(true);
-	// users.setCredentialsNonExpired(true);
-	//
-	// Authorities auth = new Authorities();
-	// auth.setUsername(uname);
-	// auth.setAuthority("ROLE_USER");
-	// userService.setAuthority(auth);
-	//
-	// userService.userActivation(users);
-	// return "homepage";
-	// }
 
 	@RequestMapping(value = "/welcome")
 	public String showWelcome(Model model, Principal principal) {
 		String uname = principal.getName();
 		model.addAttribute("uname", uname);
-		System.out.println("SHOW WELCOME");
 		return "welcome";
 	}
 
-	@RequestMapping(value = "/activateuser", method = RequestMethod.POST)
-	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal) {
+	@RequestMapping(value = "/useractivated")
+	public String showCompleteActivation(Model model, Principal principal) {
 		String uname = principal.getName();
-		System.out.println(uname);
-		// if (result.hasErrors()) {
-		// return "userconfirmation";
-		// }
-		users.setUsername(uname);
-		users.setAccountNonExpired(true);
-		users.setAccountNonLocked(true);
-		users.setEnabled(true);
-		users.setCredentialsNonExpired(true);
-		users.setSiteKeyID(1);
-
-		Authorities auth = new Authorities();
-		auth.setUsername(uname);
-		auth.setAuthority("ROLE_USER");
-		userService.setAuthority(auth);
-
-		userService.saveOrUpdateUsers(users);
-		User user_profile = userService.getUserProfilebyField("username", uname);
-		PKIUtil pki = new PKIUtil();
-		pki.sendPrivateKey(user_profile);
-		return "homepage";
+		model.addAttribute("uname", uname);
+		return "useractivated";
 	}
 
 	@RequestMapping(value = "/adminhome")
 	public String adminHome(Model model) {
-		System.out.println("Admin Home");
 		return "adminhome";
+	}
+
+	@RequestMapping("/systemadmin")
+	public String showAdminHome() {
+		return "adminhome";
+	}
+
+	@RequestMapping("/customerrorpage")
+	public String showCustomError(Model model, HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null)
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		return "customerrorpage";
+	}
+
+	@RequestMapping(value = "/registeruser")
+	public String showRegisterUser(Model model) {
+		model.addAttribute("user", new User());
+		return "registeruser";
+	}
+
+	@RequestMapping(value = "/merchant")
+	public String showMerchantUser(Model model) {
+		model.addAttribute("user", new User());
+		return "merchant";
 	}
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
 	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result) {
 		System.out.println("Finding errors, " + result.toString());
-//		if (result.hasErrors()) {
-//			return "registeruser";
-//		}
-		User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-		if (uniqueUser == null) {
-			user.setIsnewuser(true);
-			user.setIsmerchant(false);
-			sendOTPMail(user.getFirstname(), user.getEmail());
-			System.out.println("Inserting USer into database");
-			userService.createUser(user);
-			model.addAttribute("mail", user.getEmail());
-			return "completeregistration";
+		if (result.hasErrors()) {
+			return "registeruser";
+		}
 
-		} else {
+		List<User> uniqueUser;
+		uniqueUser = (userService.getUserProfileByField("username", user.getUsername()));
+		System.out.println("uniqueUser " + uniqueUser);
+		if (uniqueUser.size() > 0) {
 			System.out.println("Caught duplicate Username");
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			return "registeruser";
 		}
 
-		// check if username and email already exist
+		uniqueUser = (userService.getUserProfileByField("email", user.getEmail()));
+		if (uniqueUser.size() > 0) {
+			System.out.println("Caught duplicate Email");
+			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
+			return "registeruser";
+		}
+
+		user.setIsmerchant(false);
+		userService.createUser(user);
+		sendOTPMail(user.getFirstname(), user.getEmail());
+
+		model.addAttribute("mail", user.getEmail());
+		return "completeregistration";
+	}
+
+	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
+	public String RegisterMerchant(@Valid User user, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			return "merchant";
+		}
+
+		List<User> uniqueUser;
+		uniqueUser = (userService.getUserProfileByField("username", user.getUsername()));
+		if (uniqueUser.size() > 0) {
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+			return "merchant";
+
+		}
+
+		uniqueUser = (userService.getUserProfileByField("email", user.getEmail()));
+		if (uniqueUser.size() > 0) {
+			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
+			return "merchant";
+		}
+
+		user.setIsmerchant(true);
+		user.setLastname("Merchant");
+		userService.createUser(user);
+		sendOTPMail(user.getFirstname(), user.getEmail());
+
+		model.addAttribute("mail", user.getEmail());
+		return "completeregistration";
 
 	}
 
@@ -224,23 +168,12 @@ public class HomeController {
 
 		String otpStatus = verifyUserOTP(userObj, otpValue);
 		System.out.println("otpStatus " + otpStatus);
-		if (otpStatus.equalsIgnoreCase("success")) {
 
-			// Users uniqueUser =
-			// (userService.getUserregisterbyUsername(user.getUsername()));
-			// if (uniqueUser == null) {
+		if (otpStatus.equalsIgnoreCase("success")) {
 			userObj.setIsnewuser(true);
 			System.out.println(userObj.toString());
 			userService.createUser(userObj);
 			return "home";
-			// } else {
-			// System.out.println("Caught duplicate Username");
-			// result.rejectValue("username",
-			// "DuplicateKeyException.user.username",
-			// "Username already exists.");
-			// return "registeruser";
-			// }
-
 		} else if (otpStatus.equalsIgnoreCase("attempts")) {
 			// Too many attempts. Refresh and request OTP again
 			System.out.println("Wrong otp, otpStatus " + otpStatus);
@@ -253,30 +186,45 @@ public class HomeController {
 		return "home";
 	}
 
-	// @RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-	// public String RegisterUser(Model model, @Valid User user, BindingResult
-	// result) {
-	// System.out.println("Finding errors, " + result.toString());
-	// if (result.hasErrors()) {
-	// System.out.println("It has errors");
-	// return "registeruser";
-	// }
-	//
-	// User uniqueUser =
-	// (userService.getUserregisterbyUsername(user.getUsername()));
-	// if (uniqueUser == null) {
-	// System.out.println(user);
-	// user.setIsnewuser(true);
-	// userService.createUser(user);
-	// return "homepage";
-	//
-	// } else {
-	// System.out.println("Caught duplicate Username");
-	// result.rejectValue("username", "DuplicateKeyException.user.username",
-	// "Username already exists.");
-	// return "registeruser";
-	// }
-	// }
+	@RequestMapping(value = "/userconfirm")
+	public String showUserConfirmation(Model model) {
+		model.addAttribute("users", new Users());
+		return "userconfirm";
+	}
+
+	@RequestMapping(value = "/activateuser", method = RequestMethod.POST)
+	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal) {
+		String uname = principal.getName();
+		System.out.println(uname);
+		// if (result.hasErrors()) {
+		// return "userconfirmation";
+		// }
+		Authorities authority = userService.getUserActivatebyUsername(uname);
+		users.setUsername(uname);
+		users.setAccountNonExpired(true);
+		users.setAccountNonLocked(true);
+		users.setEnabled(true);
+		users.setCredentialsNonExpired(true);
+		users.setSiteKeyID(1);
+		Authorities auth = new Authorities();
+		auth.setUsername(uname);
+		if ("ROLE_NEWMERCHANT".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_MERCHANT");
+		} else if ("ROLE_NEWMANAGER".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_MANAGER");
+		} else if ("ROLE_NEWEMPLOYEE".equals(authority.getAuthority())) {
+			auth.setAuthority("ROLE_EMPLOYEE");
+		} else
+			auth.setAuthority("ROLE_USER");
+		userService.setAuthority(auth);
+		userService.saveOrUpdateUsers(users);
+		User user_profile = userService.getUserProfilebyField("username", uname);
+		PKIUtil pki = new PKIUtil();
+		pki.sendPrivateKey(user_profile);
+
+		// Implement a logout button here.
+		return "home";
+	}
 
 	public String verifyUserOTP(User user, String otpValue) {
 		System.out.println("showViewUser");
@@ -298,10 +246,8 @@ public class HomeController {
 				System.out.println(
 						"DB Object " + dbObj.getFirstName() + " " + dbObj.getMailID() + " " + dbObj.getOtpValue());
 				System.out.println("otpObj.getOtpValue() " + otpObj.getOtpValue());
-
 				if (otpObj.getOtpValue().equals(dbObj.getOtpValue())) {
 					System.out.println("Correct OTP. Navigate to required page");
-
 					// utilityService.deleteOTP(otpObj);
 					return "success";
 				} else if (dbObj.getAttempts() == 2) {
@@ -316,32 +262,12 @@ public class HomeController {
 					utilityService.updateOTP(otpObj);
 					return "attempts";
 				}
-
 			}
-
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("Printing stack trace");
 			e.printStackTrace();
 		}
 		return null;
-		// User uniqueUser =
-		// (userService.getUserregisterbyUsername(user.getUsername()));
-		// if (uniqueUser == null) {
-		// System.out.println(user);
-		// user.setIsnewuser(true);
-		// // user.setCanlogin(false);
-		//
-		// userService.createUser(user);
-		// return "homepage";
-		//
-		// } else {
-		// System.out.println("Caught duplicate Username");
-		// result.rejectValue("username", "DuplicateKeyException.user.username",
-		// "Username already exists.");
-		// return "registeruser";
-		// }
 	}
 
 	public static String generatePassword() {
@@ -377,5 +303,24 @@ public class HomeController {
 			System.out.println(e);
 		}
 	}
+
+	// @RequestMapping("/Sample")
+	// public String showRandom() {
+	// return "Sample";
+	// }
+
+	// @RequestMapping("/viewuser")
+	// public String showViewUser(Model model) {
+	// List<User> users = userService.getAllUsers();
+	// model.addAttribute("user", users);
+	// return "viewuser";
+	// }
+
+	// @RequestMapping(value = "/mylogin")
+	// public String loginUser(Model model) {
+	// System.out.println("loginUser");
+	// model.addAttribute("userlogin", new User());
+	// return "mylogin";
+	// }
 
 }
