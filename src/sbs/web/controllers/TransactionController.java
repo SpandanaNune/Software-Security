@@ -42,7 +42,7 @@ import sbs.web.utils.PDFUtils;
 @Controller
 public class TransactionController {
 
-	static int transactionIDCounter ;
+	static int transactionIDCounter;
 	TransactionService transactionService;
 	AccountsService accountService;
 	UtilityService utilityService;
@@ -54,17 +54,17 @@ public class TransactionController {
 	public void setTransactionService(TransactionService transactionService) {
 		System.out.println("Setting TransactionService in TransactionController");
 		this.transactionService = transactionService;
-		List<Transaction> transactions=transactionService.getTransactions();
-		int maxVal=0, curVal;
-		for (Transaction tran : transactions){
-			curVal=tran.getPrimaryKey().getTransactionId();
-			if(maxVal<curVal){
-				maxVal=curVal;
+		List<Transaction> transactions = transactionService.getTransactions();
+		int maxVal = 0, curVal;
+		for (Transaction tran : transactions) {
+			curVal = tran.getPrimaryKey().getTransactionId();
+			if (maxVal < curVal) {
+				maxVal = curVal;
 			}
 		}
-		System.out.println("Maximum value is "+ transactionIDCounter);
-		transactionIDCounter=maxVal;
-		
+		System.out.println("Maximum value is " + transactionIDCounter);
+		transactionIDCounter = maxVal;
+
 	}
 
 	@Autowired
@@ -323,8 +323,8 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/createTransaction")
-	public String createTransactions(Model model, TransactionDetails transactionDetails, HttpServletRequest request,Principal principal)
-			throws IOException {
+	public String createTransactions(Model model, TransactionDetails transactionDetails, HttpServletRequest request,
+			Principal principal) throws IOException {
 		model.addAttribute("transactionDetails", transactionDetails);
 		Object principalObj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = principal.getName();
@@ -332,20 +332,20 @@ public class TransactionController {
 		///////
 		System.out.println(request.getContentLength());
 
-		
-		//PKI related
-//		try {
-//			Part filepart = request.getPart("file");
-//			FilenameUtils util = new FilenameUtils();
-//			String priKeyPath = util.separatorsToSystem(defaultPath + username + "/private.key");
-//			final Path destination = Paths.get(priKeyPath);
-//			Files.copy(filepart.getInputStream(), destination);
-//			//validateKeyPairs(User user, String message);
-//			
-//		} catch (ServletException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		// PKI related
+		// try {
+		// Part filepart = request.getPart("file");
+		// FilenameUtils util = new FilenameUtils();
+		// String priKeyPath = util.separatorsToSystem(defaultPath + username +
+		// "/private.key");
+		// final Path destination = Paths.get(priKeyPath);
+		// Files.copy(filepart.getInputStream(), destination);
+		// //validateKeyPairs(User user, String message);
+		//
+		// } catch (ServletException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 		//////////
 		long fromUserAccount = transactionDetails.getFromAccountNo();
 		long toMyUserAccount = transactionDetails.getToMyAccountNo();
@@ -438,14 +438,14 @@ public class TransactionController {
 				// say that the to account number is invalid
 			}
 
-			if(amount>1000){
+			if (amount > 1000) {
 				User fromUserProfile = userService.getUserregisterbyUsername(username);
 				sendTransactionOTPMail(fromUserProfile.getFirstname(), fromUserProfile.getEmail());
 				model.addAttribute("email", fromUserProfile.getEmail());
 				model.addAttribute("transactionid", toCompositeKey.getTransactionId());
 				return "transactionotp";
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -525,36 +525,33 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/transactionhistory")
-	public String showTransactions(Model model,Principal principal) {
+	public String showTransactions(Model model, Principal principal) {
 		model.addAttribute("name", principal.getName());
 		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		for(Accounts acct:allaccount)
-		{
+		for (Accounts acct : allaccount) {
 			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 		}
 		model.addAttribute("transactions", transactions);
 		return "transactionhistory";
 	}
 
-
 	@RequestMapping(value = "/emailTransactions")
-	public String emailTransactions(Model model, HttpServletRequest request,Principal principal) {
-		
+	public String emailTransactions(Model model, HttpServletRequest request, Principal principal) {
+
 		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		for(Accounts acct:allaccount)
-		{
+		for (Accounts acct : allaccount) {
 			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 		}
 		try {
 
 			User user = userService.getUserregisterbyUsername(principal.getName());
-			
+
 			// saving the generated pdf to a temp folder for e-mailing
 			String path = System.getProperty("catalina.home") + "\\temp\\" + user.getFirstname() + ".pdf";
-			
-			PDFUtils.generatePDF(transactions, path,user);
+
+			PDFUtils.generatePDF(transactions, path, user);
 
 			SendMail.sendStatement(user, path);
 
@@ -578,7 +575,7 @@ public class TransactionController {
 		}
 
 		model.addAttribute("transactions", transactions);
-		model.addAttribute("uname",principal.getName());
+		model.addAttribute("uname", principal.getName());
 		return "welcome";
 	}
 
@@ -628,7 +625,7 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/bankers")
-	public String bankersTransactions(Model model,Principal principal) {
+	public String bankersTransactions(Model model, Principal principal) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
 		for (Accounts account : accounts) {
