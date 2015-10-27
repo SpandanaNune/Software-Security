@@ -107,6 +107,7 @@ public class UsersDao {
 		return query.uniqueResult();
 	}
 
+	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllNewUsers() {
 		return session().createQuery("from User where isnewuser = 1").list();
@@ -209,5 +210,8 @@ public class UsersDao {
 //		String hql = "from User ur, Users us where ur.username = us.username and us.enabled = 1";
 //		return session().createQuery(hql).list();	
 //	}
-
+	@SuppressWarnings("unchecked")
+	public List<User> getAllMerchantAccounts() {
+		return session().createQuery("from User where ismerchant = 1").list();
+	}
 }

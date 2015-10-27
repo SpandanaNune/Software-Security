@@ -2,8 +2,8 @@ package sbs.web.controllers;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.Principal;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import sbs.web.models.Accounts;
 import sbs.web.models.Authorities;
 import sbs.web.models.User;
 import sbs.web.models.Users;
-import sbs.web.service.AccountsService;
 import sbs.web.service.UserService;
 import sbs.web.utilities.SendMail;
 import sbs.web.utilities.VerifyCaptcha;
@@ -31,29 +29,26 @@ import sbs.web.utilities.VerifyCaptcha;
 public class LoginController {
 	private static final Logger logger = Logger.getLogger(LoginController.class);
 	private UserService userService;
-	private static int bankerIndex = 0;
 
-	private AccountsService accountService;
-
+//	private AccountsService accountService;
 
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-	
-	@Autowired
-	public void setAccountService(AccountsService accountService) {
-		this.accountService = accountService;
-	}
-	
+
+//	@Autowired
+//	public void setAccountService(AccountsService accountService) {
+//		this.accountService = accountService;
+//	}
 
 	@RequestMapping("/login")
-	public String showLogin( HttpServletRequest request) {
+	public String showLogin(HttpServletRequest request, Principal principal, Model model) {
 		logger.info("In the login controller");
 		return "login";
 	}
 
-	@RequestMapping(value="/loggedout")
+	@RequestMapping(value = "/loggedout")
 	public String showLoggedOut() {
 		return "loggedout";
 	}
@@ -119,11 +114,6 @@ public class LoginController {
 		return "forgotpass";
 	}
 
-	@RequestMapping("/systemadmin")
-	public String showAdminHome() {
-		return "adminhome";
-	}
-	
 	@RequestMapping("/accountactivation")
 	public String activateAccount(@Valid Users eUser, BindingResult result, Model model) {
 		if (eUser != null && eUser.getUsername() != null) {
@@ -151,5 +141,4 @@ public class LoginController {
 		}
 		return "accountactivation";
 	}
-
 }

@@ -64,7 +64,7 @@
 <body>
 	<div class="container">
 		<h1>View / Edit User Details</h1>
-		<table class="offers table table-hover">
+		<table class="table table-hover">
 			<tr>
 				<th>UserName</th>
 				<th>FirstName</th>

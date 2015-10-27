@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -43,10 +42,8 @@
 				<tr>
 					<td class="label"><h4 style="color: black">UserName:</h4></td>
 					<td><sf:input class="control form-control" path="username"
-							name="username" type="text" /><br /> <sf:errors path="username"
-							Class="error"></sf:errors></td>
+							name="username" type="text" /><br /> <sf:errors path="username" Class="error"></sf:errors></td>
 				</tr>
-				​
 				<tr>
 					<td class="label"><h4 style="color: black">FirstName:</h4></td>
 					<td><sf:input class="control form-control" path="firstname"
@@ -89,7 +86,6 @@
 							name="dob" type="text" /><br /> <sf:errors path="dob"
 							Class="error"></sf:errors></td>
 				</tr>
-				​
 				<tr>
 					<td class="label"><h4 style="color: black">Address Line
 							1:</h4></td>
@@ -97,7 +93,6 @@
 							name="Addr1" type="text" /><br /> <sf:errors path="Addr1"
 							Class="error"></sf:errors></td>
 				</tr>
-				​
 				<tr>
 					<td class="label"><h4 style="color: black">Address Line
 							2:</h4></td>
@@ -136,5 +131,3 @@
 	</div>
 </body>
 </html>
-
-

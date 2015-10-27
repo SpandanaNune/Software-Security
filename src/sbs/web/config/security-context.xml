@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
@@ -16,39 +15,135 @@
 		</security:authentication-provider>
 	</security:authentication-manager>
 
-
 	<security:http use-expressions="true">
-
-	    <security:intercept-url pattern="/welcome"
-			access="hasAnyRole('ROLE_NEW,ROLE_USER,ROLE_NEWMANAGER,ROLE_MANAGER,,ROLE_NEWMERCHANT,ROLE_MERCHANT,ROLE_EMPLOYEE,ROLE_NEWEMPLOYEE')"/>
-		<security:intercept-url pattern="/random"
-			access="hasRole('ROLE_USER')"/>
-		<security:intercept-url pattern="/userconfirm"
-			access="hasRole('ROLE_NEW')"/>
-		<security:intercept-url pattern="/systemadmin"
-			access="hasRole('ROLE_ADMIN')"/>
-		<!-- <security:intercept-url pattern="/manager"
-			access="hasRole('ROLE_MANAGER')" /> -->
-		<security:intercept-url pattern="/mylogin"
-			access="permitAll"/>
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/login"
-			access="permitAll"/>
-		<security:intercept-url pattern="/static/**"
-			access="permitAll"/>
+			access="permitAll" />
+		<security:intercept-url pattern="/registeruser"
+			access="permitAll" />
+		<security:intercept-url pattern="/login"
+			access="permitAll" />
+		<security:intercept-url pattern="/customerrorpage"
+			access="permitAll" />
+		<security:intercept-url pattern="/merchant"
+			access="permitAll" />
+		<security:intercept-url pattern="/registerbtn"
+			access="permitAll" />
+		<security:intercept-url pattern="/registerbtn2"
+			access="permitAll" />
+		<security:intercept-url pattern="/merchantregisterbtn"
+			access="permitAll" />
 		<security:intercept-url pattern="/loggedout"
-			access="PermitAll"/>
+			access="permitAll" />
+
+
+		<security:intercept-url pattern="/welcome"
+			access="hasAnyRole('ROLE_NEW,ROLE_USER,ROLE_NEWMANAGER,ROLE_MANAGER,ROLE_NEWMERCHANT,ROLE_MERCHANT,ROLE_EMPLOYEE,ROLE_NEWEMPLOYEE')" />
+		<security:intercept-url pattern="/userconfirm"
+			access="hasAnyRole('ROLE_NEW,ROLE_NEWMERCHANT,ROLE_NEWMANAGER,ROLE_NEWEMPLOYEE')" />
+		<security:intercept-url pattern="/activateuser"
+			access="hasAnyRole('ROLE_NEW,ROLE_NEWMERCHANT,ROLE_NEWMANAGER,ROLE_NEWEMPLOYEE')" />
+		<security:intercept-url pattern="/useractivated"
+			access="hasAnyRole('ROLE_USER,ROLE_MERCHANT,ROLE_MANAGER,ROLE_EMPLOYEE')" />
+
+		<security:intercept-url pattern="/usersignuprequest"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/viewedituserdetails"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/deleteactiveusers"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/approvetransaction"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/editmanagerprofile"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/declinebtn"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/acceptbtn"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/editbtn"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/updatebtn"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/deleteuser"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/editmanagerprofiledone"
+			access="hasRole('ROLE_MANAGER')" />
+
+		<security:intercept-url pattern="viewedituserdetails_employee"
+			access="hasRole('ROLE_EMPLOYEE')" />
+		<security:intercept-url pattern="/bankers"
+			access="hasRole('ROLE_EMPLOYEE')" />
+		<security:intercept-url pattern="/editemployeeprofile"
+			access="hasRole('ROLE_EMPLOYEE')" />
+		<security:intercept-url pattern="/editemployeeprofiledone"
+			access="hasRole('ROLE_EMPLOYEE')" />
+		<security:intercept-url pattern="/editbtn_employee"
+			access="hasRole('ROLE_EMPLOYEE')" />
+		<security:intercept-url pattern="/updatebtn_employee"
+			access="hasRole('ROLE_EMPLOYEE')" />
+
+
+
+		<security:intercept-url pattern="/adminhome"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/getinternalusers"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/editemployee"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/employeeupdationdone"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/deleteemployee"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/employeecreation"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/pii"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/acceptpii"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/declinepii"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/editadminprofile"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/editadminprofiledone"
+			access="hasRole('ROLE_ADMIN')" />
+
+
+
+
+
+
+
+
+
+
+
+		<security:intercept-url pattern="/random"
+			access="hasRole('ROLE_USER')" />
+
+		<security:intercept-url pattern="/systemadmin"
+			access="hasRole('ROLE_ADMIN')" />
+		<!-- <security:intercept-url pattern="/manager" access="hasRole('ROLE_MANAGER')" 
+			/> -->
+		<security:intercept-url pattern="/mylogin"
+			access="permitAll" />
+		<security:intercept-url pattern="/" access="permitAll" />
+
+		<security:intercept-url pattern="/static/**"
+			access="permitAll" />
+
+
+
 
 		<security:form-login login-page="/login"
 			login-processing-url="/login" authentication-failure-url="/login?error=true"
 			password-parameter="j_password" username-parameter="j_username" />
 		<security:logout invalidate-session="true"
-			delete-cookies="JSESSIONID" logout-url="/logout"
-			logout-success-url="/home" />
-		<security:session-management invalid-session-url="/home"
-			session-authentication-error-url="/sessionaccesserror"
+			delete-cookies="JSESSIONID" logout-url="/logout" logout-success-url="/loggedout" />
+		<security:session-management
+			invalid-session-url="/loggedout" session-authentication-error-url="/sessionaccesserror"
 			session-fixation-protection="newSession">
-			<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+			<security:concurrency-control
+				max-sessions="1" error-if-maximum-exceeded="true" />
 		</security:session-management>
 	</security:http>
 	<bean id="passwordEncoder"

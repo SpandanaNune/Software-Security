@@ -68,6 +68,9 @@
 						href="${pageContext.request.contextPath}/openDebitCreditTransaction">Debit credit your account [Arjun]</a>
 						
 						<a class="btn btn-primary btn-large"
+						href="${pageContext.request.contextPath}/openMakePayment">MakePayment [Arjun]</a>
+						
+						<a class="btn btn-primary btn-large"
 						href="${pageContext.request.contextPath}/random">Random </a>
 						
 						<a class="btn btn-primary btn-large"

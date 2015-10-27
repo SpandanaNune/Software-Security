@@ -178,4 +178,9 @@ public class UserService {
 	public List<User> getAllMerchants(){
 		return usersDao.getAllNewRoleEmployees();
 	}
+	
+	public List<User> getAllMerchantAccounts() {
+		return usersDao.getAllMerchantAccounts();
+	}
+
 }

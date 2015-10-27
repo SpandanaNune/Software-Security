@@ -1,7 +1,9 @@
 package sbs.web.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import javax.validation.Valid;
 
@@ -22,18 +24,20 @@ import sbs.web.utilities.SendMail;
 
 @Controller
 public class ManagerController {
-	private static int bankerIndex = 0; 
+	private static int bankerIndex = 0;
 	private UserService userService;
+
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-	@RequestMapping("/manager")
-	public String showManagerHome(Model model) {
-		// List<User> user = userService.getAllNewUsers();
-		// model.addAttribute("user", user);
-		return "managerhome";
-	}
+
+//	@RequestMapping("/manager")
+//	public String showManagerHome(Model model) {
+//		// List<User> user = userService.getAllNewUsers();
+//		// model.addAttribute("user", user);
+//		return "managerhome";
+//	}
 
 	@RequestMapping("/usersignuprequest")
 	public String showUserSignUpRequest(Model model) {
@@ -41,10 +45,10 @@ public class ManagerController {
 		model.addAttribute("user", user);
 		return "usersignuprequest";
 	}
-
+	
 	@RequestMapping("/declinebtn")
 	public String declineUserSignUp(Model model, @RequestParam("Decline") String username) {
-
+		
 		User user = userService.getUserProfileByField("username", username).get(0);
 		user.setIsnewuser(false);
 		user.setIs_deleted(true);
@@ -53,8 +57,8 @@ public class ManagerController {
 		List<User> updateduser = userService.getAllNewUsers();
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
-
 	}
+
 	@RequestMapping("/acceptbtn")
 	public String acceptUserSignUp(Model model, @RequestParam("Accept") String username) {
 		long account1 = 0, account2 = 0;
@@ -73,7 +77,7 @@ public class ManagerController {
 
 		SendMail sendmail = new SendMail();
 		sendmail.sendTempPassword(email, tempPassword, user.getFirstname());
-		
+
 		users.setPassword(tempPassword);
 		users.setEnabled(true);
 		users.setAccountNonExpired(true);
@@ -86,7 +90,6 @@ public class ManagerController {
 		users.setQ3(" ");
 
 		userService.saveOrUpdateUsers(users);
-
 		Authorities auth = new Authorities();
 		auth.setUsername(username);
 		auth.setAuthority("ROLE_NEW");
@@ -154,7 +157,8 @@ public class ManagerController {
 		List<User> updateduser = userService.getAllNewUsers();
 		model.addAttribute("user", updateduser);
 		return "usersignuprequest";
-	}	
+	}
+
 	@RequestMapping("/viewedituserdetails")
 	public String viewEditUserDetails(Model model) {
 		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
@@ -162,13 +166,13 @@ public class ManagerController {
 		for (Users user : userlist) {
 			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
 		}
-//		System.out.println(userlist.size());
-//		System.out.println(userlist.get(0).getUsername());
+		// System.out.println(userlist.size());
+		// System.out.println(userlist.get(0).getUsername());
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
 		return "viewedituserdetails";
 	}
-	
+
 	@RequestMapping("/editbtn")
 	public String editUserDetails(Model model, @RequestParam("View/Edit") String username) {
 		System.out.println("Edit Button Operation");
@@ -177,11 +181,11 @@ public class ManagerController {
 		model.addAttribute("user", user);
 		return "edituser";
 	}
-	
+
 	@RequestMapping(value = "/updatebtn", method = RequestMethod.POST)
 	public String updateActiveUserDetailsByEmployee(@Valid User user, BindingResult result, Model model) {
 
-		if (result.getErrorCount() > 3)
+		if (result.hasErrors())
 			return "edituser";
 		else {
 
@@ -197,7 +201,7 @@ public class ManagerController {
 			return "viewedituserdetails";
 		}
 	}
-	
+
 	@RequestMapping("/deleteactiveusers")
 	public String showActiveUsersforDelete(Model model) {
 		List<Users> userlist = userService.getUsersByFieldBool("enabled", true);
@@ -212,7 +216,7 @@ public class ManagerController {
 		model.addAttribute("user", userProfileList);
 		return "deleteactiveusers";
 	}
-	
+
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
 	public String deleteActiveUser(Model model, @RequestParam("Delete") String username) {
 		Users users = userService.getUsersByField("username", username).get(0);
@@ -230,20 +234,23 @@ public class ManagerController {
 		return "viewedituserdetails";
 
 	}
-	
+
 	@RequestMapping("/editmanagerprofile")
-	public String editManagerProfile(Model model) {
-		User user = userService.getUserregisterbyUsername("dewded");
+	public String editManagerProfile(Model model, Principal principal) {
+		String uname = principal.getName();
+		User user = userService.getUserregisterbyUsername(uname);
 		model.addAttribute("user", user);
 		return "editmanagerprofile";
 	}
-	
+
 	@RequestMapping("/editmanagerprofiledone")
-	public String editManagerProfileDone(@Valid User user, BindingResult result,Model model) {
+	public String editManagerProfileDone(@Valid User user, BindingResult result, Model model) {
+		if (result.hasErrors())
+			return "editmanagerprofile";
+		else {
 			userService.createUser(user);
-		
-		return "managerhome";
+			return "welcome";
+		}
 	}
-	
 
 }

@@ -43,5 +43,10 @@ public class AccountsDao {
         public void updateAccount(Accounts from) {
              session().saveOrUpdate(from);
         }
+		public Accounts getMerchantAccountDetails(String username) {
+			return (Accounts) session().createQuery("from Accounts where username = '"+username+"'").uniqueResult();
+		}
+        
+       
 		
 }

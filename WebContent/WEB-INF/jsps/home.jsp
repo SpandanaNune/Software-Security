@@ -31,7 +31,6 @@
 					<li><a href="#">About Us</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					​
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#"><span
 							class="glyphicon glyphicon-user"></span> Sign Up <span
@@ -40,12 +39,11 @@
 							<li><a
 								href="${pageContext.request.contextPath}/registeruser">As
 									Customer</a></li>
-							<li><a
-								href="${pageContext.request.contextPath}/merchant">As
+							<li><a href="${pageContext.request.contextPath}/merchant">As
 									Merchant</a></li>
 						</ul></li>
-					<li><a href="${pageContext.request.contextPath}/login"><span class="glyphicon glyphicon-log-in"></span>
-							Login</a></li>
+					<li><a href="${pageContext.request.contextPath}/welcome"><span
+							class="glyphicon glyphicon-log-in"></span> Login</a></li>
 				</ul>
 			</div>
 			​
@@ -59,8 +57,10 @@
 			<h4>
 				<i>A smarter way to bank!</i>
 			</H4>
-			<br><img src="${pageContext.request.contextPath}/static/images/mtbclogo.png"></img>
- ​ <br> <br>
+			<br>
+			<img
+				src="${pageContext.request.contextPath}/static/images/mtbclogo.png"></img>
+			​ <br> <br>
 			<p>At MTBC, we understand your banking needs.</p>
 			<br> <br>
 			<button type="submit" class="btn btn-info">
@@ -68,6 +68,6 @@
 			</button>
 		</center>
 	</div>
-	</div>
+
 
 </body>
