@@ -32,7 +32,10 @@ public class UserService {
 	public void updateUser(User user) {
 		usersDao.updateUser(user);
 	}
-
+	public void deleteUser(User user) {
+		usersDao.deleteUser(user);
+	}
+	
 	public Authorities getUserActivatebyUsername(String username) {
 		Authorities getuser = (Authorities) usersDao.getUserActivatebyUsername(username);  //Pankaj change
 		return getuser;

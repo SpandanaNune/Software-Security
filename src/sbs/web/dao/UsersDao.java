@@ -48,6 +48,10 @@ public class UsersDao {
 		session().saveOrUpdate(auth);
 	}
 	
+	public void deleteUser(User user) {
+		session().delete(user);
+	}
+	
 	@Transactional
 	public void saveOrUpdateUsers(Users users) {
 		users.setPassword(passwordEncoder.encode(users.getPassword()));
@@ -230,4 +234,6 @@ public class UsersDao {
 	public List<User> getAllMerchantAccounts() {
 		return session().createQuery("from User where ismerchant = 1").list();
 	}
+
+
 }

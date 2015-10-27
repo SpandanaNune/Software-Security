@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +70,11 @@ public class TransactionDao {
 	@SuppressWarnings("unchecked")
 	public List<Transaction> getTransactions(int transactionid) {
 		return  session().createQuery("from Transaction where transactionId="+transactionid).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Transaction> getTransactions(){
+		return session().createQuery("from Transaction").list();
 	}
 	
 }

@@ -42,7 +42,7 @@ import sbs.web.utils.PDFUtils;
 @Controller
 public class TransactionController {
 
-	static int transactionIDCounter = 500;
+	static int transactionIDCounter ;
 	TransactionService transactionService;
 	AccountsService accountService;
 	UtilityService utilityService;
@@ -52,7 +52,19 @@ public class TransactionController {
 
 	@Autowired
 	public void setTransactionService(TransactionService transactionService) {
+		System.out.println("Setting TransactionService in TransactionController");
 		this.transactionService = transactionService;
+		List<Transaction> transactions=transactionService.getTransactions();
+		int maxVal=0, curVal;
+		for (Transaction tran : transactions){
+			curVal=tran.getPrimaryKey().getTransactionId();
+			if(maxVal<curVal){
+				maxVal=curVal;
+			}
+		}
+		System.out.println("Maximum value is "+ transactionIDCounter);
+		transactionIDCounter=maxVal;
+		
 	}
 
 	@Autowired

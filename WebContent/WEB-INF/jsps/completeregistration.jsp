@@ -33,6 +33,11 @@
 				<td class="label"></td>
 				<td><input class="control" value="Verify" type="submit" /></td>
 			</tr>
+			<tr>
+				<td class="label"></td>
+				<td><input class="label"  name="otpstatus" value ="${otpstatus}"/>
+				</td>
+			</tr>
 		</table>
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />

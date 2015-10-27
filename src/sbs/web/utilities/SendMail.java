@@ -338,8 +338,8 @@ public class SendMail {
 		String to = otpObj.getMailID();
 
 		// Sender's email ID needs to be mentioned
-		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
-				"moneytreebanking4@gmail.com", "moneytreebanking5@gmail.com" };
+		String[] from = {  "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
+				"moneytreebanking4@gmail.com", "moneytreebanking5@gmail.com","moneytreebanking@gmail.com", };
 
 		final String username = "moneytreebanking";// change accordingly
 		final String password = "mtbc1234";// change accordingly
@@ -359,7 +359,7 @@ public class SendMail {
 
 		Random rand = new Random();
 
-		int n = rand.nextInt(2) + 1;
+		int n = rand.nextInt(4) + 1;
 		// 5 is the maximum and the 1 is our minimum
 
 		String randomMail = from[n - 1];
@@ -380,7 +380,10 @@ public class SendMail {
 			System.out.println("Done");
 
 		} catch (MessagingException e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
