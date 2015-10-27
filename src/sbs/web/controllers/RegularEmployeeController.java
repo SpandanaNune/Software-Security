@@ -2,7 +2,9 @@ package sbs.web.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -47,16 +49,17 @@ public class RegularEmployeeController {
 	public String viewEditUserDetailsByEmployee(Model model,Principal principal) {
 		
 		ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
-		List<Users> userlist = new ArrayList<Users>();
+		Set<String> userlist = new HashSet<String>();
 		for (Accounts account : accounts) {
 			Users user = userService.getUserByFieldBool("enabled", true, account.getUsername());
 			if (user != null)
-				userlist.add(user);
+				userlist.add(user.getUsername());
 		}
+		
 
 		List<User> userProfileList = new ArrayList<User>();
-		for (Users user : userlist) {
-			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
+		for (String userName : userlist) {
+			userProfileList.addAll(userService.getUserProfileByField("username", userName));
 		}
 
 		model.addAttribute("user", userProfileList);
@@ -66,26 +69,26 @@ public class RegularEmployeeController {
 	@RequestMapping("/editemployeeprofile")
 	public String editEmployeeProfile(Model model, Principal principal) {
 		String uname = principal.getName();
-		System.out.println("Edit Button Operation");
 		User user = userService.getUserregisterbyUsername(uname);
-		System.out.println(user);
 		model.addAttribute("user", user);
 		return "editemployeeprofile";
 	}
 
 	@RequestMapping("/editemployeeprofiledone")
-	public String editEmployeeProfileDone(@Valid User user, BindingResult result, Model model,Principal principal) {
-		System.out.println(user.toString());
+	public String editEmployeeProfileDone(@Valid User eUser, BindingResult result, Model model,Principal principal) {
 		if(result.hasErrors())
 			return "editemployeeprofile";
-		userService.createUser(user);
+		User user = userService.getUserregisterbyUsername(eUser.getUsername());
+		eUser.setSSN(user.getSSN());
+		eUser.setEmail(user.getEmail());
+		eUser.setDob(user.getDob());
+		userService.createUser(eUser);
 		model.addAttribute("uname", principal.getName());
 		return "welcome";
 	}
 
 	@RequestMapping("/editbtn_employee")
 	public String editUserDetailsByEmployee(Model model, @RequestParam("View/Edit") String username) {
-		System.out.println("Edit Button Operation");
 		User user = userService.getUserregisterbyUsername(username);
 		System.out.println(user);
 		model.addAttribute("user", user);
@@ -98,21 +101,25 @@ public class RegularEmployeeController {
 		if (result.hasErrors())
 			return "edituser_employee";
 		else {
-
+			
+			User dbUser = userService.getUserregisterbyUsername(user.getUsername());
+			user.setSSN(dbUser.getSSN());
+			user.setDob(dbUser.getDob());
+			user.setEmail(dbUser.getEmail());
 			userService.createUser(user);
 			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
-			List<Users> userlist = new ArrayList<Users>();
+			Set<String> userlist = new HashSet<String>();
 			for (Accounts account : accounts) {
-				Users userNew = userService.getUserByFieldBool("enabled", true, account.getUsername());
-				if (userNew != null)
-					userlist.add(userNew);
+				Users user1 = userService.getUserByFieldBool("enabled", true, account.getUsername());
+				if (user1 != null)
+					userlist.add(user1.getUsername());
 			}
+			
 
 			List<User> userProfileList = new ArrayList<User>();
-			for (Users userNew : userlist) {
-				userProfileList.add((User) userService.getUserProfileByField("username", userNew.getUsername()).get(0));
+			for (String userName : userlist) {
+				userProfileList.addAll(userService.getUserProfileByField("username", userName));
 			}
-
 			model.addAttribute("user", userProfileList);
 			return "viewedituserdetails_employee";
 		}

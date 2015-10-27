@@ -127,6 +127,12 @@
 						[Arjun]</a>
 					<br />
 					<br />
+					
+					<a class="btn btn-info btn-large" style="width:300px"
+						href="${pageContext.request.contextPath}/edituserprofile">Edit Profile</a>
+					<br />
+					<br />
+					
 
 				</sec:authorize>
 				<sec:authorize access="hasRole('ROLE_MERCHANT')">
@@ -143,8 +149,7 @@
 					<br />
 					<br>
 					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/editmerchant">View/Edit
-						User Details</a>
+						href="${pageContext.request.contextPath}/editmerchantprofile">Edit Profile</a>
 					<br />
 					<br />
 					<br />

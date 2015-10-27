@@ -1,6 +1,7 @@
 package sbs.web.controllers;
 
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -42,11 +43,8 @@ public class ExternalUserController {
 
   
   @RequestMapping("/editmerchant")
-  public String editMerchantDetails(Model model) {
-//      List<User> user = userService.getAllNewUsers();
-//      model.addAttribute("usermerchant", user);
-	  Users user = userService.getUserbyUsername("arpit");
-		//User user = userService.getUserregisterbyUsername("kardanitin");
+  public String editMerchantDetails(Model model,Principal principal) {
+	  Users user = userService.getUserbyUsername(principal.getName());
 		model.addAttribute("users", user);
 		System.out.println(user);
 		return "merchanthome";
@@ -73,15 +71,15 @@ public String UpdaterMerchantUser(@Valid User user, BindingResult result, Model 
 
 
 @RequestMapping(value = "/edituserprofile")
-public String viewEditCustomerProfile(Model model) {
-	User user=userService.getUserregisterbyUsername("arjun");
+public String viewEditCustomerProfile(Model model,Principal principal) {
+	User user=userService.getUserregisterbyUsername(principal.getName());
 	model.addAttribute("user", user);
 	return "edituserprofile";
 }
 
 @RequestMapping(value = "/editmerchantprofile")
-public String viewEditMerchantProfile(Model model) {
-	User user=userService.getUserregisterbyUsername("1234435");
+public String viewEditMerchantProfile(Model model,Principal principal) {
+	User user=userService.getUserregisterbyUsername(principal.getName());
 	model.addAttribute("user", user);
 	return "editmerchantprofile";
 }
@@ -133,9 +131,9 @@ public String acceptMerchantSignUp(Model model, @RequestParam("AcceptMerchant") 
 	users.setCredentialsNonExpired(true);
 	users.setEmail(email);
 	users.setSiteKeyID(1);
-	users.setQ1(" ");
-	users.setQ2(" ");
-	users.setQ3(" ");
+	users.setQ1("xxxxx");
+	users.setQ2("xxxxx");
+	users.setQ3("xxxxx");
 
 	// userService.saveOrUpdateUsers(users);
 
@@ -194,8 +192,11 @@ public String acceptMerchantSignUp(Model model, @RequestParam("AcceptMerchant") 
 @RequestMapping(value = "/editmerchantprofiledone", method = RequestMethod.POST)
 public String viewEditMerchantProfileDone(HttpServletRequest request,@Valid User user, BindingResult result,Model model) {
 	User dbUser=userService.getUserregisterbyUsername(user.getUsername());
-	if(dbUser.getSSN() == user.getSSN())
+	if(dbUser.getSSN().equalsIgnoreCase(user.getSSN()))
 	{
+		user.setDob(dbUser.getDob());
+		user.setEmail(dbUser.getEmail());
+		user.setLastname(dbUser.getLastname());
 	userService.createUser(user);
 	}
 	else
@@ -220,23 +221,27 @@ public String viewEditMerchantProfileDone(HttpServletRequest request,@Valid User
 		pii.setNewSSN(user.getSSN());
 		pii.setApproved(false);
 		pii.setMerchant(true);
-		userService.createPII(pii);
-		
+		user.setDob(dbUser.getDob());
+		user.setEmail(dbUser.getEmail());
 		user.setSSN(dbUser.getSSN());
+		user.setLastname(dbUser.getLastname());
 		userService.createUser(user);
+		userService.createPII(pii);
 		result.rejectValue("SSN", "xxxxxxxx", "PII request submitted to admin");
 
 	}
 	model.addAttribute("user", user);
 
-	return "editmerchantprofile";
+	return "welcome";
 }
 
 @RequestMapping(value = "/edituserprofiledone", method = RequestMethod.POST)
 public String viewEditCustomerProfileDone(HttpServletRequest request,@Valid User user, BindingResult result,Model model) {
 	User dbUser=userService.getUserregisterbyUsername(user.getUsername());
-	if(dbUser.getSSN() == user.getSSN())
+	if(dbUser.getSSN().equalsIgnoreCase(user.getSSN()))
 	{
+		user.setEmail(dbUser.getEmail());
+		user.setDob(dbUser.getDob());
 	userService.createUser(user);
 	}
 	else
@@ -261,16 +266,17 @@ public String viewEditCustomerProfileDone(HttpServletRequest request,@Valid User
 		pii.setNewSSN(user.getSSN());
 		pii.setApproved(false);
 		pii.setMerchant(false);
-		userService.createPII(pii);
-		
+		user.setEmail(dbUser.getEmail());
+		user.setDob(dbUser.getDob());
 		user.setSSN(dbUser.getSSN());
 		userService.createUser(user);
+		userService.createPII(pii);
 		result.rejectValue("SSN", "xxxxxxxx", "PII request submitted to admin");
 
 	}
 	model.addAttribute("user", user);
 
-	return "edituserprofile";
+	return "welcome";
 }
 	
 //@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)

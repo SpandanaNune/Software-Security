@@ -120,9 +120,13 @@ public class HomeController {
 		}
 
 		user.setIsmerchant(false);
-		userService.createUser(user);
 		sendOTPMail(user.getFirstname(), user.getEmail());
-
+		
+		Authorities auth = new Authorities();
+		auth.setAuthority("ROLE_NEW");
+		auth.setUsername(user.getUsername());
+		userService.createUser(user);
+		userService.setAuthority(auth);
 		model.addAttribute("mail", user.getEmail());
 		return "completeregistration";
 	}

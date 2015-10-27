@@ -128,5 +128,11 @@ public class Users {
 				+ ", accountNonLocked=" + accountNonLocked + ", credentialsNonExpired=" + credentialsNonExpired + "]";
 
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return username.hashCode();
+	}
 
 }
