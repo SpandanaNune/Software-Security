@@ -23,7 +23,7 @@
 		<h1>Admin Home</h1>
 		<h3>
 			Hi
-			<c:out value="${user.getUsername()}"></c:out>
+			<c:out value="${uname}"></c:out>
 			!
 		</h3>
 		<div id="border" class="well">
@@ -55,6 +55,12 @@
 <a class="btn btn-info btn-large" style="width: 300px"
 	href="${pageContext.request.contextPath}/editadminprofile">Edit
 	Profile</a>
+	<form method="post"
+					action="${pageContext.request.contextPath}/logout">
+					<input class="control btn btn-info" value="Logout" type="submit" />
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+				</form>
 
 <br>
 <br>

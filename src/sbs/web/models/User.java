@@ -15,7 +15,6 @@ public class User {
 	@Id
 	
 	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
-	@NotNull
 	private String username;
 
 	
@@ -25,25 +24,21 @@ public class User {
 	@Size(min = 2, max = 45, message = "lastname must be atleast 2 characters and less than 45 characters")
 	private String lastname;
 	
-	  @NotNull
-	  @Pattern(regexp=".+@.+\\..+", message="Email Address incorrect")
+	@Pattern(regexp=".+@.+\\..+", message="Email Address incorrect")
 	private String email;
 	
-	@NotNull
 	@Pattern(regexp="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$", message="Incorrect Date of Birth")
 	private String dob;
 	
-	@NotNull
 	@Pattern(regexp="^[0-9]{9}$", message="Incorrect SSN")
 	private String SSN;
 	
-	@NotNull
 	@Pattern(regexp="^[0-9]{10}$", message="Incorrect Phone Number")
 	private String phone;
 	
-	@NotNull
-	@Size(min = 5, max = 45, message = "Address must be atleast 5 characters")
+	@Size(min = 5, max = 45, message = "Address1 must be atleast 5 characters")
 	private String Addr1;
+	@Size(min = 5, max = 45, message = "Address2 must be atleast 5 characters")
 	private String Addr2;
 	
 	//@Column(name = "city")

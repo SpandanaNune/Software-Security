@@ -44,8 +44,9 @@ public class RegularEmployeeController {
 	}
 
 	@RequestMapping("/viewedituserdetails_employee")
-	public String viewEditUserDetailsByEmployee(Model model) {
-		ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker("banker");
+	public String viewEditUserDetailsByEmployee(Model model,Principal principal) {
+		
+		ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
 		List<Users> userlist = new ArrayList<Users>();
 		for (Accounts account : accounts) {
 			Users user = userService.getUserByFieldBool("enabled", true, account.getUsername());
@@ -73,11 +74,12 @@ public class RegularEmployeeController {
 	}
 
 	@RequestMapping("/editemployeeprofiledone")
-	public String editEmployeeProfileDone(@Valid User user, BindingResult result, Model model) {
+	public String editEmployeeProfileDone(@Valid User user, BindingResult result, Model model,Principal principal) {
 		System.out.println(user.toString());
 		if(result.hasErrors())
 			return "editemployeeprofile";
 		userService.createUser(user);
+		model.addAttribute("uname", principal.getName());
 		return "welcome";
 	}
 
@@ -91,14 +93,14 @@ public class RegularEmployeeController {
 	}
 
 	@RequestMapping(value = "/updatebtn_employee", method = RequestMethod.POST)
-	public String updateActiveUserDetails(@Valid User user, BindingResult result, Model model) {
+	public String updateActiveUserDetails(@Valid User user, BindingResult result, Model model,Principal principal) {
 
 		if (result.hasErrors())
 			return "edituser_employee";
 		else {
 
 			userService.createUser(user);
-			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker("banker");
+			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
 			List<Users> userlist = new ArrayList<Users>();
 			for (Accounts account : accounts) {
 				Users userNew = userService.getUserByFieldBool("enabled", true, account.getUsername());

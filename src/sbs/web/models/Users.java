@@ -14,8 +14,7 @@ public class Users {
 	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
 	@NotNull
 	private String username;
-	@Size(min = 5, max = 45, message = "Password must be atleast 5 characters")
-	@NotNull
+	@Size(min = 8, max = 100, message = "Password must be atleast 8 characters")
 	private String password;
 
 	private String email;

@@ -36,7 +36,7 @@ public class UtilityController {
 	public static String generatePassword() {
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
 
-		final int PW_LENGTH = 8;
+		final int PW_LENGTH = 9;
 		Random rnd = new SecureRandom();
 		StringBuilder pass = new StringBuilder();
 		for (int i = 0; i < PW_LENGTH; i++)

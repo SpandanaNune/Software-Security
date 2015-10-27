@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +48,7 @@ public class HomeController {
 	public String showhome(Model model) {
 		return "home";
 	}
-	
+
 	@RequestMapping("/homepage")
 	public String showhomepage(Model model) {
 		return "homepage";
@@ -68,12 +69,9 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/adminhome")
-	public String adminHome(Model model) {
-		return "adminhome";
-	}
-
-	@RequestMapping("/systemadmin")
-	public String showAdminHome() {
+	public String adminHome(Model model,Principal principal) {
+		String uname = principal.getName();
+		model.addAttribute("uname", uname);
 		return "adminhome";
 	}
 
@@ -193,7 +191,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/activateuser", method = RequestMethod.POST)
-	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal) {
+	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal,HttpServletRequest req,HttpServletResponse res) {
 		String uname = principal.getName();
 		System.out.println(uname);
 		// if (result.hasErrors()) {
@@ -221,6 +219,11 @@ public class HomeController {
 		User user_profile = userService.getUserProfilebyField("username", uname);
 		PKIUtil pki = new PKIUtil();
 		pki.sendPrivateKey(user_profile);
+		Authentication auth1 = SecurityContextHolder.getContext().getAuthentication();
+	     if (auth1 != null){    
+	        new SecurityContextLogoutHandler().logout(req, res, auth1);
+//	        new PersistentTokenBasedRememberMeServices().logout(request, response, auth);
+	     }
 
 		// Implement a logout button here.
 		return "home";

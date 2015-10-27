@@ -631,9 +631,9 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/bankers")
-	public String bankersTransactions(Model model) {
+	public String bankersTransactions(Model model,Principal principal) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker("banker");
+		ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
 		for (Accounts account : accounts) {
 			transactions.addAll(transactionService.getAllCriticalTransactions(account.getAccountNo()));
 		}

@@ -87,20 +87,29 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/employeecreation")
-	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model) {
-		if (user != null && user.getUsername() != null) {
+	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model,Principal principal) {
+		if(result.hasErrors())
+		{
+			List<String> authorities = new ArrayList<>();
+			authorities.add("ROLE_NEWEMPLOYEE");
+			authorities.add("ROLE_NEWMANAGER");
+			model.addAttribute("roles", authorities);
+			return "employeecreation";
+		}
+		if(user != null && user.getUsername() != null) {
 			String role = rqst.getParameter("role");
 			System.out.println(user);
 			User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
 			if (uniqueUser == null) {
 				System.out.println(user);
-				user.setIsnewuser(true);
+//				user.setIsnewuser(true);
 				userService.createUser(user);
 
 				
 				Users users = new Users();
 				users.setUsername(user.getUsername());
 				String tempPassword = UtilityController.generatePassword();
+				System.out.println(tempPassword);
 
 				SendMail sendmail = new SendMail();
 				sendmail.sendTempPassword(user.getEmail(), tempPassword, user.getFirstname());
@@ -112,9 +121,10 @@ public class AdminController {
 				users.setCredentialsNonExpired(true);
 				users.setEmail(user.getEmail());
 				users.setSiteKeyID(1);
-				users.setQ1(" ");
-				users.setQ2(" ");
-				users.setQ3(" ");
+				users.setQ1("xxxxx");
+				users.setQ2("xxxxx");
+				users.setQ3("xxxxx");
+				System.out.println(users);
 
 				userService.saveOrUpdateUsers(users);
 				
@@ -131,8 +141,8 @@ public class AdminController {
 		authorities.add("ROLE_NEWEMPLOYEE");
 		authorities.add("ROLE_NEWMANAGER");
 		model.addAttribute("roles", authorities);
-		model.addAttribute("user", new User());
-		return "employeecreation";
+		model.addAttribute("uname",principal.getName());
+		return "adminhome";
 	}
 
 	@RequestMapping(value = "/pii")
