@@ -10,13 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -33,7 +37,15 @@ import sbs.web.utils.PKIUtil;
 public class HomeController {
 	private UserService userService;
 	private UtilityService utilityService;
+	
+	 @Autowired
+	    @Qualifier("userValidator")
+	    private Validator validator;
 
+	 @InitBinder
+	    private void initBinder(WebDataBinder binder) {
+	        binder.setValidator(validator);
+	    }
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -100,7 +112,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result) {
+	public String moveToVerifyOTP(Model model, @Validated User user, BindingResult result) {
 		System.out.println("Finding errors, " + result.toString());
 		if (result.hasErrors()) {
 			return "registeruser";
