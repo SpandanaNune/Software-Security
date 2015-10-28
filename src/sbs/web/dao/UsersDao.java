@@ -47,6 +47,10 @@ public class UsersDao {
 		session().saveOrUpdate(auth);
 	}
 	
+	public void deleteUser(User user) {
+		session().delete(user);
+	}
+	
 	@Transactional
 	public void saveOrUpdateUsers(Users users) {
 		users.setPassword(passwordEncoder.encode(users.getPassword()));
@@ -143,6 +147,16 @@ public class UsersDao {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Users> getAllExternalCustomersByFieldBool(String field, boolean value) {
+		return session().createQuery("from Users where username in (select username from Authorities where authority in ('ROLE_USER')) and " + field + "=" + value + "").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Users> getAllExternalMerchantsByFieldBool(String field, boolean value) {
+		return session().createQuery("from Users where username in (select username from Authorities where authority in ('ROLE_MERCHANT')) and " + field + "=" + value + "").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Users> getAllInternalUsersByFieldBool(String field, boolean value) {
 		return session().createQuery("from Users where username = (select username from Authorities where authority in ('ROLE_EMPLOYEE', 'ROLE_MANAGER')) and " + field + "=" + value + "").list();	
 	}
@@ -229,4 +243,6 @@ public class UsersDao {
 	public List<User> getAllMerchantAccounts() {
 		return session().createQuery("from User where ismerchant = 1").list();
 	}
+
+
 }

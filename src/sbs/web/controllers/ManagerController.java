@@ -137,7 +137,7 @@ public class ManagerController {
 				account1IsNotValid = false;
 			}
 		}
-		List<Authorities> authorisedEmployee = userService.getUserAuthoritiesByField("authority", "ROLE_EMPLOYEE");
+		List<Authorities> authorisedEmployee = userService.getUserAuthoritiesByField("authority", "ROLE_MANAGER");
 		String bankername = authorisedEmployee.get(bankerIndex % authorisedEmployee.size()).getUsername();
 		bankerIndex++;
 
@@ -192,6 +192,7 @@ public class ManagerController {
 		users.setQ2("xxxxx");
 		users.setQ3("xxxxx");
 
+		userService.saveOrUpdateUsers(users);
 		System.out.println("Creating account Numbers");
 
 		boolean account1IsNotValid = true;
@@ -267,7 +268,9 @@ public class ManagerController {
 	public String viewEditUserDetails(Model model) {
 		// List<Users> userlist = userService.getUsersByFieldBool("enabled",
 		// true);
-		List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
+		List<Users> userlist = userService.getAllExternalCustomersByFieldBool("enabled", true);
+		// List<Users> userlist =
+		// userService.getAllExternalUsersByFieldBool("enabled", true);
 		List<User> userProfileList = new ArrayList<User>();
 		for (Users user : userlist) {
 			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
@@ -277,6 +280,26 @@ public class ManagerController {
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
 		return "viewedituserdetails";
+	}
+
+	@RequestMapping("/deleteactiveusers")
+	public String showActiveUsersforDelete(Model model) {
+		// List<Users> userlist = userService.getUsersByFieldBool("enabled",
+		// true);
+		List<Users> userlist = userService.getAllExternalMerchantsByFieldBool("enabled", true);
+
+		// List<Users> userlist =
+		// userService.getAllExternalUsersByFieldBool("enabled", true);
+		List<User> userProfileList = new ArrayList<User>();
+		for (Users user : userlist) {
+
+			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
+		}
+		System.out.println(userlist.size());
+		System.out.println(userlist.get(0).getUsername());
+		// List<User> userlist = userService.getAllActiveUsers();
+		model.addAttribute("user", userProfileList);
+		return "deleteactiveusers";
 	}
 
 	@RequestMapping("/editbtn")
@@ -294,11 +317,15 @@ public class ManagerController {
 		if (result.hasErrors())
 			return "edituser";
 		else {
+			User dbUser = userService.getUserregisterbyUsername(user.getUsername());
 
+			user.setSSN(dbUser.getSSN());
+			user.setEmail(dbUser.getEmail());
+			user.setDob(dbUser.getDob());
 			userService.createUser(user);
 			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
 			// true);
-			List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
+			List<Users> userlist = userService.getAllExternalCustomersByFieldBool("enabled", true);
 			List<User> userProfileList = new ArrayList<User>();
 			for (Users listofuser : userlist) {
 
@@ -310,21 +337,40 @@ public class ManagerController {
 		}
 	}
 
-	@RequestMapping("/deleteactiveusers")
-	public String showActiveUsersforDelete(Model model) {
-		// List<Users> userlist = userService.getUsersByFieldBool("enabled",
-		// true);
-		List<Users> userlist = userService.getAllExternalUsersByFieldBool("enabled", true);
-		List<User> userProfileList = new ArrayList<User>();
-		for (Users user : userlist) {
+	@RequestMapping("/editbtnmerchant")
+	public String editMerchantDetails(Model model, @RequestParam("View/Edit") String username) {
+		System.out.println("Edit Button Operation");
+		User user = userService.getUserregisterbyUsername(username);
+		System.out.println(user);
+		model.addAttribute("user", user);
+		return "editmerchant";
+	}
 
-			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
+	@RequestMapping(value = "/updatebtnmerchant", method = RequestMethod.POST)
+	public String updateActiveMerchantDetailsByEmployee(@Valid User user, BindingResult result, Model model) {
+
+		if (result.hasErrors())
+			return "editmerchant";
+		else {
+			User dbUser = userService.getUserregisterbyUsername(user.getUsername());
+
+			user.setLastname(dbUser.getLastname());
+			user.setSSN(dbUser.getSSN());
+			user.setEmail(dbUser.getEmail());
+			user.setDob(dbUser.getDob());
+			userService.createUser(user);
+			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
+			// true);
+			List<Users> userlist = userService.getAllExternalMerchantsByFieldBool("enabled", true);
+			List<User> userProfileList = new ArrayList<User>();
+			for (Users listofuser : userlist) {
+
+				userProfileList
+						.add((User) userService.getUserProfileByField("username", listofuser.getUsername()).get(0));
+			}
+			model.addAttribute("user", userProfileList);
+			return "deleteactiveusers";
 		}
-		System.out.println(userlist.size());
-		System.out.println(userlist.get(0).getUsername());
-		// List<User> userlist = userService.getAllActiveUsers();
-		model.addAttribute("user", userProfileList);
-		return "deleteactiveusers";
 	}
 
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
@@ -350,6 +396,35 @@ public class ManagerController {
 			}
 			// List<User> userlist = userService.getAllActiveUsers();
 			model.addAttribute("user", userProfileList);
+			return "viewedituserdetails";
+		}
+		// TODO Add a page for error showing user cannot be deleted.
+		return "error";
+	}
+
+	@RequestMapping(value = "/deletemerchant", method = RequestMethod.POST)
+	public String deleteActiveMerchants(Model model, @RequestParam("Delete") String username, Principal principal) {
+
+		Authorities logged_in_user_auth = userService.getAuthorityByField("username", principal.getName());
+		Authorities edited_user_auth = userService.getAuthorityByField("username", username);
+
+		boolean canDelete = check_if_authorised_to_delete(logged_in_user_auth.getAuthority(),
+				edited_user_auth.getAuthority());
+		if (canDelete) {
+			Users users = userService.getUsersByField("username", username).get(0);
+
+			users.setEnabled(false);
+			userService.saveOrUpdateUsers(users);
+
+			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
+			// true);
+			List<Users> userlist = userService.getAllExternalMerchantsByFieldBool("enabled", true);
+			List<User> userProfileList = new ArrayList<User>();
+			for (Users user : userlist) {
+				userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
+			}
+			// List<User> userlist = userService.getAllActiveUsers();
+			model.addAttribute("user", userProfileList);
 			return "deleteactiveusers";
 		}
 		// TODO Add a page for error showing user cannot be deleted.
@@ -366,11 +441,15 @@ public class ManagerController {
 	}
 
 	@RequestMapping("/editmanagerprofiledone")
-	public String editManagerProfileDone(@Valid User user, BindingResult result, Model model) {
+	public String editManagerProfileDone(@Valid User eUser, BindingResult result, Model model) {
 		if (result.hasErrors())
 			return "editmanagerprofile";
 		else {
-			userService.createUser(user);
+			User user = userService.getUserregisterbyUsername(eUser.getUsername());
+			eUser.setSSN(user.getSSN());
+			eUser.setEmail(user.getEmail());
+			eUser.setDob(user.getDob());
+			userService.createUser(eUser);
 			return "welcome";
 		}
 	}

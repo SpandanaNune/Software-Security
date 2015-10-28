@@ -12,6 +12,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link href="${pageContext.request.contextPath}/static/css/navbar.css"
+	rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/static/css/main.css"
+	rel="stylesheet" type="text/css" />
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
@@ -31,41 +36,29 @@
 				<h4>What would you like to do??</h4>
 				<br> <a class="btn btn-info btn-large" style="width: 300px"
 					href="${pageContext.request.contextPath}/employeecreation">Add
-					Employee</a>
-<br>
-<br>
-<br>
-<a class="btn btn-info btn-large" style="width: 300px"
-	href="${pageContext.request.contextPath}/getinternalusers">View/Edit
-	Employee</a>
-<br>
-<br>
-<br>
-<a class="btn btn-info btn-large" style="width: 300px"
-	href="${pageContext.request.contextPath}/transactionlog">Transaction
-	Logs</a>
-<br>
-<br>
-<br>
-<a class="btn btn-info btn-large" style="width: 300px"
-	href="${pageContext.request.contextPath}/pii">Approve PII</a>
-<br>
-<br>
-<br>
-<a class="btn btn-info btn-large" style="width: 300px"
-	href="${pageContext.request.contextPath}/editadminprofile">Edit
-	Profile</a>
-	<form method="post"
+					Employee</a> <br> <br> <br> <a
+					class="btn btn-info btn-large" style="width: 300px"
+					href="${pageContext.request.contextPath}/getinternalusers">View/Edit
+					Employee</a> <br> <br> <br> <a
+					class="btn btn-info btn-large" style="width: 300px"
+					href="${pageContext.request.contextPath}/transactionlog">Transaction
+					Logs</a> <br> <br> <br> <a
+					class="btn btn-info btn-large" style="width: 300px"
+					href="${pageContext.request.contextPath}/pii">Approve PII</a> <br>
+				<br> <br> <a class="btn btn-info btn-large"
+					style="width: 300px"
+					href="${pageContext.request.contextPath}/editadminprofile">Edit
+					Profile</a>
+				<form method="post"
 					action="${pageContext.request.contextPath}/logout">
 					<input class="control btn btn-info" value="Logout" type="submit" />
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 				</form>
 
-<br>
-<br>
-</center>
-</div>
-</div>
+				<br> <br>
+			</center>
+		</div>
+	</div>
 </body>
 </html>

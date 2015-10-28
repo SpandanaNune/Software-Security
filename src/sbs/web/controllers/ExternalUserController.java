@@ -1,11 +1,9 @@
 package sbs.web.controllers;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import sbs.web.models.Accounts;
-import sbs.web.models.Authorities;
 import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
@@ -33,23 +29,20 @@ public class ExternalUserController {
 		this.userService = userService;
 	}
 
-	@RequestMapping("/merchanthome")
-	public String showMerchantHome(Model model) {
-		// List<User> user = userService.getAllNewUsers();
-		// model.addAttribute("user", user);
-		return "merchanthome";
-	}
-
-	// @RequestMapping("/editmerchant")
-	// public String editMerchantDetails(Model model) {
-	//// List<User> user = userService.getAllNewUsers();
-	//// model.addAttribute("usermerchant", user);
-	// Users user = userService.getUserbyUsername("arpit");
-	// //User user = userService.getUserregisterbyUsername("kardanitin");
-	// model.addAttribute("users", user);
-	// System.out.println(user);
+	// @RequestMapping("/merchanthome")
+	// public String showMerchantHome(Model model) {
+	// // List<User> user = userService.getAllNewUsers();
+	// // model.addAttribute("user", user);
 	// return "merchanthome";
 	// }
+
+	@RequestMapping("/editmerchant")
+	public String editMerchantDetails(Model model, Principal principal) {
+		Users user = userService.getUserbyUsername(principal.getName());
+		model.addAttribute("users", user);
+		System.out.println(user);
+		return "merchanthome";
+	}
 
 	@RequestMapping(value = "/updatemerchantbtn", method = RequestMethod.POST)
 	public String UpdaterMerchantUser(@Valid User user, BindingResult result, Model model) {
@@ -58,7 +51,7 @@ public class ExternalUserController {
 		// System.out.println(user);
 		// user.setCanlogin(true);
 
-		if (result.getErrorCount() > 2)
+		if (result.hasErrors())
 			return "editmerchant";
 		else {
 			userService.createUser(user);
@@ -69,14 +62,14 @@ public class ExternalUserController {
 	}
 
 	@RequestMapping(value = "/edituserprofile")
-	public String viewEditCustomerProfile(Model model) {
-		User user = userService.getUserregisterbyUsername("arjun");
+	public String viewEditCustomerProfile(Model model, Principal principal) {
+		User user = userService.getUserregisterbyUsername(principal.getName());
 		model.addAttribute("user", user);
 		return "edituserprofile";
 	}
 
 	@RequestMapping(value = "/editmerchantprofile")
-	public String viewEditMerchantProfile(Model model,Principal principal) {	
+	public String viewEditMerchantProfile(Model model, Principal principal) {
 		User user = userService.getUserregisterbyUsername(principal.getName());
 		model.addAttribute("user", user);
 		return "editmerchantprofile";
@@ -85,12 +78,19 @@ public class ExternalUserController {
 	@RequestMapping(value = "/editmerchantprofiledone", method = RequestMethod.POST)
 	public String viewEditMerchantProfileDone(HttpServletRequest request, @Valid User user, BindingResult result,
 			Model model) {
-		if (result.hasErrors()) {
+		if (result.hasErrors())
 			return "editmerchantprofile";
-		}
 		User dbUser = userService.getUserregisterbyUsername(user.getUsername());
 
-		if (dbUser.getSSN() == user.getSSN()) {
+		// check has errors
+
+		if (dbUser.getSSN().equalsIgnoreCase(user.getSSN())) {
+		
+			user.setDob(dbUser.getDob());
+			user.setLastname(dbUser.getLastname());
+			user.setEmail(dbUser.getEmail());
+			user.setLastname(dbUser.getLastname());
+			user.setIsmerchant(true);
 			userService.createUser(user);
 		} else {
 
@@ -114,23 +114,28 @@ public class ExternalUserController {
 			pii.setNewSSN(user.getSSN());
 			pii.setApproved(false);
 			pii.setMerchant(true);
-			userService.createPII(pii);
-
+			user.setDob(dbUser.getDob());
+			user.setEmail(dbUser.getEmail());
 			user.setSSN(dbUser.getSSN());
+			user.setLastname(dbUser.getLastname());
 			userService.createUser(user);
+			userService.createPII(pii);
 			result.rejectValue("SSN", "xxxxxxxx", "PII request submitted to admin");
-
+			return "editmerchantprofile";
 		}
-		model.addAttribute("user", user);
+		return "welcome";
 
-		return "editmerchantprofile";
 	}
 
 	@RequestMapping(value = "/edituserprofiledone", method = RequestMethod.POST)
 	public String viewEditCustomerProfileDone(HttpServletRequest request, @Valid User user, BindingResult result,
 			Model model) {
+		if (result.hasErrors())
+			return "edituserprofile";
 		User dbUser = userService.getUserregisterbyUsername(user.getUsername());
-		if (dbUser.getSSN() == user.getSSN()) {
+		if (dbUser.getSSN().equalsIgnoreCase(user.getSSN())) {
+			user.setEmail(dbUser.getEmail());
+			user.setDob(dbUser.getDob());
 			userService.createUser(user);
 		} else {
 
@@ -154,42 +159,16 @@ public class ExternalUserController {
 			pii.setNewSSN(user.getSSN());
 			pii.setApproved(false);
 			pii.setMerchant(false);
-			userService.createPII(pii);
-
+			user.setEmail(dbUser.getEmail());
+			user.setDob(dbUser.getDob());
 			user.setSSN(dbUser.getSSN());
 			userService.createUser(user);
+			userService.createPII(pii);
 			result.rejectValue("SSN", "xxxxxxxx", "PII request submitted to admin");
 
+			return "edituserprofile";
 		}
-		model.addAttribute("user", user);
-
-		return "edituserprofile";
+		// **************** check if this is correct
+		return "welcome";
 	}
-
-	// @RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-	// public String RegisterUser(Model model, @Valid User user, BindingResult
-	// result) {
-	// System.out.println("Finding errors, " + result.toString());
-	// if (result.hasErrors()) {
-	// System.out.println("It has errors");
-	// return "registeruser";
-	// }
-	//
-	// User uniqueUser =
-	// (userService.getUserregisterbyUsername(user.getUsername()));
-	// if (uniqueUser == null) {
-	// System.out.println(user);
-	// user.setIsnewuser(true);
-	// // user.setCanlogin(false);
-	//
-	// userService.createUser(user);
-	// return "homepage";
-	//
-	// } else {
-	// System.out.println("Caught duplicate Username");
-	// result.rejectValue("username", "DuplicateKeyException.user.username",
-	// "Username already exists.");
-	// return "registeruser";
-	// }
-	// }
 }

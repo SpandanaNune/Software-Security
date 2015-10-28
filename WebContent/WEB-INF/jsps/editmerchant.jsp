@@ -44,7 +44,7 @@
       window.location.hash = "no-back-button";
     }
   </script>
-  <title>Edit User</title>
+  <title>Edit Merchant</title>
 </head>
 
 <body>
@@ -74,7 +74,7 @@
     <h1>Edit User Details</h1>
     <br />
     <br /> ​
-    <sf:form method="post" action="${pageContext.request.contextPath}/updatebtn" commandName="user">
+    <sf:form method="post" action="${pageContext.request.contextPath}/updatebtnmerchant" commandName="user">
 ​
       <table>
        <tr>
@@ -90,7 +90,7 @@
 
         <tr>
           <td class="label">
-            <h4 style="color: black">FirstName:</h4>
+            <h4 style="color: black">Company Name:</h4>
           </td>
           <td>
             <sf:input class="control form-control" path="firstname" name="firstname" type="text" />
@@ -98,17 +98,7 @@
             <sf:errors path="firstname" Class="error"></sf:errors>
           </td>
         </tr>
-        <tr>
-          <td class="label">
-            <h4 style="color: black">LastName:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="lastname" name="lastname" type="text" />
-            <br />
-            <sf:errors path="lastname" Class="error"></sf:errors>
-          </td>
-        </tr>
-
+        
         <tr>
           <td class="label">
             <h4 style="color: black">Phone:</h4>

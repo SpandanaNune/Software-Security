@@ -45,25 +45,31 @@
 
 				<sec:authorize
 					access="hasAnyRole('ROLE_NEW,ROLE_NEWMANAGER,ROLE_NEWEMPLOYEE,ROLE_NEWMERCHANT')">
-					<a class="btn btn-info btn-large" style="width:300px"
+					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/userconfirm">Activate
 						Your Account Here</a>
 					<br />
 					<br />
 				</sec:authorize>
-
-				<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
-					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/viewedituserdetails_employee">View/Edit
-						Customer Details</a>
-					<br />
-					<br />
-					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/bankers">View
+				<sec:authorize access="hasAnyRole('ROLE_USER,ROLE_MERCHANT')">
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/transactionhistory">View
 						Transactions</a>
 					<br />
 					<br />
-					<a class="btn btn-info btn-large" style="width:300px" 
+				</sec:authorize>
+				<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/viewedituserdetails_employee"
+						target="_blank">View/Edit Customer Details</a>
+					<br />
+					<br />
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/bankers">Approve
+						Transactions</a>
+					<br />
+					<br />
+					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/editemployeeprofile">Edit
 						Profile</a>
 					<br />
@@ -72,34 +78,32 @@
 
 				<sec:authorize access="hasRole('ROLE_MANAGER')">
 
-					<a class="btn btn-info btn-large" style="width:300px" 
+					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/usersignuprequest">Customer
 						SignUp Request</a>
 					<br />
 					<br />
-					<a class="btn btn-info btn-large" style="width:300px"
+					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/merchantsignuprequest">Merchant
 						SignUp Request</a>
 					<br />
 					<br />
-					<br />
-					<a class="btn btn-info btn-large" style="width:300px"
+					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/viewedituserdetails">View/Edit
 						Customer Details</a>
 					<br />
 					<br />
-					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/approvetransaction">View
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/deleteactiveusers">View/Edit
+						Merchant Details</a>
+					<br />
+					<br />
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/approvetransaction">Approve
 						Transaction</a>
 					<br />
 					<br />
-					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/deleteactiveusers">Block
-						Active Customers</a>
-					<br />
-					<br />
-
-					<a class="btn btn-info btn-large" style="width:300px"
+					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/editmanagerprofile">Edit
 						Profile</a>
 					<br />
@@ -109,60 +113,50 @@
 				</sec:authorize>
 
 				<sec:authorize access="hasRole('ROLE_USER')">
-
-					<a class="btn btn-info btn-large" style="width:300px" 
-						href="${pageContext.request.contextPath}/openTransaction">Open
-						transactions [Arjun]</a>
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/openTransaction">Transfer
+						Funds</a>
 					<br />
 					<br />
-
-					<a class="btn btn-info btn-large" style="width:300px" 
-						href="${pageContext.request.contextPath}/openDebitCreditTransaction">Debit
-						credit your account [Arjun]</a>
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/openDebitCreditTransaction">Debit/Credit
+						your account</a>
 					<br />
 					<br />
-
-					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/openMakePayment">MakePayment
-						[Arjun]</a>
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/openMakePayment">Make
+						Payment</a>
 					<br />
 					<br />
-
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/edituserprofile">Edit
+						Profile</a>
+					<br />
+					<br />
 				</sec:authorize>
 				<sec:authorize access="hasRole('ROLE_MERCHANT')">
-
-					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/openMerchantTransaction">Make Transaction</a>
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/openMerchantTransaction">Transfer
+						Funds</a>
 					<br />
 					<br />
-					<a class="btn btn-info btn-large" style="width:300px" 
-						href="${pageContext.request.contextPath}/transactionhistory">View Statement</a>
-					<br />
-					<br />
-					<br>
-					<a class="btn btn-info btn-large" style="width:300px"
-						href="${pageContext.request.contextPath}/editmerchantprofile">Edit Profile</a>
-					<br />
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/editmerchantprofile">Edit
+						Profile</a>
 					<br />
 					<br />
 				</sec:authorize>
+			</center>
 
-
-				<form method="post"
-					action="${pageContext.request.contextPath}/logout">
-					<input class="control btn btn-info" value="Logout" type="submit" />
-					<input type="hidden" name="${_csrf.parameterName}"
-						value="${_csrf.token}" />
-				</form>
+			<form method="post"
+				action="${pageContext.request.contextPath}/logout">
+				<input class="control btn btn-info" value="Logout" type="submit" />
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
+			</form>
 		</div>
 	</div>
 	<div class="span4"></div>
-	</div>
-
-
-
-	<%-- <a href = "${pageContext.request.contextPath}/viewuser">Click Here to Login</a>
- --%>
 
 </body>
 </html>

@@ -107,7 +107,7 @@ public class HomeController {
 		}
 
 		List<User> uniqueUser;
-		uniqueUser = (userService.getUserProfileByField("username", user.getUsername()));
+		uniqueUser = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		System.out.println("uniqueUser " + uniqueUser);
 		if (uniqueUser.size() > 0) {
 			System.out.println("Caught duplicate Username");
@@ -127,10 +127,10 @@ public class HomeController {
 		auth.setUsername(user.getUsername());
 		auth.setAuthority("ROLE_NEW");
 
-		sendOTPMail(user.getFirstname(), user.getEmail());
-
 		userService.createUser(user);
 		userService.setAuthority(auth);
+
+		sendOTPMail(user.getFirstname(), user.getEmail());
 
 		model.addAttribute("mail", user.getEmail());
 		return "completeregistration";
@@ -144,7 +144,7 @@ public class HomeController {
 		}
 
 		List<User> uniqueUser;
-		uniqueUser = (userService.getUserProfileByField("username", user.getUsername()));
+		uniqueUser = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		if (uniqueUser.size() > 0) {
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			return "merchant";
@@ -163,10 +163,12 @@ public class HomeController {
 		Authorities auth = new Authorities();
 		auth.setUsername(user.getUsername());
 		auth.setAuthority("ROLE_NEWMERCHANT");
-		sendOTPMail(user.getFirstname(), user.getEmail());
 
 		userService.createUser(user);
 		userService.setAuthority(auth);
+
+		sendOTPMail(user.getFirstname(), user.getEmail());
+
 		model.addAttribute("mail", user.getEmail());
 		return "completeregistration";
 
@@ -177,10 +179,14 @@ public class HomeController {
 
 		String mail = request.getParameter("mail");
 		String otpValue = request.getParameter("otpValue");
+		System.out.println("mail " + mail);
 		User userObj = userService.getUserregisterbyEmail(mail);
 
 		String otpStatus = verifyUserOTP(userObj, otpValue);
 		System.out.println("otpStatus " + otpStatus);
+
+		// sending the email back to jsp
+		model.addAttribute("mail", mail);
 
 		if (otpStatus.equalsIgnoreCase("success")) {
 			userObj.setIsnewuser(true);
@@ -189,11 +195,16 @@ public class HomeController {
 			return "home";
 		} else if (otpStatus.equalsIgnoreCase("attempts")) {
 			// Too many attempts. Refresh and request OTP again
-			System.out.println("Wrong otp, otpStatus " + otpStatus);
+			System.out.println("Wrong otp, otpStatus: " + otpStatus);
+			model.addAttribute("otpstatus", "Incorrect OTP");
+			return "completeregistration";
 		} else if (otpStatus.equalsIgnoreCase("failure")) {
-			// Wrong OTP
 			// delete userprofile and redirect again to registration.
-			System.out.println("FAilure refresh and request OTP, otpStatus " + otpStatus);
+			System.out.println("Failure refresh and request OTP, otpStatus " + otpStatus);
+			userService.deleteUser(userObj);
+			model.addAttribute("otpstatus", "Too many attempts, register again");
+			return "registeruser";
+
 		}
 		// DELETE THIS LATER
 		return "home";
@@ -210,10 +221,10 @@ public class HomeController {
 			HttpServletResponse res, Model model) {
 		String uname = principal.getName();
 		System.out.println(uname);
-//
-//		if (result.hasErrors()) {
-//			return "userconfirm";
-//		}
+		//
+		// if (result.hasErrors()) {
+		// return "userconfirm";
+		// }
 		Authorities authority = userService.getUserActivatebyUsername(uname);
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);
@@ -246,7 +257,6 @@ public class HomeController {
 	}
 
 	public String verifyUserOTP(User user, String otpValue) {
-		System.out.println("showViewUser");
 		// String mail=user.getEmail();
 		String mail = user.getEmail();
 		String firstName = user.getFirstname();
@@ -255,6 +265,7 @@ public class HomeController {
 		otpObj.setFirstName(firstName);
 		otpObj.setMailID(mail);
 		otpObj.setOtpValue(otpValue);
+		System.out.println(firstName + " " + mail + " " + otpValue);
 		try {
 			OTP dbObj = utilityService.checkOTP(otpObj);
 			if (dbObj == null) {
@@ -286,6 +297,7 @@ public class HomeController {
 			System.out.println("Printing stack trace");
 			e.printStackTrace();
 		}
+		// return error page
 		return null;
 	}
 
@@ -322,24 +334,5 @@ public class HomeController {
 			System.out.println(e);
 		}
 	}
-
-	// @RequestMapping("/Sample")
-	// public String showRandom() {
-	// return "Sample";
-	// }
-
-	// @RequestMapping("/viewuser")
-	// public String showViewUser(Model model) {
-	// List<User> users = userService.getAllUsers();
-	// model.addAttribute("user", users);
-	// return "viewuser";
-	// }
-
-	// @RequestMapping(value = "/mylogin")
-	// public String loginUser(Model model) {
-	// System.out.println("loginUser");
-	// model.addAttribute("userlogin", new User());
-	// return "mylogin";
-	// }
 
 }

@@ -57,4 +57,8 @@ public class TransactionService {
 		return transactionDao.getTransactions(transactionid);
 	}
 
+	public List<Transaction> getTransactions() {
+		return transactionDao.getTransactions();
+	}
+
 }

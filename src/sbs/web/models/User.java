@@ -13,8 +13,7 @@ import javax.validation.constraints.Size;
 public class User {
 	
 	@Id
-	
-	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
+	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters!ERROR!")
 	private String username;
 
 	
@@ -50,7 +49,6 @@ public class User {
 	private String State;
 	
 	//@Column(name = "zip")
-	@NotNull
 	@Pattern(regexp="^[0-9]{5}$", message="Incorrect Zip Code")
 	private String Zip;
 

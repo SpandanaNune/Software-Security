@@ -21,8 +21,6 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/registeruser"
 			access="permitAll" />
-		<security:intercept-url pattern="/login"
-			access="permitAll" />
 		<security:intercept-url pattern="/customerrorpage"
 			access="permitAll" />
 		<security:intercept-url pattern="/merchant"
@@ -60,6 +58,8 @@
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/editmanagerprofile"
 			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/editmanagerprofiledone"
+			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/declinebtn"
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/acceptbtn"
@@ -70,7 +70,11 @@
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/deleteuser"
 			access="hasRole('ROLE_MANAGER')" />
-		<security:intercept-url pattern="/editmanagerprofiledone"
+		<security:intercept-url pattern="/editbtnmerchant"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/updatebtnmerchant"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/deletemerchant"
 			access="hasRole('ROLE_MANAGER')" />
 
 		<security:intercept-url pattern="viewedituserdetails_employee"

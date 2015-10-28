@@ -48,7 +48,7 @@ import sbs.web.utils.PKIUtil;
 @Controller
 public class TransactionController {
 
-	static int transactionIDCounter = 500;
+	static int transactionIDCounter;
 	TransactionService transactionService;
 	AccountsService accountService;
 	UtilityService utilityService;
@@ -58,7 +58,19 @@ public class TransactionController {
 
 	@Autowired
 	public void setTransactionService(TransactionService transactionService) {
+		System.out.println("Setting TransactionService in TransactionController");
 		this.transactionService = transactionService;
+		List<Transaction> transactions = transactionService.getTransactions();
+		int maxVal = 0, curVal;
+		for (Transaction tran : transactions) {
+			curVal = tran.getPrimaryKey().getTransactionId();
+			if (maxVal < curVal) {
+				maxVal = curVal;
+			}
+		}
+		System.out.println("Maximum value is " + transactionIDCounter);
+		transactionIDCounter = maxVal;
+
 	}
 
 	@Autowired
@@ -362,15 +374,13 @@ public class TransactionController {
 	public String createTransactions(Model model, @Valid TransactionDetails transactionDetails, BindingResult result,
 			HttpServletRequest request, Principal principal) throws IOException {
 		String username = principal.getName();
-		System.out.println("1");
 		
 		
-		
-//		if (result.hasErrors()) {
-//			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
-//			model.addAttribute("accounts", accounts);
-//			return "maketransaction";
-//		}
+		if (result.hasErrors()) {
+			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
+			model.addAttribute("accounts", accounts);
+			return "maketransaction";
+		}
 		System.out.println("2");
 		
 		
@@ -410,8 +420,7 @@ public class TransactionController {
 			return "maketransaction";
 		}
 
-		System.out.println("3");
-		
+
 		model.addAttribute("transactionDetails", transactionDetails);
 		Object principalObj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -614,53 +623,37 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/transactionhistory")
-	public String showTransactions(Model model) {
-		model.addAttribute("name", "swetha");
-		ArrayList<Transaction> transactions = (ArrayList<Transaction>) transactionService.getAllTransactions(1000);
-		model.addAttribute("transactions", transactions);
-		return "transactionhistory";
-	}
 
-	@RequestMapping(value = "/downloadTransactions")
-	public String downloadTransactions(Model model, HttpServletRequest request) {
-		System.out.println("Download Transaction History");
-		ArrayList<Transaction> transactions = (ArrayList<Transaction>) transactionService.getAllTransactions(1234);
-		try {
-			User user = new User();
-			user.setEmail("sswetha2809@gmail.com");
-			user.setFirstname("swetha");
-			user.setLastname("swaminathan");
-			// user.setUsername("sswetha2809");
-			String home = System.getProperty("user.home");
-			String filePath = home + "\\Downloads\\" + user.getFirstname() + ".pdf";
-			PDFUtils.generatePDF(transactions, filePath);
-
-		} catch (FileNotFoundException | DocumentException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	public String showTransactions(Model model,Principal principal) {
+		model.addAttribute("name", principal.getName());
+		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		for(Accounts acct:allaccount)
+		{
+			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 		}
-
 		model.addAttribute("transactions", transactions);
-
 		return "transactionhistory";
 	}
+
 
 	@RequestMapping(value = "/emailTransactions")
-	public String emailTransactions(Model model, HttpServletRequest request) {
-		System.out.println("Mail Transaction History");
-		ArrayList<Transaction> transactions = (ArrayList<Transaction>) transactionService.getAllTransactions(1000);
+	public String emailTransactions(Model model, HttpServletRequest request,Principal principal) {
+		
+		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		for(Accounts acct:allaccount)
+		{
+			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
+		}
 		try {
 
-			User user = new User();
-			user.setEmail("sswetha2809@gmail.com");
-			user.setFirstname("swetha");
-			user.setLastname("swaminathan");
+			User user = userService.getUserregisterbyUsername(principal.getName());
+			
 			// saving the generated pdf to a temp folder for e-mailing
 			String path = System.getProperty("catalina.home") + "\\temp\\" + user.getFirstname() + ".pdf";
-			PDFUtils.generatePDF(transactions, path);
+			
+			PDFUtils.generatePDF(transactions, path,user);
 
 			SendMail.sendStatement(user, path);
 
@@ -685,7 +678,8 @@ public class TransactionController {
 
 		model.addAttribute("transactions", transactions);
 
-		return "transactionhistory";
+		model.addAttribute("uname",principal.getName());
+		return "welcome";
 	}
 
 	@RequestMapping(value = "/accepttransactionbtn")
