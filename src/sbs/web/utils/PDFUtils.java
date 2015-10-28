@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -53,14 +55,14 @@ public class PDFUtils {
 
 	private static void addTitlePage(Document document,String userName)
 			throws DocumentException, MalformedURLException, IOException {
+
 		Paragraph preface = new Paragraph();
 		addEmptyLine(preface, 1);
 		// Lets write a big header
 		preface.add(new Paragraph("Money Tree Banking Corporation", catFont));
 		addEmptyLine(preface, 4);
-		String logo = System.getProperty("catalina.home") +"\\images\\mtbclogo.png";
+		String logo = FilenameUtils.separatorsToSystem(System.getProperty("catalina.home") +"/images/mtbclogo.png");
 
-		//String logo = ";
 		Image img;
 
 		img = Image.getInstance(logo);

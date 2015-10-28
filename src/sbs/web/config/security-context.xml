@@ -35,8 +35,10 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/loggedout"
 			access="permitAll" />
+			
+			
 
-
+	
 		<security:intercept-url pattern="/welcome"
 			access="hasAnyRole('ROLE_NEW,ROLE_USER,ROLE_NEWMANAGER,ROLE_MANAGER,ROLE_NEWMERCHANT,ROLE_MERCHANT,ROLE_EMPLOYEE,ROLE_NEWEMPLOYEE')" />
 		<security:intercept-url pattern="/userconfirm"

@@ -24,7 +24,7 @@
       }
     </style>
   </noscript>
-  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
   <script language="javascript">
     document.onmousedown = disableclick;
     status = "Right Click Disabled";
@@ -52,7 +52,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/welcome">
           <b>MTBC </b>
         </a>
       </div>
@@ -62,8 +62,16 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#">
-              <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+           <form method="post"
+						action="${pageContext.request.contextPath}/logout">
+
+						<input class="btn btn-none" value="Logout" type="submit"
+							style="background-color: #006f87; height: 50px; color: white;" />
+
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form>
+
           </li>
         </ul>
       </div>

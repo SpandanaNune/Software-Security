@@ -24,7 +24,7 @@
 			}
 		</style>
 	</noscript>
-	<link rel="stylesheet" href="navbar.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
 	<script language="javascript">
 		document.onmousedown = disableclick;
 		status = "Right Click Disabled";
@@ -50,7 +50,7 @@
   <nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/welcome">
 					<b>MTBC </b>
 				</a>
 			</div>
@@ -60,8 +60,16 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<a href="#">
-							<span class="glyphicon glyphicon-log-out"></span> Logout</a>
+						<form method="post"
+						action="${pageContext.request.contextPath}/logout">
+
+						<input class="btn btn-none" value="Logout" type="submit"
+							style="background-color: #006f87; height: 50px; color: white;" />
+
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form>
+
 					</li>
 				</ul>
 			</div>
@@ -76,16 +84,11 @@
 			commandName="user" htmlEscape="true">
 
 			<table class="formtable">
-				 <tr>
-      <td class="label">
-            <h4 style="color: black">UserName:</h4>
-          </td>
-          <td>
-      <sf:input class="control form-control" path="username" name="username" type="text" readonly="true"/>
-       <br />
-      <sf:errors path="username" Class="error"></sf:errors>
-</td>
-</tr>
+				<tr>
+					<td><sf:input class="control form-control"  path="username"
+							name="username" type="hidden" /><br /> <sf:errors path="username"
+							Class="error"></sf:errors></td>
+				</tr>
 
 				<tr>
 					<td class="label"><h4 style="color: black">FirstName:</h4></td>
@@ -99,14 +102,29 @@
 							name="lastname" type="text" /><br /> <sf:errors path="lastname"
 							Class="error"></sf:errors></td>
 				</tr>
-			
+				<tr>
+					<td><sf:input class="control form-control" path="email"
+							name="email" type="hidden" /><br /> <sf:errors path="email"
+							Class="error"></sf:errors></td>
+				</tr>
 				<tr>
 					<td class="label"><h4 style="color: black">Phone:</h4></td>
 					<td><sf:input class="control form-control" path="phone"
 							name="phone" type="text" /><br /> <sf:errors path="phone"
 							Class="error"></sf:errors></td>
 				</tr>
-			
+				<tr>
+					<td><sf:input class="control form-control" path="SSN"
+							name="SSN" type="hidden" /><br /> <sf:errors path="SSN"
+							Class="error"></sf:errors></td>
+				</tr>
+				<tr>
+					<td class="label"><h4 style="color: black">Date of Birth
+							(mm/dd/yyyy):</h4></td>
+					<td><sf:input class="control form-control" path="dob"
+							name="dob" type="text" /><br /> <sf:errors path="dob"
+							Class="error"></sf:errors></td>
+				</tr>
 
 				<tr>
 					<td class="label"><h4 style="color: black">Address Line

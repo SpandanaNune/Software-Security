@@ -5,56 +5,123 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script language="javaScript">
-function showAlert()
-{
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="navbar.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-  alert('File Download Complete');
-}
-</script>
+  <noscript>
+    <h2>JavaScript is disabled! Why you want to do so? Please enable JavaScript in your web browser!</h2>
+    <style type="text/css">
+      #main-content {
+        display: none;
+      }
+    </style>
+  </noscript>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
+  <script language="javascript">
+    document.onmousedown = disableclick;
+    status = "Right Click Disabled";
+
+    function disableclick(event) {
+      if (event.button == 2) {
+        alert(status);
+        return false;
+      }
+    }
+  </script>
+
+  <script>
+    window.location.hash = "no-back-button";
+    window.location.hash = "Again-No-back-button";
+    window.onhashchange = function() {
+      window.location.hash = "no-back-button";
+    }
+  </script>
+  <title>Transaction History</title>
+  <script language="javaScript">
+    function showAlert() {
+
+      alert('File Download Complete');
+    }
+  </script>
 </head>
+
 <body>
-  <div class = "container">
-<sf:form method="post" action="${pageContext.request.contextPath}/downloadTransactions">
-	<H1>Transaction History</H1>
-	<TABLE class ="table table-hover">
-		<TR>
-			<TH>Transaction ID</TH>
-			<TH>Account No</TH>
-			<TH>Transaction Type</TH>
-			<TH>Amount</TH>
-			<TH>Status</TH>
-		</TR>
-		<c:forEach items="${transactions}" var="transaction">
-			<TR>
-				<TD><c:out
-						value="${transaction.getPrimaryKey().getTransactionId()}" /></TD>
-				<TD><c:out
-						value="${transaction.getPrimaryKey().getAccountNo()}" /></TD>
-				<TD><c:out value="${transaction.getAmount()}" /></TD>
-				<TD><c:out value="${transaction.getTransactionType()}" /></TD>
-				<TD><c:out value="${transaction.getStatus()}" /></TD>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/welcome">
+          <b>MTBC </b>
+        </a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+          <li><a href="#">About Us</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+           <form method="post"
+						action="${pageContext.request.contextPath}/logout">
 
-			</TR>
-		</c:forEach>
+						<input class="btn btn-none" value="Logout" type="submit"
+							style="background-color: #006f87; height: 50px; color: white;" />
 
-	</TABLE>
-	<!--  <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">Download</button>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form>
+
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+  <div class="container">
+    <sf:form method="post" action="${pageContext.request.contextPath}/downloadTransactions">
+      <H1>Transaction History</H1>
+      <TABLE class="table table-hover">
+        <TR>
+          <TH>Transaction ID</TH>
+          <TH>Account No</TH>
+          <TH>Transaction Type</TH>
+          <TH>Amount</TH>
+          <TH>Status</TH>
+        </TR>
+        <c:forEach items="${transactions}" var="transaction">
+          <TR>
+            <TD>
+              <c:out value="${transaction.getPrimaryKey().getTransactionId()}" />
+            </TD>
+            <TD>
+              <c:out value="${transaction.getPrimaryKey().getAccountNo()}" />
+            </TD>
+            <TD>
+              <c:out value="${transaction.getAmount()}" />
+            </TD>
+            <TD>
+              <c:out value="${transaction.getTransactionType()}" />
+            </TD>
+            <TD>
+              <c:out value="${transaction.getStatus()}" />
+            </TD>
+
+          </TR>
+        </c:forEach>
+
+      </TABLE>
+      <!--  <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">Download</button>
 	 	 <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">E-Mail</button> -->
 
-	 </sf:form>
-		  <a class="btn btn-info btn-primary btn-large"
-		href="${pageContext.request.contextPath}/emailTransactions" type="submit"> Email </a>
+    </sf:form>
+    <a class="btn btn-info btn-primary btn-large" href="${pageContext.request.contextPath}/emailTransactions" type="submit"> Email </a>
   </div>
 </body>
+
 </html>

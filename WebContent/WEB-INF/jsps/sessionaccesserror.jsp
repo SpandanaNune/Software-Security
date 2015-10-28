@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -34,14 +34,14 @@
   window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
   window.onhashchange=function(){window.location.hash="no-back-button";}
 </script>
-<title>Error!</title>
+<title>Invalid Session</title>
 <body>
-  <br><br>
+<br><br>
 <div class="container well">
           <center>
-          <h1>Internal Server Error<small></small></h1>
-          <br/> <br>
-          <p>You have encountered a server error. Please navigate back to the Home page.</p>
+          <h1>Unauthorized<small><font face="Tahoma" color="red">&nbsp;Error 402</font></small></h1>
+          <br /> <br>
+          <p>You have tried to access an unauthorized session. Please navigate to the home page or click the link below.</p>
           <br><br>
           <a href="#" class="btn btn-large btn-info"><span class="glyphicon glyphicon-home"></span> Home</a>
         </center>
