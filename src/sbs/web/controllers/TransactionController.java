@@ -649,9 +649,9 @@ public class TransactionController {
 		try {
 
 			User user = userService.getUserregisterbyUsername(principal.getName());
-			
+
 			// saving the generated pdf to a temp folder for e-mailing
-			String path = System.getProperty("catalina.home") + "\\temp\\" + user.getFirstname() + ".pdf";
+			String path = FilenameUtils.separatorsToSystem(System.getProperty("catalina.home") + "/temp/" + user.getFirstname() + ".pdf");
 			
 			PDFUtils.generatePDF(transactions, path,user);
 
