@@ -60,7 +60,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="${pageContext.request.contextPath}/login">
+            <a href="${pageContext.request.contextPath}/welcome">
               <span class="glyphicon glyphicon-log-in"></span> Login</a>
           </li>
         </ul>

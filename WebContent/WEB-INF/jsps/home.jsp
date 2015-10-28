@@ -71,7 +71,7 @@
             </ul>
           </li>
           <li>
-            <a href="${pageContext.request.contextPath}/login">
+            <a href="${pageContext.request.contextPath}/welcome">
               <span class="glyphicon glyphicon-log-in"></span> Login</a>
           </li>
         </ul>
@@ -95,7 +95,7 @@
       <p>At MTBC, we understand your banking needs.</p>
       <br>
       <br>
-      <a class="btn btn-info" href="${pageContext.request.contextPath}/login">
+      <a class="btn btn-info" href="${pageContext.request.contextPath}/welcome">
               <span class="glyphicon glyphicon-log-in"></span> Login</a>
     </center>
   </div>

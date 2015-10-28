@@ -23,7 +23,7 @@
       }
     </style>
   </noscript>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/welcome">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
   <script language="javascript">
     document.onmousedown = disableclick;
     status = "Right Click Disabled";
@@ -50,7 +50,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/static/css/navbar.css">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/welcome">
           <b>MTBC </b>
         </a>
       </div>

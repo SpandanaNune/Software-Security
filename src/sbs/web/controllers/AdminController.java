@@ -102,6 +102,7 @@ public class AdminController {
 			return "employeecreation";
 		}
 
+		if (user != null && user.getUsername() != null) {
 		List<User> uniqueUser1;
 		uniqueUser1 = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		System.out.println("uniqueUser " + uniqueUser1);
@@ -124,7 +125,7 @@ public class AdminController {
 			return "employeecreation";
 		}
 
-		if (user != null && user.getUsername() != null) {
+		
 			String role = rqst.getParameter("role");
 			System.out.println(user);
 
@@ -160,21 +161,17 @@ public class AdminController {
 
 			SendMail sendmail = new SendMail();
 			sendmail.sendTempPassword(user.getEmail(), tempPassword, user.getFirstname());
+			return "adminhome";
 
 		}
-		// else {
-		// System.out.println("Caught duplicate Username");
-		// result.rejectValue("username", "DuplicateKeyException.user.username",
-		// "Username already exists.");
-		// }
-		// }
+		
 
 		List<String> authorities = new ArrayList<>();
 		authorities.add("ROLE_NEWEMPLOYEE");
 		authorities.add("ROLE_NEWMANAGER");
 		model.addAttribute("roles", authorities);
 		model.addAttribute("uname", principal.getName());
-		return "adminhome";
+		return "employeecreation";
 
 	}
 

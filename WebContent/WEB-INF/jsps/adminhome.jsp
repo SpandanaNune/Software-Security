@@ -24,7 +24,7 @@
      }
    </style>
  </noscript>
- <link rel="stylesheet" href="${pageContext.request.contextPath}/welcome">
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
  <script language="javascript">
    document.onmousedown = disableclick;
    status = "Right Click Disabled";

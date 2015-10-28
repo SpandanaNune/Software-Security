@@ -116,7 +116,7 @@
 				<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
 					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/viewedituserdetails_employee"
-						target="_blank">View/Edit Customer Details</a>
+						>View/Edit Customer Details</a>
 					<br />
 					<br />
 					<a class="btn btn-info btn-large" style="width: 300px"
@@ -141,7 +141,6 @@
 					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/merchantsignuprequest">Merchant
 						SignUp Request</a>
-					<br />
 					<br />
 					<br />
 					<a class="btn btn-info btn-large" style="width: 300px"
@@ -204,12 +203,6 @@
 				</sec:authorize>
 			</center>
 
-			<form method="post"
-				action="${pageContext.request.contextPath}/logout">
-				<input class="control btn btn-info" value="Logout" type="submit" />
-				<input type="hidden" name="${_csrf.parameterName}"
-					value="${_csrf.token}" />
-			</form>
 		</div>
 	</div>
 	<div class="span4"></div>

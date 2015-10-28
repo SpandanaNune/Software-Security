@@ -45,7 +45,7 @@
           <br /> <br>
           <p>The page you are trying to access does not exist.</p>
           <br><br>
-          <a href="#" class="btn btn-large btn-info"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a href="${pageContext.request.contextPath}/welcome" class="btn btn-large btn-info"><span class="glyphicon glyphicon-home"></span> Home</a>
         </center>
 </div>
 </body>

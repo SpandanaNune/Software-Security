@@ -59,7 +59,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li>
-              <a href="${pageContext.request.contextPath}/login">
+              <a href="${pageContext.request.contextPath}/welcome">
                 <span class="glyphicon glyphicon-log-in"></span> Login</a>
             </li>
           </ul>
@@ -73,7 +73,7 @@
           <c:out value="${uname}"></c:out>
           ! Activation is complete </h1>
         <br>
-        <form method="post" action="${pageContext.request.contextPath}/login">
+        <form method="post" action="${pageContext.request.contextPath}/welcome">
           <input class="control btn btn-info" value="Login" type="submit" />
           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
