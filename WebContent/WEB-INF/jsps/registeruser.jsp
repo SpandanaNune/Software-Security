@@ -14,6 +14,7 @@
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="navbar.css">
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
@@ -192,11 +193,15 @@
 							name="Zip" type="text" /></td>
 					<td>&nbsp;</td>
 					<td><sf:errors path="Zip" Class="error"></sf:errors></td>
-					<td>&nbsp;</td>
+				</tr>
+				<tr>
+		            <td class="label">
+		              <h4 style="color:black">Verify Captcha:</h4>
+		            </td>
 		            <td>
 		              <div class="g-recaptcha" data-sitekey="6LcHCw8TAAAAAIqGUaZBHaZbJ4ra61tME5Lz3zB7"></div>
 		            </td>
-				</tr>
+		         </tr>
 			</table>
 			<br>
 			<center>
