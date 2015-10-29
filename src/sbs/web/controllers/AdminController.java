@@ -90,6 +90,7 @@ public class AdminController {
 		return "vieweditinternalusers";
 
 	}
+	
 
 	@RequestMapping(value = "/employeecreation")
 	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model,Principal principal) {
@@ -101,10 +102,40 @@ public class AdminController {
 			model.addAttribute("roles", authorities);
 			return "employeecreation";
 		}
+		
+		List<User> uniqueUser1;
+		uniqueUser1 = (userService.getUserProfileByField("username", user.getUsername()));
+		System.out.println("uniqueUser " + uniqueUser1);
+		if (uniqueUser1.size() > 0) {
+			System.out.println("Caught duplicate Username");
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+			
+			List<String> authorities = new ArrayList<>();
+			authorities.add("ROLE_NEWEMPLOYEE");
+			authorities.add("ROLE_NEWMANAGER");
+			model.addAttribute("roles", authorities);
+			
+			return "employeecreation";
+		}
+
+		uniqueUser1 = (userService.getUserProfileByField("email", user.getEmail()));
+		if (uniqueUser1.size() > 0) {
+			System.out.println("Caught duplicate Email");
+			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
+			
+			List<String> authorities = new ArrayList<>();
+			authorities.add("ROLE_NEWEMPLOYEE");
+			authorities.add("ROLE_NEWMANAGER");
+			model.addAttribute("roles", authorities);
+			
+			return "employeecreation";
+		}
+		
 		if(user != null && user.getUsername() != null) {
 			String role = rqst.getParameter("role");
 			System.out.println(user);
 			User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
+			
 			if (uniqueUser == null) {
 				System.out.println(user);
 //				user.setIsnewuser(true);
@@ -137,10 +168,11 @@ public class AdminController {
 				auth.setUsername(user.getUsername());
 				auth.setAuthority(role);
 				userService.setAuthority(auth);
-			} else {
-				System.out.println("Caught duplicate Username");
-				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			}
+//			} else {
+//				System.out.println("Caught duplicate Username");
+//				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
+//			}
 		}
 		List<String> authorities = new ArrayList<>();
 		authorities.add("ROLE_NEWEMPLOYEE");

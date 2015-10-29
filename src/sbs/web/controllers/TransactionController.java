@@ -526,36 +526,33 @@ public class TransactionController {
 
 	@RequestMapping(value = "/transactionhistory")
 
-	public String showTransactions(Model model,Principal principal) {
+	public String showTransactions(Model model, Principal principal) {
 		model.addAttribute("name", principal.getName());
 		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		for(Accounts acct:allaccount)
-		{
+		for (Accounts acct : allaccount) {
 			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 		}
 		model.addAttribute("transactions", transactions);
 		return "transactionhistory";
 	}
 
-
 	@RequestMapping(value = "/emailTransactions")
-	public String emailTransactions(Model model, HttpServletRequest request,Principal principal) {
-		
+	public String emailTransactions(Model model, HttpServletRequest request, Principal principal) {
+
 		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		for(Accounts acct:allaccount)
-		{
+		for (Accounts acct : allaccount) {
 			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 		}
 		try {
 
 			User user = userService.getUserregisterbyUsername(principal.getName());
-			
+
 			// saving the generated pdf to a temp folder for e-mailing
 			String path = System.getProperty("catalina.home") + "\\temp\\" + user.getFirstname() + ".pdf";
-			
-			PDFUtils.generatePDF(transactions, path,user);
+
+			PDFUtils.generatePDF(transactions, path, user);
 
 			SendMail.sendStatement(user, path);
 
@@ -580,7 +577,7 @@ public class TransactionController {
 
 		model.addAttribute("transactions", transactions);
 
-		model.addAttribute("uname",principal.getName());
+		model.addAttribute("uname", principal.getName());
 		return "welcome";
 	}
 
