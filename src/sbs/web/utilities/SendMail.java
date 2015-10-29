@@ -640,7 +640,7 @@ public class SendMail {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject("Welcome To Money Tree Banking Corporation " + fname+" "+dateFormat.format(date));
 			message.setText("Dear " + fname + "," + "\n\n We are pleased to have you with MTBC bank. "
-					+ "You have successfully registered with MTBC . Your account is undergoing necessary processing. You will receive another email"
+					+ "You have successfully registered with MTBC . Your account is undergoing necessary processing. You will receive another email "
 					+"with details to setup your account."
 					+ "\n\nSincerely,\nMoney Tree Banking Corporation \n 'Grow your money here'");
 			logger.info("Sending message");

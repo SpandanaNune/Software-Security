@@ -44,7 +44,7 @@ public class HomeController {
 	private UtilityService utilityService;
 
 	private AccountsService accountService;
- 
+
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -78,10 +78,10 @@ public class HomeController {
 		model.addAttribute("uname", uname);
 		return "adminhome";
 	}
-	
+
 	@RequestMapping(value = "/about")
 	public String aboutUs(Model model, Principal principal) {
-		
+
 		return "about";
 	}
 
@@ -115,7 +115,7 @@ public class HomeController {
 		if (result.hasErrors()) {
 			return "registeruser";
 		}
-		
+
 		List<User> uniqueUser;
 		uniqueUser = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		if (uniqueUser.size() > 0) {
@@ -131,46 +131,45 @@ public class HomeController {
 			return "registeruser";
 		}
 		boolean verify = false;
-		try{
+		try {
 			verify = VerifyCaptcha.verify(gCaptchaResponse);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("Failed to verify captcha");
 		}
-		
+
 		if (verify) {
-			try{
+			try {
 				user.setIsmerchant(false);
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEW");
-				logger.error("Before creating user"+user);
+				logger.error("Before creating user" + user);
 				userService.createUser(user);
-				logger.error("After creating user"+user);
-				logger.error("Before creating auth"+auth);
+				logger.error("After creating user" + user);
+				logger.error("Before creating auth" + auth);
 
 				userService.setAuthority(auth);
-				logger.error("After Creating auth"+auth);
+				logger.error("After Creating auth" + auth);
 				logger.error("Failed to verify captcha");
-	
+
 				sendOTPMail(user.getFirstname(), user.getEmail());
 				logger.error("Failed to verify captcha");
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
-			}
-			catch(Exception e){
-				logger.error("Failure during user registration::"+e.getMessage());
+			} catch (Exception e) {
+				logger.error("Failure during user registration::" + e.getMessage());
 				e.printStackTrace();
 			}
 		}
-		
-			return "registeruser";
+
+		return "registeruser";
 	}
 
 	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
-	public String RegisterMerchant(@Valid User user, BindingResult result, Model model,  HttpServletRequest request) {
+	public String RegisterMerchant(@Valid User user, BindingResult result, Model model, HttpServletRequest request) {
 		System.out.println(" Inside merchnat button pressed");
-		
+
 		String gCaptchaResponse = request.getParameter("g-recaptcha-response");
 		System.out.println("1");
 		if (result.hasErrors()) {
@@ -196,33 +195,32 @@ public class HomeController {
 			return "merchant";
 		}
 		boolean verify = false;
-		try{
+		try {
 			verify = VerifyCaptcha.verify(gCaptchaResponse);
-		}catch(Exception e){
+		} catch (Exception e) {
 			logger.error("Failed to verify captcha");
 			e.printStackTrace();
 		}
 		System.out.println("4");
 		if (verify) {
-			try{
-		
+			try {
+
 				user.setIsmerchant(true);
 				user.setLastname("Merchant");
-		
+
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEWMERCHANT");
-		
+
 				userService.createUser(user);
 				userService.setAuthority(auth);
-		
+
 				sendOTPMail(user.getFirstname(), user.getEmail());
-		
+
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
-			}
-			catch(Exception e){
-				logger.error("Failure during merchant registration::"+e.getMessage());
+			} catch (Exception e) {
+				logger.error("Failure during merchant registration::" + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -248,7 +246,7 @@ public class HomeController {
 			System.out.println(userObj.toString());
 			userService.createUser(userObj);
 			SendMail mailsend = new SendMail();
-			mailsend.sendAccountApproval(userObj.getEmail(),userObj.getFirstname());
+			mailsend.sendAccountApproval(userObj.getEmail(), userObj.getFirstname());
 			return "home";
 		} else if (otpStatus.equalsIgnoreCase("attempts")) {
 			// Too many attempts. Refresh and request OTP again
@@ -263,7 +261,7 @@ public class HomeController {
 			return "registeruser";
 
 		}
-		
+
 		// DELETE THIS LATER
 		return "home";
 	}
@@ -371,15 +369,13 @@ public class HomeController {
 	public static String generatePassword() {
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + "1234567890";
 		final int PW_LENGTH = 8;
-		
+
 		Random rnd = new SecureRandom();
 		StringBuilder pass = new StringBuilder();
 		for (int i = 0; i < PW_LENGTH; i++)
 			pass.append(chars.charAt(rnd.nextInt(chars.length())));
 		return pass.toString();
 	}
-	
-	
 
 	void sendOTPMail(String firstName, String mail) {
 

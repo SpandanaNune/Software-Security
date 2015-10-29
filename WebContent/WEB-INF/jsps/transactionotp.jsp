@@ -98,8 +98,6 @@ function validateForm() {
       <center>
         <h1>Confirm Transaction</h1>
         <br />
-        <c:out value="${email}"></c:out>
-        <c:out value="${transactionid}"></c:out>
         <sf:form name="myForm" onsubmit="return validateForm()" 
         method="post" action="${pageContext.request.contextPath}/completetransaction" htmlEscape="true" >
           <table>

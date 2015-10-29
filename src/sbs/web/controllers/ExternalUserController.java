@@ -48,37 +48,6 @@ public class ExternalUserController {
 	}
 
 	
-//	@RequestMapping("/editmerchant")
-//	public String editMerchantDetails(Model model, Principal principal) {
-//		Users user = userService.getUserbyUsername(principal.getName());
-//		model.addAttribute("users", user);
-//		System.out.println(user);
-//		return "merchanthome";
-//	}
-	
-
-//	@RequestMapping(value = "/updatemerchantbtn", method = RequestMethod.POST)
-//	public String UpdaterMerchantUser(@Valid User user, BindingResult result, Model model, Principal principal) {
-//		// System.out.println(result.getErrorCount());
-//		// System.out.println(result.toString());
-//		// System.out.println(user);
-//		// user.setCanlogin(true);
-//
-//		if (result.hasErrors())
-//			return "editmerchant";
-//		else {
-//			boolean canEdit = principal.getName().equals(user.getUsername());
-//			if (canEdit){			
-//				userService.createUser(user);
-//				List<User> updateduser = userService.getAllActiveUsers();
-//				model.addAttribute("user", updateduser);
-//				return "viewedituserdetails";
-//			}
-//		}
-//		return "accessdenied";
-//	}
-//
-	
 	@RequestMapping(value = "/editmerchantprofile")
 	public String viewEditMerchantProfile(Model model, Principal principal) {
 		User user = userService.getUserregisterbyUsername(principal.getName());
@@ -221,4 +190,37 @@ public class ExternalUserController {
 		// **************** check if this is correct
 		return "welcome";
 	}
+	
+	
+//	@RequestMapping("/editmerchant")
+//	public String editMerchantDetails(Model model, Principal principal) {
+//		Users user = userService.getUserbyUsername(principal.getName());
+//		model.addAttribute("users", user);
+//		System.out.println(user);
+//		return "merchanthome";
+//	}
+	
+
+//	@RequestMapping(value = "/updatemerchantbtn", method = RequestMethod.POST)
+//	public String UpdaterMerchantUser(@Valid User user, BindingResult result, Model model, Principal principal) {
+//		// System.out.println(result.getErrorCount());
+//		// System.out.println(result.toString());
+//		// System.out.println(user);
+//		// user.setCanlogin(true);
+//
+//		if (result.hasErrors())
+//			return "editmerchant";
+//		else {
+//			boolean canEdit = principal.getName().equals(user.getUsername());
+//			if (canEdit){			
+//				userService.createUser(user);
+//				List<User> updateduser = userService.getAllActiveUsers();
+//				model.addAttribute("user", updateduser);
+//				return "viewedituserdetails";
+//			}
+//		}
+//		return "accessdenied";
+//	}
+//
+
 }

@@ -9,7 +9,7 @@ public class DatabaseExceptionHandler {
 	@ExceptionHandler(DataAccessException.class)
 	public String handleDatabaseException(DataAccessException exception) {
 		exception.printStackTrace();
-		return "error";
+		return "customerrorpage";
 	}
 
 }

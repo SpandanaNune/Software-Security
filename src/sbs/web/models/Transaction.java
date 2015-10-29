@@ -22,8 +22,6 @@ public class Transaction {
 	private String status;
 	@Column(name = "isCritical")
 	private boolean isCritical;
-	@Column(name = "dt_modified")
-	private String modifiedDate;
 	@Column(name = "dt_created")
 	private String createdDate;
 
@@ -57,12 +55,6 @@ public class Transaction {
 	public void setCritical(boolean isCritical) {
 		this.isCritical = isCritical;
 	}
-	public String getModifiedDate() {
-		return modifiedDate;
-	}
-	public void setModifiedDate(String modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
 	public String getCreatedDate() {
 		return createdDate;
 	}
@@ -72,9 +64,9 @@ public class Transaction {
 	@Override
 	public String toString() {
 		return "Transaction [primaryKey=" + primaryKey + ", transactionType=" + transactionType + ", amount=" + amount
-				+ ", status=" + status + ", isCritical=" + isCritical + ", modifiedDate=" + modifiedDate
-				+ ", createdDate=" + createdDate + "]";
+				+ ", status=" + status + ", isCritical=" + isCritical + ", createdDate=" + createdDate + "]";
 	}
+	
 	
 }
 

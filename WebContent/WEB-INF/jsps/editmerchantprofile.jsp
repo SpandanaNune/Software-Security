@@ -287,7 +287,7 @@
 					</td>
 					<td><sf:input class="control form-control" path="Addr2"
 							name="Addr2" type="text" /> <br /> <sf:errors path="Addr2"
-							Class="error"></sf:errors<div id="matchpass8"></div>></td>
+							Class="error"></sf:errors><div id="matchpass8"></div></td>
 				</tr>
 				<tr>
 					<td class="label">

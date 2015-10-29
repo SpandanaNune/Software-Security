@@ -860,7 +860,7 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/deletetransactionbtn")
-	public String DeleteTransactionByManager(Model model, @RequestParam("Accept") int transactionId) {
+	public String DeleteTransactionByManager(Model model, @RequestParam("Decline") int transactionId) {
 		List<Transaction> tList = transactionService.getTransaction(transactionId);
 		for (Transaction t : tList) {
 			t.setStatus("DECLINED");
