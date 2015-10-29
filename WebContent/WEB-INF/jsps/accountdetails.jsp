@@ -11,13 +11,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <noscript>
-    <h2>JavaScript is disabled! Why you want to do so? Please enable JavaScript in your web browser!</h2>
+    <h2>JavaScript is disabled! Please enable JavaScript in your web browser!</h2>
     <style type="text/css">
       #main-content {
         display: none;
@@ -48,6 +48,7 @@
 </head>
 
 <body>
+
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -56,13 +57,11 @@
         </a>
       </div>
       <div>
-        <ul class="nav navbar-nav">
-          <li><a href="#">About Us</a></li>
-        </ul>
+       
         <ul class="nav navbar-nav navbar-right">
           <li>
            <form method="post"
-						action="${pageContext.request.contextPath}/logout">
+						action="${pageContext.request.contextPath}/logout" >
 
 						<input class="btn btn-none" value="Logout" type="submit"
 							style="background-color: #006f87; height: 50px; color: white;" />

@@ -5,11 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <noscript>
-  <h2>JavaScript is disabled! Why you want to do so?
+  <h2>JavaScript is disabled! 
   Please enable JavaScript in your web browser!</h2>
   <style type="text/css">
     #main-content { display:none; }
@@ -43,7 +43,7 @@
           <br /> <br>
           <p>You have tried to access an unauthorized session. Please navigate to the home page or click the link below.</p>
           <br><br>
-          <a href="#" class="btn btn-large btn-info"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a href="${pageContext.request.contextPath}/" class="btn btn-large btn-info"><span class="glyphicon glyphicon-home"></span> Home</a>
         </center>
 </div>
 </body>

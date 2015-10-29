@@ -42,6 +42,7 @@ public class HomeController {
 	private UserService userService;
 
 	private UtilityService utilityService;
+
 	private AccountsService accountService;
  
 	@Autowired
@@ -76,6 +77,12 @@ public class HomeController {
 		String uname = principal.getName();
 		model.addAttribute("uname", uname);
 		return "adminhome";
+	}
+	
+	@RequestMapping(value = "/about")
+	public String aboutUs(Model model, Principal principal) {
+		
+		return "about";
 	}
 
 	@RequestMapping("/customerrorpage")
@@ -359,12 +366,15 @@ public class HomeController {
 	public static String generatePassword() {
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + "1234567890";
 		final int PW_LENGTH = 8;
+		
 		Random rnd = new SecureRandom();
 		StringBuilder pass = new StringBuilder();
 		for (int i = 0; i < PW_LENGTH; i++)
 			pass.append(chars.charAt(rnd.nextInt(chars.length())));
 		return pass.toString();
 	}
+	
+	
 
 	void sendOTPMail(String firstName, String mail) {
 

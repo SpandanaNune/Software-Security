@@ -19,7 +19,8 @@
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-
+<security:intercept-url pattern="/about"
+			access="permitAll" />
 		<security:intercept-url pattern="/registeruser"
 			access="permitAll" />
 		<security:intercept-url pattern="/customerrorpage"
@@ -37,7 +38,7 @@
 		<security:intercept-url pattern="/static/**"
 			access="permitAll" />
 
-
+		
 		<security:intercept-url pattern="/welcome"
 			access="hasAnyRole('ROLE_NEW,ROLE_USER,ROLE_NEWMANAGER,ROLE_MANAGER,ROLE_NEWMERCHANT,ROLE_MERCHANT,ROLE_EMPLOYEE,ROLE_NEWEMPLOYEE')" />
 		<security:intercept-url pattern="/userconfirm"
