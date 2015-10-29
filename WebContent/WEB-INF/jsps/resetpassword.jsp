@@ -35,48 +35,48 @@
 			if (event.button == 2) {
 				alert(status);
 				return false;
-			}
 		}
-	</script>
+	}
+</script>
 
-	<script>
+<script>
+	window.location.hash = "no-back-button";
+	window.location.hash = "Again-No-back-button";
+	window.onhashchange = function() {
 		window.location.hash = "no-back-button";
-		window.location.hash = "Again-No-back-button";
-		window.onhashchange = function() {
-			window.location.hash = "no-back-button";
+	}
+</script>
+
+<script type="text/javascript">
+	function onLoad() {
+		$("#password").keyup(checkPasswordMatch);
+		$("#confirmpassword").keyup(checkPasswordMatch);
+		$("$details").submit(canSubmit);
+	}
+
+	function canSubmit() {
+
+		var password = $("#password").val();
+		var confirmpassword = $("#confirmpassword").val();
+		if (password != confirmpassword) {
+			alert("Password do not match!");
+			return false;
+		} else {
+			return true;
 		}
-	</script>
+	}
 
-	<script type="text/javascript">
-		function onLoad() {
-			$("#password").keyup(checkPasswordMatch);
-			$("#confirmpassword").keyup(checkPasswordMatch);
-			$("$details").submit(canSubmit);
-		}
+	function checkPasswordMatch() {
+		var password = $("#password").val();
+		var confirmpassword = $("#confirmpassword").val();
+		if (password.length > 3 || confirmpassword.length > 3) {
 
-		function canSubmit() {
+			if (password == confirmpassword) {
+				$("#matchpass").text("Passwords match");
+				$("#matchpass").addClass("valid");
+				$("#matchpass").removeClass("error");
 
-			var password = $("#password").val();
-			var confirmpassword = $("#confirmpassword").val();
-			if (password != confirmpassword) {
-				alert("Password do not match!");
-				return false;
 			} else {
-				return true;
-			}
-		}
-
-		function checkPasswordMatch() {
-			var password = $("#password").val();
-			var confirmpassword = $("#confirmpassword").val();
-			if (password.length > 3 || confirmpassword.length > 3) {
-
-				if (password == confirmpassword) {
-					$("#matchpass").text("passwords match");
-					$("#matchpass").addClass("valid");
-					$("#matchpass").removeClass("error");
-
-				} else {
 					$("#matchpass").text("passwords do not match");
 					$("#matchpass").addClass("error");
 					$("#matchpass").removeClass("valid");
@@ -198,8 +198,8 @@ function validateForm() {
 					</li>
 				</ul>
 			</div>
-
 		</div>
+	</div>
 	</nav>
 	<div class="container well">
 		<center>
@@ -209,7 +209,7 @@ function validateForm() {
 			<sf:form name='details' onsubmit="return validateForm()"
 			id="details" method="post" action="${pageContext.request.contextPath}/resetpasswordbtn" commandName="users" htmlEscape="true" >
 				<c:if test="${param.error != null}">
-					<p class="error">Login failed. Check your Login credentials.</p>
+					<p class="error">Please enter valid inputs in all fields</p>
 				</c:if>
 				<table>
 					<tr>
@@ -245,8 +245,7 @@ function validateForm() {
 							<h4 style="color: black">Q1:What is your mother's maiden name:</h4>
 						<div id="matchpass3"></div></td>
 						<td>&nbsp;</td>
-						<td>
-							<input class="control form-control" name="q1" type="text" />
+						<td><input class="control form-control" name="q1" type="text" />
 							<br />
 					</tr>
 					<tr>
@@ -254,8 +253,7 @@ function validateForm() {
 							<h4 style="color: black">Q2:Name of your Highschool:</h4>
 						<div id="matchpass4"></div></td>
 						<td>&nbsp;</td>
-						<td>
-							<input class="control form-control" name="q2" type="text" />
+						<td><input class="control form-control" name="q2" type="text" />
 							<br />
 					</tr>
 					<tr>
@@ -263,16 +261,17 @@ function validateForm() {
 							<h4 style="color: black">Q3:Name your favourite colour:</h4>
 						<div id="matchpass5"></div></td>
 						<td>&nbsp;</td>
-						<td>
-							<input class="control form-control" name="q3" type="text" />
+						<td><input class="control form-control" name="q3" type="text" />
 							<br />
 					</tr>
 				</table>
 				<br>
 				<br>
-				<input class="control btn btn-info" value="Reset Password" type="submit" />
+				<input class="control btn btn-info" value="Reset Password"
+					type="submit" />
 
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
 			</sf:form>
 	</div>
 	</center>

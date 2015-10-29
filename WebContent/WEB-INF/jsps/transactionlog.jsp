@@ -29,24 +29,24 @@
 </noscript>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
 <script language="javascript">
-    document.onmousedown = disableclick;
-    status = "Right Click Disabled";
+	document.onmousedown = disableclick;
+	status = "Right Click Disabled";
 
-    function disableclick(event) {
-      if (event.button == 2) {
-        alert(status);
-        return false;
-      }
-    }
-  </script>
+	function disableclick(event) {
+		if (event.button == 2) {
+			alert(status);
+			return false;
+		}
+	}
+</script>
 
 <script>
-    window.location.hash = "no-back-button";
-    window.location.hash = "Again-No-back-button";
-    window.onhashchange = function() {
-      window.location.hash = "no-back-button";
-    }
-  </script>
+	window.location.hash = "no-back-button";
+	window.location.hash = "Again-No-back-button";
+	window.onhashchange = function() {
+		window.location.hash = "no-back-button";
+	}
+</script>
 <script type="text/javascript">
 	function radiofn() {
 

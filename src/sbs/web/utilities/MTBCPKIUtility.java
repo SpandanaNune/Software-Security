@@ -17,6 +17,8 @@ import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
@@ -31,6 +33,7 @@ public class MTBCPKIUtility {
 	private static String PKIAlg = "RSA";
 	private static int keySize = 1024;
 	private static String defaultPath = System.getProperty("catalina.home") + "/users_keys/";
+	
 
 	public KeyPair generatePublicPrivateKeyPairs() {
 		try {

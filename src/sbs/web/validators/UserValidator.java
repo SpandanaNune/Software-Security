@@ -32,8 +32,8 @@ public class UserValidator implements Validator{
 			errors.rejectValue("username", "Invalid username","Username must be atleast 5 characters and not greater than 45 characters");
 		if(user.getFirstname()==null || user.getFirstname().length()<2 || user.getFirstname().length()>45)
 			errors.rejectValue("firstname", "Invalid firstname","Name must be atleast 2 characters and less than 45 characters");
-		if(user.getLastname()==null || user.getLastname().length()<2 || user.getLastname().length()>45)
-			errors.rejectValue("lastname", "Invalid lastname","Name must be atleast 2 characters and less than 45 characters");
+//		if(user.getLastname()==null || user.getLastname().length()<2 || user.getLastname().length()>45)
+//			errors.rejectValue("lastname", "Invalid lastname","Name must be atleast 2 characters and less than 45 characters");
 		matcher = emailPattern.matcher(user.getEmail());
 		if(!matcher.matches())
 		{
@@ -49,7 +49,7 @@ public class UserValidator implements Validator{
 		{
 			errors.rejectValue("SSN", "Invalid SSN","Invalid SSN");
 		}
-		matcher = phonePattern.matcher(user.getSSN());
+		matcher = phonePattern.matcher(user.getPhone());
 		if(!matcher.matches())
 		{
 			errors.rejectValue("phone", "Invalid Phone","Invalid Phone number");
@@ -72,7 +72,7 @@ public class UserValidator implements Validator{
 		{
 			errors.rejectValue("State", "Invalid State","State must be atleast 2 characters and not greater than 45 characters");
 		}
-		matcher = zipPattern.matcher(user.getEmail());
+		matcher = zipPattern.matcher(user.getZip());
 		if(!matcher.matches())
 		{
 			errors.rejectValue("Zip", "Invalid Zipcode","Invalid Zipcode format");

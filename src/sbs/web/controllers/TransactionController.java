@@ -48,28 +48,31 @@ import sbs.web.utils.PKIUtil;
 @Controller
 public class TransactionController {
 
-	static int transactionIDCounter;
-	TransactionService transactionService;
+	static int transactionIDCounter=1000;
+	static TransactionService transactionService;
 	AccountsService accountService;
 	UtilityService utilityService;
 	private UserService userService;
 
 	private static String defaultPath = System.getProperty("catalina.home") + "/users_keys/";
 
+//	static{
+//		System.out.println("Initiallizing Transaction controller");
+//		List<Transaction> transactions = transactionService.getTransactions();
+//		int maxVal = 0, curVal;
+//		for (Transaction tran : transactions) {
+//			curVal = tran.getPrimaryKey().getTransactionId();
+//			if (maxVal < curVal) {
+//				maxVal = curVal;
+//			}
+//		}
+//		System.out.println("Maximum value is " + transactionIDCounter);
+//		transactionIDCounter = maxVal;
+//	}
 	@Autowired
 	public void setTransactionService(TransactionService transactionService) {
 		System.out.println("Setting TransactionService in TransactionController");
 		this.transactionService = transactionService;
-		List<Transaction> transactions = transactionService.getTransactions();
-		int maxVal = 0, curVal;
-		for (Transaction tran : transactions) {
-			curVal = tran.getPrimaryKey().getTransactionId();
-			if (maxVal < curVal) {
-				maxVal = curVal;
-			}
-		}
-		System.out.println("Maximum value is " + transactionIDCounter);
-		transactionIDCounter = maxVal;
 
 	}
 
@@ -435,7 +438,7 @@ public class TransactionController {
 			String priKeyPath = util.separatorsToSystem(defaultPath + username + "/private.key");
 			final Path destination = Paths.get(priKeyPath);
 			Files.copy(filepart.getInputStream(), destination);
-			boolean resultPKI = PKIUtil.validateKeyPairs(user, "Hello World");
+			boolean resultPKI = PKIUtil.validateKeyPairs(user, transactionDetails.getBalance());
 			System.out.println("resultPKI is :" + resultPKI);
 			if (!resultPKI) {
 				model.addAttribute("PKIMessage", "Please upload your Private Key");
@@ -624,26 +627,23 @@ public class TransactionController {
 
 	@RequestMapping(value = "/transactionhistory")
 
-	public String showTransactions(Model model,Principal principal) {
+	public String showTransactions(Model model, Principal principal) {
 		model.addAttribute("name", principal.getName());
 		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		for(Accounts acct:allaccount)
-		{
+		for (Accounts acct : allaccount) {
 			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 		}
 		model.addAttribute("transactions", transactions);
 		return "transactionhistory";
 	}
 
-
 	@RequestMapping(value = "/emailTransactions")
-	public String emailTransactions(Model model, HttpServletRequest request,Principal principal) {
-		
+	public String emailTransactions(Model model, HttpServletRequest request, Principal principal) {
+
 		List<Accounts> allaccount = accountService.getAccountDetails(principal.getName());
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		for(Accounts acct:allaccount)
-		{
+		for (Accounts acct : allaccount) {
 			transactions.addAll(transactionService.getAllTransactions(acct.getAccountNo()));
 		}
 		try {
@@ -651,6 +651,7 @@ public class TransactionController {
 			User user = userService.getUserregisterbyUsername(principal.getName());
 
 			// saving the generated pdf to a temp folder for e-mailing
+
 			String path = FilenameUtils.separatorsToSystem(System.getProperty("catalina.home") + "/temp/" + user.getFirstname() + ".pdf");
 			
 			PDFUtils.generatePDF(transactions, path,user);
@@ -678,7 +679,7 @@ public class TransactionController {
 
 		model.addAttribute("transactions", transactions);
 
-		model.addAttribute("uname",principal.getName());
+		model.addAttribute("uname", principal.getName());
 		return "welcome";
 	}
 

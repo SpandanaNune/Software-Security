@@ -110,6 +110,11 @@
 						Transactions</a>
 					<br />
 					<br />
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/accountsummary">Account
+						Summary</a>
+					<br />
+					<br />
 				</sec:authorize>
 				<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
 					<a class="btn btn-info btn-large" style="width: 300px"
@@ -205,9 +210,5 @@
 	</div>
 	<div class="span4"></div>
 	</div>
-
-
-
 </body>
-
 </html>

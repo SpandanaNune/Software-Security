@@ -273,7 +273,6 @@ function validateForm() {
 		</div>
 	</div>
 	</nav>
-	
 	<div class="container">
 	<div class="alert alert-info">
    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -433,3 +432,4 @@ function validateForm() {
 </body>
 
 </html>
+>>>>>>> 02c54ae4e9f7e6af6454f03b56de4786c3ba1bff

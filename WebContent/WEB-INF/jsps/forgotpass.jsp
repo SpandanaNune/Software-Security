@@ -27,13 +27,13 @@
     document.onmousedown = disableclick;
     status = "Right Click Disabled";
 
-    function disableclick(event) {
-      if (event.button == 2) {
-        alert(status);
-        return false;
-      }
-    }
-  </script>
+	function disableclick(event) {
+		if (event.button == 2) {
+			alert(status);
+			return false;
+		}
+	}
+</script>
 
   <script>
     window.location.hash = "no-back-button";
@@ -93,6 +93,11 @@ function validateForm() {
    <strong>Info!</strong> You will receive an email after you proceed. 
  </div>
     <center>
+
+	</div>
+	</nav>
+	<div class="container well">
+		<center>
       <br />
       <h1> Forgot Password </h1>
       <br>
@@ -111,32 +116,31 @@ function validateForm() {
               <div id="matchpass3"></div>
               <br />
             </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td class="label">
-              <h4 style="color:black">Verify Captcha:</h4>
-            </td>
-            <td>&nbsp;</td>
-            <td>
-              <div class="g-recaptcha" data-sitekey="6LcHCw8TAAAAAIqGUaZBHaZbJ4ra61tME5Lz3zB7"></div>
-            </td>
-          </tr>
-        </table>
-        <br>
-        <br>
-        <br>
-        <input class="control btn btn-info" value="Register" type="submit" />
-        <br>
-
-
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="label">
+							<h4 style="color: black">Verify Captcha:</h4>
+						</td>
+						<td>&nbsp;</td>
+						<td>
+							<div class="g-recaptcha"
+								data-sitekey="6LcHCw8TAAAAAIqGUaZBHaZbJ4ra61tME5Lz3zB7"></div>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<br>
+				<br>
+				<input class="control btn btn-info" value="Send Link" type="submit" />
+				<br>
       </sf:form>
       <br>
       <br>
