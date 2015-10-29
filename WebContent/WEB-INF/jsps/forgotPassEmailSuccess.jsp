@@ -57,7 +57,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<a href="${pageContext.request.contextPath}/login">
+						<a href="${pageContext.request.contextPath}/welcome">
 							<span class="glyphicon glyphicon-log-in"></span> Login</a>
 					</li>
 				</ul>
@@ -73,7 +73,7 @@
     <br><br>
 An Email has been sent to your account please click on the link to reset your password.
 <br/><br/>
-<a href="${pageContext.request.contextPath}/login"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
+<a href="${pageContext.request.contextPath}/welcome"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
 </div>
 </center>
 </body>

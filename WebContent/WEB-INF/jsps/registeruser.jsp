@@ -14,6 +14,7 @@
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="navbar.css">
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
@@ -58,7 +59,7 @@
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="${pageContext.request.contextPath}/"> <b>MTBC </b>
+				href="${pageContext.request.contextPath}/welcome"> <b>MTBC </b>
 			</a>
 		</div>
 		<div>
@@ -86,49 +87,54 @@
 						<h4 style="color: black">User Name:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="username"
-							name="username" type="text" /> <sf:errors path="username"
-							Class="error"></sf:errors> <br /></td>
+							name="username" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="username" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">First Name:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="firstname"
-							name="firstname" type="text" /> <sf:errors path="firstname"
-							Class="error"></sf:errors> <br /></td>
+							name="firstname" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="firstname" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">Last Name:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="lastname"
-							name="lastname" type="text" /> <sf:errors path="lastname"
-							Class="error"></sf:errors> <br /></td>
+							name="lastname" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="lastname" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">Email:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="email"
-							name="email" type="text" /> <sf:errors path="email"
-							Class="error"></sf:errors> <br /></td>
+							name="email" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="email" Class="error"></sf:errors></td>
 				</tr>
-				​ ​
 				<tr>
 					<td class="label">
 						<h4 style="color: black">Phone:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="phone"
-							name="phone" type="text" /> <sf:errors path="phone"
-							Class="error"></sf:errors> <br /></td>
+							name="phone" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="phone" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">SSN:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="SSN"
-							name="SSN" type="text" /> <sf:errors path="SSN" Class="error"></sf:errors>
-						<br /></td>
+							name="SSN" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="SSN" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
@@ -137,49 +143,63 @@
 						</h4>
 					</td>
 					<td><sf:input class="control form-control" path="dob"
-							name="dob" type="date" /> <sf:errors path="dob" Class="error"></sf:errors>
-						<br /></td>
+							name="dob" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="dob" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">Address Line 1:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="Addr1"
-							name="Addr1" type="text" /> <sf:errors path="Addr1"
-							Class="error"></sf:errors> <br /></td>
+							name="Addr1" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="Addr1" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">Address Line 2:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="Addr2"
-							name="Addr2" type="text" /> <sf:errors path="Addr2"
-							Class="error"></sf:errors> <br /></td>
+							name="Addr2" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="Addr2" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">City:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="City"
-							name="City" type="text" /> <sf:errors path="City" Class="error"></sf:errors>
-						<br /></td>
+							name="City" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="City" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">State:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="State"
-							name="State" type="text" /> <sf:errors path="State"
-							Class="error"></sf:errors> <br /></td>
+							name="State" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="State" Class="error"></sf:errors></td>
 				</tr>
 				<tr>
 					<td class="label">
 						<h4 style="color: black">ZIP Code:</h4>
 					</td>
 					<td><sf:input class="control form-control" path="Zip"
-							name="Zip" type="text" /> <sf:errors path="Zip" Class="error"></sf:errors>
-						<br /></td>
+							name="Zip" type="text" /></td>
+					<td>&nbsp;</td>
+					<td><sf:errors path="Zip" Class="error"></sf:errors></td>
 				</tr>
+				<tr>
+		            <td class="label">
+		              <h4 style="color:black">Verify Captcha:</h4>
+		            </td>
+		            <td>
+		              <div class="g-recaptcha" data-sitekey="6LcHCw8TAAAAAIqGUaZBHaZbJ4ra61tME5Lz3zB7"></div>
+		            </td>
+		         </tr>
 			</table>
 			<br>
 			<center>

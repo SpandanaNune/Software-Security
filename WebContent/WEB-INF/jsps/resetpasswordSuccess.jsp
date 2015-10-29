@@ -49,7 +49,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/welcome">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/">
           <b>MTBC </b>
         </a>
       </div>
@@ -59,7 +59,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="${pageContext.request.contextPath}/login">
+            <a href="${pageContext.request.contextPath}/welcome">
               <span class="glyphicon glyphicon-log-in"></span> Login</a>
           </li>
         </ul>
@@ -79,7 +79,7 @@
       <br> Password Reset Successful
       <br/>
       <br/>
-      <a href="${pageContext.request.contextPath}/login">
+      <a href="${pageContext.request.contextPath}/welcome">
         <span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
 </body>
 

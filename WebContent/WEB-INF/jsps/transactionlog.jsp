@@ -68,7 +68,7 @@
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="${pageContext.request.contextPath}/adminhome"> <b>MTBC
+				href="${pageContext.request.contextPath}/welcome"> <b>MTBC
 			</b>
 			</a>
 		</div>

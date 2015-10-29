@@ -14,7 +14,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="navbar.css">
+<link href="${pageContext.request.contextPath}/static/css/navbar.css"
+	rel="stylesheet" type="text/css" />
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
@@ -29,8 +31,7 @@
 }
 </style>
 </noscript>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
 <script language="javascript">
 	document.onmousedown = disableclick;
 	status = "Right Click Disabled";
@@ -58,8 +59,7 @@
 	<nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand"
-				href="${pageContext.request.contextPath}/welcome"> <b>MTBC </b>
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/welcome"> <b>MTBC </b>
 			</a>
 		</div>
 		<div>
@@ -67,8 +67,7 @@
 				<li><a href="#">About Us</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<form method="post"
+				<li><form method="post"
 						action="${pageContext.request.contextPath}/logout">
 
 						<input class="btn btn-none" value="Logout" type="submit"
@@ -76,9 +75,7 @@
 
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
-					</form>
-
-				</li>
+					</form></li>
 			</ul>
 		</div>
 
@@ -193,3 +190,4 @@
 </body>
 
 </html>
+>>>>>>> f92d5303f27dd740799088cdf9cb746c33232a47

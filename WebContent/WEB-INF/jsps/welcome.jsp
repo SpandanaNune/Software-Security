@@ -107,24 +107,21 @@
 					<br />
 				</sec:authorize>
 				<sec:authorize access="hasAnyRole('ROLE_USER,ROLE_MERCHANT')">
-
-					<a class="btn btn-info btn-large" style="width: 300px"
-						href="${pageContext.request.contextPath}/accountsummary">Account
-						Summary</a>
-					<br />
-					<br />
 					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/transactionhistory">View
 						Transactions</a>
 					<br />
 					<br />
-
+					<a class="btn btn-info btn-large" style="width: 300px"
+						href="${pageContext.request.contextPath}/accountsummary">Account
+						Summary</a>
+					<br />
+					<br />
 				</sec:authorize>
-
 				<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
 					<a class="btn btn-info btn-large" style="width: 300px"
-						href="${pageContext.request.contextPath}/viewedituserdetails_employee">View/Edit
-						Customer Details</a>
+						href="${pageContext.request.contextPath}/viewedituserdetails_employee"
+						>View/Edit Customer Details</a>
 					<br />
 					<br />
 					<a class="btn btn-info btn-large" style="width: 300px"
@@ -151,7 +148,6 @@
 						SignUp Request</a>
 					<br />
 					<br />
-					<br />
 					<a class="btn btn-info btn-large" style="width: 300px"
 						href="${pageContext.request.contextPath}/viewedituserdetails">View/Edit
 						Customer Details</a>
@@ -172,6 +168,7 @@
 						Profile</a>
 					<br />
 					<br />
+					</p>
 
 				</sec:authorize>
 
@@ -214,8 +211,6 @@
 		</div>
 	</div>
 	<div class="span4"></div>
-
-
+	</div>
 </body>
-
 </html>

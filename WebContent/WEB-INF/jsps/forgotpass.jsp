@@ -52,23 +52,24 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="${pageContext.request.contextPath}/">
-				<b>MTBC </b>
-			</a>
-		</div>
-		<div>
-			<ul class="nav navbar-nav">
-				<li><a href="#">About Us</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="${pageContext.request.contextPath}/login"> <span
-						class="glyphicon glyphicon-log-in"></span> Login
-				</a></li>
-			</ul>
-		</div>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/">
+          <b>MTBC </b>
+        </a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+          <li><a href="#">About Us</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="${pageContext.request.contextPath}/welcome">
+              <span class="glyphicon glyphicon-log-in"></span> Login</a>
+          </li>
+        </ul>
+      </div>
 
 	</div>
 	</nav>
@@ -113,15 +114,13 @@
 				<br>
 				<input class="control btn btn-info" value="Send Link" type="submit" />
 				<br>
-
-
-			</sf:form>
-			<br> <br> <a
-				href="${pageContext.request.contextPath}/login"> <span
-				class="glyphicon glyphicon-log-in"></span>&nbsp;Login
-			</a>
-		</center>
-	</div>
+      </sf:form>
+      <br>
+      <br>
+      <a href="${pageContext.request.contextPath}/welcome">
+        <span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
+    </center>
+  </div>
 </body>
 
 </html>

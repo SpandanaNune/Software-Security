@@ -11,6 +11,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src='https://www.google.com/recaptcha/api.js'></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <title>Merchant Registration Page</title>
@@ -206,6 +207,14 @@
             <sf:errors path="Zip" Class="error"></sf:errors>
           </td>
         </tr>
+        <tr>
+            <td class="label">
+              <h4 style="color:black">Verify Captcha:</h4>
+            </td>
+            <td>
+              <div class="g-recaptcha" data-sitekey="6LcHCw8TAAAAAIqGUaZBHaZbJ4ra61tME5Lz3zB7"></div>
+            </td>
+          </tr>   
       </table>
       <br>
       <center>

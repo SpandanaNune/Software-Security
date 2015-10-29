@@ -435,7 +435,7 @@ public class TransactionController {
 			String priKeyPath = util.separatorsToSystem(defaultPath + username + "/private.key");
 			final Path destination = Paths.get(priKeyPath);
 			Files.copy(filepart.getInputStream(), destination);
-			boolean resultPKI = PKIUtil.validateKeyPairs(user, "Hello World");
+			boolean resultPKI = PKIUtil.validateKeyPairs(user, transactionDetails.getBalance());
 			System.out.println("resultPKI is :" + resultPKI);
 			if (!resultPKI) {
 				model.addAttribute("PKIMessage", "Please upload your Private Key");
