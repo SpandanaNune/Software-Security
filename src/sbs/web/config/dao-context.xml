@@ -38,7 +38,6 @@
 	<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
-	<bean id="userValidator" class="sbs.web.validators.UserValidator" />
 	
 	<tx:annotation-driven />
 	

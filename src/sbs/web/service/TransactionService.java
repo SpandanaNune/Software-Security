@@ -39,7 +39,7 @@ public class TransactionService {
 
 	}
 
-	public Object getTransaction(int transactionId) {
+	public List<Transaction> getTransaction(int transactionId) {
 		return transactionDao.getTransaction(transactionId);
 	}
 

@@ -225,6 +225,7 @@ public class ManagerController {
 				}
 	
 			}
+
 			System.out.println("Successfully got two account number :" + account1 + ", " + account2);
 	
 			List<Authorities> authorisedEmployee = userService.getUserAuthoritiesByField("authority", "ROLE_EMPLOYEE");
@@ -304,8 +305,7 @@ public class ManagerController {
 
 			userProfileList.add((User) userService.getUserProfileByField("username", user.getUsername()).get(0));
 		}
-		System.out.println(userlist.size());
-		System.out.println(userlist.get(0).getUsername());
+
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
 		

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,16 +33,17 @@
 
 <script>
   window.location.hash="no-back-button";
-  window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+  window.location.hash="Again-No-back-button";
   window.onhashchange=function(){window.location.hash="no-back-button";}
 </script>
-<title>Session Timeout</title>
+<title>Error!</title>
 <body>
-<div class="container">
+  <br><br>
+<div class="container well">
           <center>
-          <h1>Session Timeout <small><font face="Tahoma" color="red">&nbsp;Error 401</font></small></h1>
-          <br /> <br>
-          <p>The Session has timed out. Please navigate to the home page or click the link below.</p>
+          <h1>Method not allowed<small><font face="Tahoma" color="red">&nbsp;Error 405</font></small></h1>
+          <br/> <br>
+          <p>Method is not supported.</p>
           <br><br>
           <a href="${pageContext.request.contextPath}/" class="btn btn-large btn-info"><span class="glyphicon glyphicon-home"></span> Home</a>
         </center>

@@ -1,4 +1,5 @@
 
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,13 +12,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <script src='https://www.google.com/recaptcha/api.js'></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <noscript>
-    <h2>JavaScript is disabled! Why you want to do so? Please enable JavaScript in your web browser!</h2>
+    <h2>JavaScript is disabled! Please enable JavaScript in your web browser!</h2>
     <style type="text/css">
       #main-content {
         display: none;
@@ -44,6 +44,45 @@
       window.location.hash = "no-back-button";
     }
   </script>
+  
+   <script>
+  function validateForm() {
+    var val=/^[1-9]\d*(\.\d+)?$/;
+    var num=/^[0-9]+$/;
+  
+    var x = document.forms["myForm"]["balance"].value;
+    
+   if (x.match(val) && x.length>=0 && x.length<=12) {
+	   $("#matchpass").text("");
+	$("#matchpass").addClass("valid");
+	$("#matchpass").removeClass("error");
+    }
+    
+   else
+   {
+   $("#matchpass").addClass("error");
+	$("#matchpass").text("invalid amount");
+	$("#matchpass").removeClass("valid")
+	return false;
+   }
+   
+   var x4 = document.forms["myForm"]["toOtherAccountNo"].value;
+   if (x4.match(num) && x4.length>=2 && x4.length<=50) {
+   $("#matchpass1").text("");
+	$("#matchpass1").addClass("valid");
+	$("#matchpass1").removeClass("error");
+}
+else{
+$("#matchpass1").addClass("error");
+   $("#matchpass1").text("invalid account number");
+   $("#matchpass1").removeClass("valid")
+   // f=1;
+   return false;
+  
+}
+   }
+   
+  </script>
   <title>Merchant Transactions</title>
 </head>
 
@@ -56,9 +95,7 @@
         </a>
       </div>
       <div>
-        <ul class="nav navbar-nav">
-          <li><a href="#">About Us</a></li>
-        </ul>
+       
         <ul class="nav navbar-nav navbar-right">
           <li>
             <form method="post"
@@ -78,7 +115,8 @@
     </div>
   </nav>
   <div class="container">
-    <sf:form method="post" action="${pageContext.request.contextPath}/createMerchnatTransaction" commandName="transactionDetails" htmlEscape="true">
+    <sf:form name="myForm" onsubmit="return validateForm()" 
+    method="post" action="${pageContext.request.contextPath}/createMerchnatTransaction" commandName="transactionDetails" htmlEscape="true">
 
 
       <h1>Transfer Funds</h1>
@@ -98,12 +136,14 @@
       <br> Enter the account number
       <br />
       <sf:input type='textbox' class='form-control' path='toOtherAccountNo' />
-		<sf:errors path="toOtherAccountNo" Class="error"></sf:errors> 
+      <div id="matchpass1"></div>
+		<sf:errors name='toOtherAccountNo' path="toOtherAccountNo" Class="error"></sf:errors> 
 		
       <br> Enter the amount
       <br />
-      <sf:input type="textbox" class="form-control" path="balance" />
-		<sf:errors path="balance" class="error"></sf:errors> 
+      <sf:input type="textbox" class="form-control" name='balance' path="balance" />
+      <div id="matchpass"></div>
+		<sf:errors path="balance" class="error"></sf:errors> <br><br>
         <button type="submit" class="btn btn-info">Send Money</button>
       </center>
 

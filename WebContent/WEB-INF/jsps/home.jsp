@@ -9,13 +9,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <script src='https://www.google.com/recaptcha/api.js'></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <noscript>
-    <h2>JavaScript is disabled! Why you want to do so? Please enable JavaScript in your web browser!</h2>
+    <h2>JavaScript is disabled! Please enable JavaScript in your web browser!</h2>
     <style type="text/css">
       #main-content {
         display: none;
@@ -55,7 +54,7 @@
       </div>
       <div>
         <ul class="nav navbar-nav">
-          <li><a href="#">About Us</a></li>
+          <li><a href="${pageContext.request.contextPath}/about">About Us</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
@@ -64,14 +63,14 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="${pageContext.request.contextPath}/registeruser">As
+              <li><a href="javascript:window.open('${pageContext.request.contextPath}/registeruser','winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1000,height=600');">As
 									Customer</a></li>
-              <li><a href="${pageContext.request.contextPath}/merchant">As
+              <li><a href="javascript:window.open('${pageContext.request.contextPath}/merchant','winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1000,height=600');">As
 									Merchant</a></li>
             </ul>
           </li>
           <li>
-            <a href="${pageContext.request.contextPath}/welcome">
+            <a href="javascript:window.open('${pageContext.request.contextPath}/welcome','winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1000,height=600');">
               <span class="glyphicon glyphicon-log-in"></span> Login</a>
           </li>
         </ul>
@@ -95,8 +94,8 @@
       <p>At MTBC, we understand your banking needs.</p>
       <br>
       <br>
-      <a class="btn btn-info" href="${pageContext.request.contextPath}/welcome">
-              <span class="glyphicon glyphicon-log-in"></span> Login</a>
+     <a class="btn btn-info" href="javascript:window.open('${pageContext.request.contextPath}/welcome','winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1000,height=600');">
+             <span class="glyphicon glyphicon-log-in"></span> Login</a>
     </center>
   </div>
 
@@ -104,4 +103,3 @@
 </body>
 
 </html>
-	
