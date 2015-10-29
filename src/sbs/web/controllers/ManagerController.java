@@ -33,13 +33,6 @@ public class ManagerController {
 		this.userService = userService;
 	}
 
-	// @RequestMapping("/manager")
-	// public String showManagerHome(Model model) {
-	// // List<User> user = userService.getAllNewUsers();
-	// // model.addAttribute("user", user);
-	// return "managerhome";
-	// }
-
 	@RequestMapping("/usersignuprequest")
 	public String showUserSignUpRequest(Model model) {
 		logger.info("Listing Signup Requests for new users");
@@ -72,7 +65,6 @@ public class ManagerController {
 		user.setIsnewuser(false);
 		user.setIs_deleted(true);
 		userService.createUser(user);
-
 		// List<User> updateduser = userService.getAllNewUsers();
 		List<User> user_list = userService.getAllNewRoleUsers();
 		List<User> updateduser = new ArrayList<User>();
@@ -299,6 +291,7 @@ public class ManagerController {
 		System.out.println(userlist.get(0).getUsername());
 		// List<User> userlist = userService.getAllActiveUsers();
 		model.addAttribute("user", userProfileList);
+		
 		return "deleteactiveusers";
 	}
 
@@ -386,6 +379,8 @@ public class ManagerController {
 
 			users.setEnabled(false);
 			userService.saveOrUpdateUsers(users);
+			SendMail sendmail = new SendMail();
+			sendmail.sendBlockAccount(users.getEmail(),users.getUsername());
 
 			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
 			// true);
@@ -399,7 +394,7 @@ public class ManagerController {
 			return "viewedituserdetails";
 		}
 		// TODO Add a page for error showing user cannot be deleted.
-		return "error";
+		return "customerrorpage";
 	}
 
 	@RequestMapping(value = "/deletemerchant", method = RequestMethod.POST)
@@ -415,6 +410,8 @@ public class ManagerController {
 
 			users.setEnabled(false);
 			userService.saveOrUpdateUsers(users);
+			SendMail sendmail = new SendMail();
+			sendmail.sendBlockAccount(users.getEmail(),users.getUsername());
 
 			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
 			// true);
@@ -428,7 +425,7 @@ public class ManagerController {
 			return "deleteactiveusers";
 		}
 		// TODO Add a page for error showing user cannot be deleted.
-		return "error";
+		return "customerrorpage";
 	}
 
 	@RequestMapping("/editmanagerprofile")

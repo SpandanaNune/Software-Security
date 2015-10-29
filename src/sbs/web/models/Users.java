@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -11,26 +12,34 @@ import javax.validation.constraints.Size;
 public class Users {
 
 	@Id
-	@Size(min = 5, max = 45, message = "Name must be atleast 5 characters")
-	@NotNull
+	@Size(min = 8, max = 45)
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "Username must be alphanumeric")
 	private String username;
-	@Size(min = 8, max = 100, message = "Password must be atleast 8 characters")
+	
+	@Size(min = 8, max = 100)
+	@Pattern(regexp = "^[A-Za-z0-9_@]*$", message = "Password must be alphanumeric and ")
 	private String password;
 
+	@Pattern(regexp = ".+@.+\\..+", message = "Invalid Email Address format")
 	private String email;
 	private int siteKeyID;
+	
 	private boolean enabled;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
-	@Size(min = 5, max = 45, message = "Answer1 must be atleast 5 characters")
-	@NotNull
+	
+	@Size(min = 5, max = 45)
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "Answer1 must be alphanumeric")
+	
 	private String q1;
-	@Size(min = 5, max = 45, message = "Answer2 must be atleast 5 characters")
-	@NotNull
+	
+	@Size(min = 5, max = 45)
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "Answer2 must be alphanumeric")
 	private String q2;
-	@Size(min = 5, max = 45, message = "Answer3 must be atleast 5 characters")
-	@NotNull
+	
+	@Size(min = 5, max = 45)
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "Answer3 must be alphanumeric")
 	private String q3;
 
 	public String getQ1() {

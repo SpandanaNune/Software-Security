@@ -88,7 +88,7 @@
 				$("#matchpass").removeClass("error");
 
 			} else {
-				$("#matchpass").text("paasswords do not match");
+				$("#matchpass").text("Password and Confirm password does not match");
 				$("#matchpass").addClass("error");
 				$("#matchpass").removeClass("valid");
 
@@ -145,7 +145,7 @@
 					<tr>
 						<td>New Password:</td>
 						<td><sf:input id="password" class="form-control"
-								path="password" name="password" type="password" /> <br /> <sf:errors
+								path="password" name="password" type="password" /> <sf:errors
 								path="password" Class="error"></sf:errors></td>
 					</tr>
 					<tr>
@@ -165,7 +165,7 @@
 					<tr>
 						<td>Q1:What is your mother's maiden name:</td>
 						<td><sf:input class="form-control" path="q1" name="q1"
-								type="text" /> <br /> <sf:errors path="q1" Class="error"></sf:errors>
+								type="text" /><sf:errors path="q1" Class="error"></sf:errors>
 						</td>
 					</tr>
 					<tr>
@@ -175,7 +175,7 @@
 					<tr>
 						<td>Q2:Name of your Highschool:</td>
 						<td><sf:input class="form-control" path="q2" name="q2"
-								type="text" /> <br /> <sf:errors path="q2" Class="error"></sf:errors>
+								type="text" /><sf:errors path="q2" Class="error"></sf:errors>
 						</td>
 					</tr>
 					<tr>
@@ -185,7 +185,7 @@
 					<tr>
 						<td>Q3:Name your favourite colour:</td>
 						<td><sf:input class="form-control" path="q3" name="q3"
-								type="text" /> <br /> <sf:errors path="q3" Class="error"></sf:errors>
+								type="text" /><sf:errors path="q3" Class="error"></sf:errors>
 						</td>
 					</tr>
 					<tr>

@@ -13,7 +13,7 @@ public class TransactionDetails {
 	@Pattern(regexp="^[0-9]", message="Invalid Account Number")
 	private String toOtherAccountNo;
 	
-	@Pattern(regexp="^[0-9]+\\.*[0-9]{2}$+", message="Invalid amount number")
+	@Pattern(regexp="^[0-9]+$+", message="Invalid amount number")
 	private String balance;
 	
 	private String account_type;

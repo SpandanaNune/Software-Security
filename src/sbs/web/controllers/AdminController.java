@@ -72,6 +72,8 @@ public class AdminController {
 		user.setIsnewuser(false);
 		user.setIs_deleted(true);
 		userService.createUser(user);
+		SendMail sendmail = new SendMail();
+		sendmail.sendBlockAccount(user.getEmail(),user.getUsername());
 
 		Authorities employee = userService.getEmployee(username);
 		userService.deleteEmployee(employee);
@@ -91,9 +93,10 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value = "/employeecreation")
-	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model,
+	@RequestMapping(value = "/employeecreationdone")
+	public String createEmployeeDone(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model,
 			Principal principal) {
+		// if (user != null && user.getUsername() != null) {
 		if (result.hasErrors()) {
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
@@ -107,74 +110,66 @@ public class AdminController {
 		System.out.println("uniqueUser " + uniqueUser1);
 		if (uniqueUser1.size() > 0) {
 			System.out.println("Caught duplicate Username");
-			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
 			authorities.add("ROLE_NEWMANAGER");
+			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			return "employeecreation";
 		}
 
 		uniqueUser1 = (userService.getUserProfileByField("email", user.getEmail()));
 		if (uniqueUser1.size() > 0) {
 			System.out.println("Caught duplicate Email");
-			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
 			authorities.add("ROLE_NEWMANAGER");
+			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
 			return "employeecreation";
 		}
 
-		if (user != null && user.getUsername() != null) {
-			String role = rqst.getParameter("role");
-			System.out.println(user);
+		String role = rqst.getParameter("role");
+		System.out.println(user);
 
-			// User uniqueUser =
-			// (userService.getUserregisterbyUsername(user.getUsername()));
-			// if (uniqueUser == null) {
-			// System.out.println(user);
-			// user.setIsnewuser(true);
+		Users users = new Users();
+		users.setUsername(user.getUsername());
+		String tempPassword = UtilityController.generatePassword();
+		System.out.println(tempPassword);
 
-			Users users = new Users();
-			users.setUsername(user.getUsername());
-			String tempPassword = UtilityController.generatePassword();
-			System.out.println(tempPassword);
+		users.setPassword(tempPassword);
+		users.setEnabled(true);
+		users.setAccountNonExpired(true);
+		users.setAccountNonLocked(true);
+		users.setCredentialsNonExpired(true);
+		users.setEmail(user.getEmail());
+		users.setSiteKeyID(1);
+		users.setQ1("xxxxx");
+		users.setQ2("xxxxx");
+		users.setQ3("xxxxx");
+		System.out.println(users);
 
-			users.setPassword(tempPassword);
-			users.setEnabled(true);
-			users.setAccountNonExpired(true);
-			users.setAccountNonLocked(true);
-			users.setCredentialsNonExpired(true);
-			users.setEmail(user.getEmail());
-			users.setSiteKeyID(1);
-			users.setQ1("xxxxx");
-			users.setQ2("xxxxx");
-			users.setQ3("xxxxx");
-			System.out.println(users);
+		Authorities auth = new Authorities();
+		auth.setUsername(user.getUsername());
+		auth.setAuthority(role);
+		userService.createUser(user);
+		userService.saveOrUpdateUsers(users);
+		userService.setAuthority(auth);
 
-			Authorities auth = new Authorities();
-			auth.setUsername(user.getUsername());
-			auth.setAuthority(role);
-			userService.createUser(user);
-			userService.saveOrUpdateUsers(users);
-			userService.setAuthority(auth);
+		SendMail sendmail = new SendMail();
+		sendmail.sendTempPassword(user.getEmail(), tempPassword, user.getFirstname());
 
-			SendMail sendmail = new SendMail();
-			sendmail.sendTempPassword(user.getEmail(), tempPassword, user.getFirstname());
+		model.addAttribute("uname", principal.getName());
+		return "adminhome";
 
-		}
-		// else {
-		// System.out.println("Caught duplicate Username");
-		// result.rejectValue("username", "DuplicateKeyException.user.username",
-		// "Username already exists.");
-		// }
-		// }
+	}
 
+	@RequestMapping(value = "/employeecreation")
+	public String createEmployee(HttpServletRequest rqst, Model model, Principal principal) {
+		model.addAttribute("user", new User());
 		List<String> authorities = new ArrayList<>();
 		authorities.add("ROLE_NEWEMPLOYEE");
 		authorities.add("ROLE_NEWMANAGER");
 		model.addAttribute("roles", authorities);
-		model.addAttribute("uname", principal.getName());
-		return "adminhome";
+		return "employeecreation";
 
 	}
 

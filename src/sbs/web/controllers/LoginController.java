@@ -62,13 +62,18 @@ public class LoginController {
 		if (token == null || "".equals(token)) {
 			return "redirect:/login";
 		}
-		User user_profile = userService.getUserProfilebyField("reset_pass_token", token);
-		Users user = userService.getUserbyUsername(user_profile.getUsername());
-		if (user != null) {
-			model.addAttribute("users", user);
-			return "resetpassword";
+		try{
+			User user_profile = userService.getUserProfilebyField("reset_pass_token", token);
+			Users user = userService.getUserbyUsername(user_profile.getUsername());
+			if (user != null) {
+				model.addAttribute("users", user);
+				return "resetpassword";
+			}
 		}
-		return "redirect:/login";
+		catch(Exception e){
+			logger.error("Invalid URL for token not associated with an account");
+		}
+		return "redirect:/accessdenied";
 	}
 
 	@RequestMapping(value = "/resetpasswordbtn", method = RequestMethod.POST)
@@ -82,11 +87,13 @@ public class LoginController {
 		}
 		User user_profile = userlist.get(0);
 		Users dbuser = userService.getUserbyUsername(users.getUsername());
-		boolean ans1 = dbuser.getQ1().equals(q1);
-		boolean ans2 = dbuser.getQ2().equals(q1);
-		boolean ans3 = dbuser.getQ3().equals(q1);
-		boolean pass = password.equals(password1);
+		boolean ans1 = dbuser.getQ1().equals(q1) && !q1.isEmpty();
+		boolean ans2 = dbuser.getQ2().equals(q2) && !q2.isEmpty();
+		boolean ans3 = dbuser.getQ3().equals(q3) && !q3.isEmpty();
+		boolean pass = password.equals(password1) && !password.isEmpty() && !password1.isEmpty();
+		System.out.println("Erro"+ans1+ans2+ans3+pass);
 		if ( pass && ans1 && ans2 && ans3){
+			System.out.println("I am here");
 //			users.setUsername(users.getUsername());
 //			users.setQ1(dbuser.getQ1());
 //			users.setQ2(dbuser.getQ2());
@@ -101,7 +108,7 @@ public class LoginController {
 			userService.saveOrUpdateUsers(dbuser);
 			user_profile.setReset_pass_token(null);
 			userService.updateUser(user_profile);
-			return "redirect:/home";
+			return "redirect:/";
 		}
 		return "redirect:/resetpassword?token="+user_profile.getReset_pass_token()+"&error=true";
 	}
@@ -123,7 +130,7 @@ public class LoginController {
 			if (user != null) {
 				SecureRandom random = new SecureRandom();
 				String token = new BigInteger(130, random).toString(32);
-				String url = request.getScheme() + "://" + request.getServerName() + request.getContextPath()
+				String url = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort()+ request.getContextPath()
 						+ "/resetpassword?token=" + token;
 				user.setReset_pass_token(token);
 				userService.updateUser(user);

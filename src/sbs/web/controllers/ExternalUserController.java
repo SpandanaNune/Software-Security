@@ -14,34 +14,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import sbs.web.models.Accounts;
 import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
+import sbs.web.service.AccountsService;
 import sbs.web.service.UserService;
 
 @Controller
 public class ExternalUserController {
 	private UserService userService;
+	private AccountsService accountService;
+
 	private static String defaultPath = System.getProperty("catalina.home") + "/users_keys/";
 
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+	
+	@Autowired
+	public void setAccountService(AccountsService accountService) {
+		this.accountService = accountService;
+	}
 
-	// @RequestMapping("/merchanthome")
-	// public String showMerchantHome(Model model) {
-	// // List<User> user = userService.getAllNewUsers();
-	// // model.addAttribute("user", user);
-	// return "merchanthome";
-	// }
-
+	
 	@RequestMapping("/editmerchant")
 	public String editMerchantDetails(Model model, Principal principal) {
 		Users user = userService.getUserbyUsername(principal.getName());
 		model.addAttribute("users", user);
 		System.out.println(user);
 		return "merchanthome";
+	}
+	
+	@RequestMapping(value = "/accountsummary")
+	public String showWelcome(Model model, Principal principal) {
+		String uname = principal.getName();
+		String accountType = "";
+		List<Accounts> accountDetails = accountService.getAccountDetails(uname);
+		for(Accounts account:accountDetails){
+			if(account.isAccount_type())
+				accountType = "CHECKING";
+			else
+				accountType = "SAVING";
+		}
+		model.addAttribute("accountdetails", accountDetails);
+		
+		return "accountsummary";
 	}
 
 	@RequestMapping(value = "/updatemerchantbtn", method = RequestMethod.POST)
