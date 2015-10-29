@@ -192,6 +192,10 @@
 							name="Zip" type="text" /></td>
 					<td>&nbsp;</td>
 					<td><sf:errors path="Zip" Class="error"></sf:errors></td>
+					<td>&nbsp;</td>
+		            <td>
+		              <div class="g-recaptcha" data-sitekey="6LcHCw8TAAAAAIqGUaZBHaZbJ4ra61tME5Lz3zB7"></div>
+		            </td>
 				</tr>
 			</table>
 			<br>

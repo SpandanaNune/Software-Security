@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +31,12 @@ import sbs.web.models.Users;
 import sbs.web.service.UserService;
 import sbs.web.service.UtilityService;
 import sbs.web.utilities.SendMail;
+import sbs.web.utilities.VerifyCaptcha;
 import sbs.web.utils.PKIUtil;
 
 @Controller
 public class HomeController {
+	private static final Logger logger = Logger.getLogger(HomeController.class);
 	private UserService userService;
 	private UtilityService utilityService;
 	
@@ -112,12 +114,13 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result) {
+	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result, HttpServletRequest request) {
 		System.out.println("Finding errors, " + result.toString());
+		String gCaptchaResponse = request.getParameter("g-recaptcha-response");
 		if (result.hasErrors()) {
 			return "registeruser";
 		}
-
+		
 		List<User> uniqueUser;
 		uniqueUser = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		System.out.println("uniqueUser " + uniqueUser);
@@ -133,24 +136,40 @@ public class HomeController {
 			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
 			return "registeruser";
 		}
-
-		user.setIsmerchant(false);
-		Authorities auth = new Authorities();
-		auth.setUsername(user.getUsername());
-		auth.setAuthority("ROLE_NEW");
-
-		userService.createUser(user);
-		userService.setAuthority(auth);
-
-		sendOTPMail(user.getFirstname(), user.getEmail());
-
-		model.addAttribute("mail", user.getEmail());
-		return "completeregistration";
+		boolean verify = false;
+		try{
+			verify = VerifyCaptcha.verify(gCaptchaResponse);
+		}catch(Exception e){
+			logger.error("Failed to verify captcha");
+		}
+		
+		if (verify) {
+			try{
+				user.setIsmerchant(false);
+				Authorities auth = new Authorities();
+				auth.setUsername(user.getUsername());
+				auth.setAuthority("ROLE_NEW");
+	
+				userService.createUser(user);
+				userService.setAuthority(auth);
+	
+				sendOTPMail(user.getFirstname(), user.getEmail());
+	
+				model.addAttribute("mail", user.getEmail());
+				return "completeregistration";
+			}
+			catch(Exception e){
+				logger.error("Failure during user registration::"+e.getMessage());
+			}
+		}
+		else
+			return "registeruser";
+		return "registeruser";
 	}
 
 	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
-	public String RegisterMerchant(@Valid User user, BindingResult result, Model model) {
-
+	public String RegisterMerchant(@Valid User user, BindingResult result, Model model,  HttpServletRequest request) {
+		String gCaptchaResponse = request.getParameter("g-recaptcha-response");
 		if (result.hasErrors()) {
 			return "merchant";
 		}
@@ -168,22 +187,38 @@ public class HomeController {
 			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
 			return "merchant";
 		}
-
-		user.setIsmerchant(true);
-		user.setLastname("Merchant");
-
-		Authorities auth = new Authorities();
-		auth.setUsername(user.getUsername());
-		auth.setAuthority("ROLE_NEWMERCHANT");
-
-		userService.createUser(user);
-		userService.setAuthority(auth);
-
-		sendOTPMail(user.getFirstname(), user.getEmail());
-
-		model.addAttribute("mail", user.getEmail());
-		return "completeregistration";
-
+		boolean verify = false;
+		try{
+			verify = VerifyCaptcha.verify(gCaptchaResponse);
+		}catch(Exception e){
+			logger.error("Failed to verify captcha");
+		}
+		
+		if (verify) {
+			try{
+		
+				user.setIsmerchant(true);
+				user.setLastname("Merchant");
+		
+				Authorities auth = new Authorities();
+				auth.setUsername(user.getUsername());
+				auth.setAuthority("ROLE_NEWMERCHANT");
+		
+				userService.createUser(user);
+				userService.setAuthority(auth);
+		
+				sendOTPMail(user.getFirstname(), user.getEmail());
+		
+				model.addAttribute("mail", user.getEmail());
+				return "completeregistration";
+			}
+			catch(Exception e){
+				logger.error("Failure during merchant registration::"+e.getMessage());
+			}
+		}
+		else
+			return "merchant";
+		return "merchant";
 	}
 
 	@RequestMapping(value = "/registerbtn2", method = RequestMethod.POST)
