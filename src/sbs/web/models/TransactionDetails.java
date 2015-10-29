@@ -11,7 +11,7 @@ public class TransactionDetails {
 	private String toMyAccountNo;
 //	@Pattern(regexp="^[0-9]{8}", message="Invalid Account Number. It should be 8 digits.")
 	private String toOtherAccountNo;
-	
+	@Size(min =1, max=6, message="Amount should be less than 999999")
 	@Pattern(regexp="^[0-9]+$+", message="Invalid amount number")
 	private String balance;
 	

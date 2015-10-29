@@ -143,7 +143,7 @@ $("#matchpass1").addClass("error");
       <br />
       <sf:input type="textbox" class="form-control" name='balance' path="balance" />
       <div id="matchpass"></div>
-		<sf:errors path="balance" class="error"></sf:errors> 
+		<sf:errors path="balance" class="error"></sf:errors> <br><br>
         <button type="submit" class="btn btn-info">Send Money</button>
       </center>
 

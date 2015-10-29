@@ -174,7 +174,19 @@ public class TransactionController {
 
 		System.out.println("check1");
 		long fromUserAccount = Long.parseLong(transactionDetails.getFromAccountNo());
-		long toOtherUserAccount =Long.parseLong( transactionDetails.getToOtherAccountNo());
+		long toOtherUserAccount;
+		try{
+			
+			toOtherUserAccount = Long.parseLong(transactionDetails.getToOtherAccountNo());
+		}catch(NumberFormatException e){
+			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
+			model.addAttribute("accounts", accounts);
+			result.rejectValue("toOtherAccountNo", "DuplicateKeyException.transactionDetails.balance",
+					"Account number should be numeric");
+			System.out.println("Invalid other account number, not of length 8");
+			return "merchanttransaction";
+		}
+		
 		double amount = Double.parseDouble(transactionDetails.getBalance());
 		if (fromUserAccount == toOtherUserAccount) {
 			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
@@ -446,7 +458,7 @@ public class TransactionController {
 			HttpServletRequest request, Principal principal) throws IOException {
 		String username = principal.getName();
 		
-		
+		System.out.println("1");
 		if (result.hasErrors()) {
 			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
 			model.addAttribute("accounts", accounts);
@@ -460,7 +472,19 @@ public class TransactionController {
 		System.out.println("Value of transactionDetails.getToOtherAccountNo():"+transactionDetails.getToOtherAccountNo());
 		if(!transactionDetails.getToOtherAccountNo().equalsIgnoreCase("")){
 			System.out.println("Value of transactionDetails.getToOtherAccountNo():"+transactionDetails.getToOtherAccountNo());
-			 toOtherUserAccount = Long.parseLong(transactionDetails.getToOtherAccountNo());
+			try{
+			
+				toOtherUserAccount = Long.parseLong(transactionDetails.getToOtherAccountNo());
+			}catch(NumberFormatException e){
+				ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
+				model.addAttribute("accounts", accounts);
+				
+				result.rejectValue("toOtherAccountNo", "DuplicateKeyException.transactionDetails.balance",
+						"Account number should be numeric");
+				System.out.println("Invalid other account number, not of length 8");
+				return "maketransaction";
+			}
+			 
 		}
 		
 		long toMyUserAccount = Long.parseLong(transactionDetails.getToMyAccountNo());
