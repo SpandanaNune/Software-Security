@@ -144,12 +144,15 @@ public class HomeController {
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEW");
-	
+				logger.error("User object before persisting "+user);
 				userService.createUser(user);
+				logger.error("User object after persisting "+user);
+				logger.error("Auth object before persisting "+auth);
 				userService.setAuthority(auth);
-	
+				logger.error("Auth object after persisting "+auth);
+				logger.info("Attempting to send email");
 				sendOTPMail(user.getFirstname(), user.getEmail());
-	
+				logger.info("Email sent successfully");
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
 			}
