@@ -99,9 +99,10 @@
 
       <sf:select class="form-control" id="sendoptions" path="toOtherAccountNo">
         <c:forEach var="toaccount" items="${toaccounts}">
-          <option value="${toaccount.getAccountNo()}">${toaccount.getAccountNo()}</option>
+          <option value="${toaccount.getAccountNo()}">${toaccount.getAccountNo()} </option>
         </c:forEach>
       </sf:select>
+      <sf:errors path="toOtherAccountNo" Class="error"></sf:errors>
       <br />
       <br />
 
@@ -109,7 +110,7 @@
       <br />
       <sf:input type='textbox' class='form-control' path='balance' />
       <br>
-			<sf:errors path="balance" Class="error"></sf:errors>
+	<sf:errors path="balance" Class="error"></sf:errors>
 
 
     </div>

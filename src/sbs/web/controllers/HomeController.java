@@ -40,14 +40,6 @@ public class HomeController {
 	private UserService userService;
 	private UtilityService utilityService;
 	
-	 @Autowired
-	    @Qualifier("userValidator")
-	    private Validator validator;
-
-	 @InitBinder
-	    private void initBinder(WebDataBinder binder) {
-	        binder.setValidator(validator);
-	    }
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -266,8 +258,10 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/userconfirm")
-	public String showUserConfirmation(Model model) {
-		model.addAttribute("users", new Users());
+	public String showUserConfirmation(Model model,Principal principal) {
+		Users users = new Users();
+		users.setUsername(principal.getName());
+		model.addAttribute("users", users);
 		return "userconfirm";
 	}
 
@@ -276,10 +270,10 @@ public class HomeController {
 			HttpServletResponse res, Model model) {
 		String uname = principal.getName();
 		System.out.println(uname);
-		//
-		// if (result.hasErrors()) {
-		// return "userconfirm";
-		// }
+		
+		 if (result.hasErrors()) {
+		 return "userconfirm";
+		 }
 		Authorities authority = userService.getUserActivatebyUsername(uname);
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);

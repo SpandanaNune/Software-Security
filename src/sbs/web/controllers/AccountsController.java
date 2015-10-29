@@ -101,6 +101,7 @@ public class AccountsController {
 				ArrayList<Accounts> toaccounts= new ArrayList<Accounts>();
 				Accounts merchantAccount; 
 				for(User user: userList){
+					System.out.println("Getting accounts of merchant "+user.getUsername());
 					merchantAccount=accountsService.getMerchantAccountDetails(user.getUsername());
 					System.out.println("Got account for "+merchantAccount.getAccountNo());
 					toaccounts.add(merchantAccount);

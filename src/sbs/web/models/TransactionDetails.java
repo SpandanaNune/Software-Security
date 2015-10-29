@@ -1,19 +1,18 @@
 package sbs.web.models;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class TransactionDetails {
 
-	@Pattern(regexp="^[0-9]{8}$", message="Invalid Account Number")
+//	@Pattern(regexp="^[0-9]{8}$", message="Invalid Account Number. It should be 8 digits.")
 	private String fromAccountNo;
-//	@Pattern(regexp="^[0-9]*$", message="Invalid Account Number")
+//	@Pattern(regexp="^[0-9]*$", message="Invalid Account Number. It should be 8 digits.")
 	private String toMyAccountNo;
-	@Pattern(regexp="^[0-9]", message="Invalid Account Number")
+//	@Pattern(regexp="^[0-9]{8}", message="Invalid Account Number. It should be 8 digits.")
 	private String toOtherAccountNo;
 	
-	@Pattern(regexp="^[0-9]+\\.*[0-9]{2}$+", message="Invalid amount number")
+	@Pattern(regexp="^[0-9]+$+", message="Invalid amount number")
 	private String balance;
 	
 	private String account_type;

@@ -248,10 +248,9 @@ public class ManagerController {
 
 		System.out.println(newAccount1);
 		System.out.println(newAccount2);
-
 			
 		userService.createUser(user);
-		userService.saveOrUpdateUsers(users);
+//		userService.saveOrUpdateUsers(users);
 		userService.addNewAccount(newAccount1);
 		userService.addNewAccount(newAccount2);
 		
