@@ -62,9 +62,9 @@ public class TransactionDao {
 	public void updateTransaction(Transaction transaction){
 		session().saveOrUpdate(transaction);
 	}
-	
-	public Object getTransaction(int transactionId){
-		 return session().createQuery("from Transaction where transactionId="+transactionId).uniqueResult();
+	@SuppressWarnings("unchecked")
+	public List<Transaction> getTransaction(int transactionId){
+		 return session().createQuery("from Transaction where transactionId="+transactionId).list();
 	}
 	
 	@SuppressWarnings("unchecked")
