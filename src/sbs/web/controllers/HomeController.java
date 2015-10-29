@@ -112,7 +112,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/registerbtn", method = RequestMethod.POST)
-	public String moveToVerifyOTP(Model model, @Validated User user, BindingResult result) {
+	public String moveToVerifyOTP(Model model, @Valid User user, BindingResult result) {
 		System.out.println("Finding errors, " + result.toString());
 		if (result.hasErrors()) {
 			return "registeruser";

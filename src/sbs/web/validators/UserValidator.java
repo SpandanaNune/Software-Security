@@ -70,7 +70,7 @@ public class UserValidator implements Validator{
 		}
 		if(user.getState()==null || user.getState().length()<2 || user.getState().length()>45)
 		{
-			errors.rejectValue("State", "Invalid State","State must be atleast 5 characters and not greater than 45 characters");
+			errors.rejectValue("State", "Invalid State","State must be atleast 2 characters and not greater than 45 characters");
 		}
 		matcher = zipPattern.matcher(user.getEmail());
 		if(!matcher.matches())
