@@ -37,6 +37,21 @@
    }
  </script>
 
+<script type="text/javascript">
+               var clickCount = 0;
+               function disableMeAfterOnceClick()
+               {                    
+                   if(clickCount == 0)
+                   {
+                       clickCount++;
+                       return true;
+                   }
+                   else
+                   {
+                       return false;
+                   }
+               }
+           </script>
  <script>
    window.location.hash = "no-back-button";
    window.location.hash = "Again-No-back-button";
@@ -101,7 +116,11 @@
        <br>
        <br>
        <br>
-       <a class="btn btn-info btn-large" style="width: 300px" href="${pageContext.request.contextPath}/pii">Approve PII</a>
+       <a class="btn btn-info btn-large" style="width: 300px" href="${pageContext.request.contextPath}/pii">Approve/Reject PII</a>
+       <br>
+       <br>
+       <br>
+       <a class="btn btn-info btn-large" style="width: 300px" href="${pageContext.request.contextPath}/systemlogs">Mail System Logs</a>
        <br>
        <br>
        <br>

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utilities.Compressor;
 import sbs.web.utilities.SendMail;
 
 @Controller
@@ -28,6 +30,22 @@ public class AdminController {
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+	
+	@RequestMapping("/systemlogs")
+	public String viewSystemLogs(Model model,Principal principal) {
+		Compressor comp = new Compressor();
+		String outputFile = FilenameUtils.separatorsToSystem(System.getProperty("catalina.home") + "/temp/logs_" + System.currentTimeMillis() + ".zip");
+		String sourceFolder = FilenameUtils.separatorsToSystem(System.getProperty("catalina.home") + "/logs");
+		System.out.println(outputFile);
+		System.out.println(sourceFolder);
+
+		comp.compressFiles(outputFile, sourceFolder);
+		User user = userService.getUserregisterbyUsername(principal.getName());
+		SendMail.sendlogs(user, outputFile);
+		
+		System.out.println("Compression Done");
+		return "adminhome";
 	}
 
 	@RequestMapping("/getinternalusers")
@@ -190,6 +208,7 @@ public class AdminController {
 			user.setSSN(pii.getNewSSN());
 			userService.updateUser(user);
 			userService.approvePII(pii.getUserName());
+			SendMail.sendPIIConfirm(user.getEmail(),user.getFirstname());
 		} else {
 			// error SSN not matched
 		}
