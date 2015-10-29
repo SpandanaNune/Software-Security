@@ -34,7 +34,7 @@ public class SendMail {
 				"moneytreebanking4@gmail.com", "moneytreebanking5@gmail.com" };
 
 		final String username = "moneytreebanking";// change accordingly
-		final String password = "mtbc1234";// change accordingly
+		final String password = "factlab12345";// change accordingly
 		Properties props = new Properties();
 
 		props = new Properties();
