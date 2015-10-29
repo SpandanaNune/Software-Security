@@ -62,10 +62,7 @@
 							name="email" type="text" /><br /> <sf:errors path="email"
 							Class="error"></sf:errors></td>
 				</tr>
-				​
-				
-				
-				​
+
 				<tr>
 					<td class="label"><h4 style="color: black">Phone:</h4></td>
 					<td><sf:input class="control form-control" path="phone"
