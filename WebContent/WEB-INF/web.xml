@@ -43,6 +43,11 @@
 			classpath:sbs/web/config/service-context.xml
 			classpath:sbs/web/config/security-context.xml
 		</param-value>
+		 
+  </context-param>
+  <context-param>
+		 <param-name>defaultHtmlEscape</param-name>
+   <param-value>true</param-value>
   </context-param>
   <filter>
     <display-name>springSecurityFilterChain</display-name>

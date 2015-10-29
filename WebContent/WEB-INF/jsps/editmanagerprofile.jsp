@@ -13,17 +13,17 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link href="${pageContext.request.contextPath}/static/css/navbar.css"
 	rel="stylesheet" type="text/css" />
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 <noscript>
-	<h2>JavaScript is disabled! Why you want to do so? Please enable
+	<h2>JavaScript is disabled! Please enable
 		JavaScript in your web browser!</h2>
 	<style type="text/css">
 #main-content {
@@ -51,6 +51,161 @@
 		window.location.hash = "no-back-button";
 	}
 </script>
+    <script>
+function validateForm() {
+    var alphanum=/^[0-9a-zA-Z]+$/;
+    var alphanums=/^[0-9a-zA-Z\s]+$/;
+    var alpha= /^[a-zA-Z]+$/;
+    var num=/^[0-9]+$/;
+    var email=".+@.+\\..+";
+    var date="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$";
+    //var f=0;
+    
+    var x = document.forms["myForm"]["username"].value;
+    
+   if (x.match(alphanum) && x.length>=8 && x.length<=45) {
+	   $("#matchpass").text("");
+	$("#matchpass").addClass("valid");
+	$("#matchpass").removeClass("error");
+    }
+    
+   else
+   {
+   $("#matchpass").addClass("error");
+	$("#matchpass").text("username must be alphanumeric and between 8 and 45 characters");
+	$("#matchpass").removeClass("valid")
+	return false;
+	//f=1;
+   }
+
+   var x1 = document.forms["myForm"]["firstname"].value;
+   if (x1.match(alpha) && x1.length>=2 && x1.length<=45) {
+	   $("#matchpass1").text("");
+		$("#matchpass1").addClass("valid");
+		$("#matchpass1").removeClass("error");
+    }
+   else{
+    $("#matchpass1").addClass("error");
+	   $("#matchpass1").text("first name must be alphabetic and between 2 and 45 characters");
+	   $("#matchpass1").removeClass("valid")
+      //f=1;
+	   return false;
+	  
+   }
+	   
+   
+
+
+   var x2 = document.forms["myForm"]["lastname"].value;
+      if (x2.match(alpha) && x2.length>=2 && x2.length<=45) {
+	   $("#matchpass2").text("");
+		$("#matchpass2").addClass("valid");
+		$("#matchpass2").removeClass("error");
+    }
+   else{
+    $("#matchpass2").addClass("error");
+	   $("#matchpass2").text("last name must be alphabetic and between 2 and 45 characters");
+	   $("#matchpass2").removeClass("valid")
+      //f=1;
+	  return false;
+	  
+   }
+ 
+  
+    
+    var x4 = document.forms["myForm"]["phone"].value;
+       if (x4.match(num) && x4.length>=10 && x4.length<=14) {
+	   $("#matchpass4").text("");
+		$("#matchpass4").addClass("valid");
+		$("#matchpass4").removeClass("error");
+    }
+   else{
+    $("#matchpass4").addClass("error");
+	   $("#matchpass4").text("Phone number must be numeric without spaces/dashes");
+	   $("#matchpass4").removeClass("valid")
+       // f=1;
+	   return false;
+	  
+   }
+     
+        
+       var x7 = document.forms["myForm"]["Addr1"].value;
+          if (x7.match(alphanums) && x7.length>=2 && x7.length<=45) {
+	   $("#matchpass7").text("");
+		$("#matchpass7").addClass("valid");
+		$("#matchpass7").removeClass("error");
+    }
+   else{
+    $("#matchpass7").addClass("error");
+	   $("#matchpass7").text("Address1 must be alphanumeric and between 2 and 45 characters");
+	   $("#matchpass7").removeClass("valid")
+      //f=1;
+	   return false;
+	  
+   }
+        
+        var x8 = document.forms["myForm"]["Addr2"].value;
+          if (x8.match(alphanums) && x8.length>=2 && x8.length<=45) {
+	   $("#matchpass8").text("");
+		$("#matchpass8").addClass("valid");
+		$("#matchpass8").removeClass("error");
+    }
+   else{
+    $("#matchpass8").addClass("error");
+	   $("#matchpass8").text("Address2 must be alphanumeric and between 2 and 45 characters");
+	   $("#matchpass8").removeClass("valid")
+      //f=1;
+	   return false;
+	  
+   }
+         
+         var x9 = document.forms["myForm"]["City"].value;
+               if (x9.match(alpha) && x9.length>=2 && x9.length<=45) {
+	   $("#matchpass9").text("");
+		$("#matchpass9").addClass("valid");
+		$("#matchpass9").removeClass("error");
+    }
+   else{
+    $("#matchpass9").addClass("error");
+	   $("#matchpass9").text("City name must be alphabetic without space and between 2 and 45 characters");
+	   $("#matchpass9").removeClass("valid")
+      //f=1;
+	   return false;
+	  
+   }
+          
+          var x10 = document.forms["myForm"]["State"].value;
+                 if (x10.match(alpha) && x10.length>=2 && x10.length<=45) {
+	   $("#matchpass10").text("");
+		$("#matchpass10").addClass("valid");
+		$("#matchpass10").removeClass("error");
+    }
+   else{
+    $("#matchpass10").addClass("error");
+	   $("#matchpass10").text("State name must be alphabetic without space and between 2 and 45 characters");
+	   $("#matchpass10").removeClass("valid")
+      //f=1;
+	  return false;
+	  
+   }
+           var x11 = document.forms["myForm"]["Zip"].value;
+           if (x11.match(num) && x11.length>=5 && x11.length<=10) {
+	   $("#matchpass11").text("");
+		$("#matchpass11").addClass("valid");
+		$("#matchpass11").removeClass("error");
+    }
+   else{
+    $("#matchpass11").addClass("error");
+	   $("#matchpass11").text("Zip code must be numeric without spaces/dashes");
+	   $("#matchpass11").removeClass("valid")
+       // f=1;
+	   return false;
+	  
+   }
+      
+        	  
+}
+</script>
 <title>Edit Manager Profile</title>
 </head>
 
@@ -63,9 +218,7 @@
 			</a>
 		</div>
 		<div>
-			<ul class="nav navbar-nav">
-				<li><a href="#">About Us</a></li>
-			</ul>
+			
 			<ul class="nav navbar-nav navbar-right">
 				<li><form method="post"
 						action="${pageContext.request.contextPath}/logout">
@@ -84,9 +237,9 @@
 	<div class="container">
 		<h1>Edit Manager Profile</h1>
 		<br />
-		<sf:form method="post"
+		<sf:form method="post" name="myForm" onsubmit="return validateForm()"
 			action="${pageContext.request.contextPath}/editmanagerprofiledone"
-			commandName="user">
+			commandName="user" htmlEscape="true" >
 
 			<table>
 
@@ -97,7 +250,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="username"
 							name="username" type="text" readonly="true" /> <br /> <sf:errors
-							path="username" Class="error"></sf:errors></td>
+							path="username" Class="error"></sf:errors><div id="matchpass"></div></td>
 				</tr>
 
 				<tr>
@@ -107,7 +260,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="firstname"
 							name="firstname" type="text" /> <br /> <sf:errors
-							path="firstname" Class="error"></sf:errors></td>
+							path="firstname" Class="error"></sf:errors><div id="matchpass1"></div></td>
 
 				</tr>
 				<tr>
@@ -117,7 +270,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="lastname"
 							name="lastname" type="text" /> <br /> <sf:errors
-							path="lastname" Class="error"></sf:errors></td>
+							path="lastname" Class="error"></sf:errors><div id="matchpass2"></div></td>
 				</tr>
 
 				<tr>
@@ -127,7 +280,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="phone"
 							name="phone" type="text" /> <br /> <sf:errors path="phone"
-							Class="error"></sf:errors></td>
+							class="error"></sf:errors> <div id="matchpass4"></div></td>
 				</tr>
 
 				<tr>
@@ -137,7 +290,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="Addr1"
 							name="Addr1" type="text" /> <br /> <sf:errors path="Addr1"
-							Class="error"></sf:errors></td>
+							Class="error"></sf:errors><div id="matchpass7"></div></td>
 				</tr>
 				<tr>
 					<td class="label">
@@ -146,7 +299,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="Addr2"
 							name="Addr2" type="text" /> <br /> <sf:errors path="Addr2"
-							Class="error"></sf:errors></td>
+							Class="error"></sf:errors><div id="matchpass8"></div></td>
 				</tr>
 				<tr>
 					<td class="label">
@@ -155,7 +308,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="City"
 							name="City" type="text" /> <br /> <sf:errors path="City"
-							Class="error"></sf:errors></td>
+							Class="error"></sf:errors><div id="matchpass9"></div></td>
 				</tr>
 				<tr>
 					<td class="label">
@@ -164,7 +317,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="State"
 							name="State" type="text" /> <br /> <sf:errors path="State"
-							Class="error"></sf:errors></td>
+							Class="error"></sf:errors><div id="matchpass10"></div></td>
 				</tr>
 				​
 				<tr>
@@ -174,7 +327,7 @@
 					<td>&nbsp;</td>
 					<td><sf:input class="control form-control" path="Zip"
 							name="Zip" type="text" /> <br /> <sf:errors path="Zip"
-							Class="error"></sf:errors></td>
+							Class="error"></sf:errors><div id="matchpass11"></div></td>
 				</tr>
 			</table>
       ​

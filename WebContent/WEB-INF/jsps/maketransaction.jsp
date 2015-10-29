@@ -12,9 +12,9 @@
   <title>Transaction</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script type="text/javascript">
     function change() {
       var select = document.getElementById("sendoptions");
@@ -34,7 +34,7 @@
   </script>
 
   <noscript>
-    <h2>JavaScript is disabled! Why you want to do so? Please enable JavaScript in your web browser!</h2>
+    <h2>JavaScript is disabled! Please enable JavaScript in your web browser!</h2>
     <style type="text/css">
       #main-content {
         display: none;
@@ -62,7 +62,44 @@
     }
   </script>
 
-
+ <script>
+  function validateForm() {
+    var val=/^[1-9]\d*(\.\d+)?$/;
+    var num=/^[0-9]+$/;
+  
+    var x = document.forms["myForm"]["balance"].value;
+    
+   if (x.match(val) && x.length>=0 && x.length<=12) {
+	   $("#matchpass").text("");
+	$("#matchpass").addClass("valid");
+	$("#matchpass").removeClass("error");
+    }
+    
+   else
+   {
+   $("#matchpass").addClass("error");
+	$("#matchpass").text("invalid amount");
+	$("#matchpass").removeClass("valid")
+	return false;
+   }
+   
+   var x4 = document.forms["myForm"]["toOtherAccountNo"].value;
+   if (x4.match(num) && x4.length>=2 && x4.length<=50) {
+   $("#matchpass1").text("");
+	$("#matchpass1").addClass("valid");
+	$("#matchpass1").removeClass("error");
+}
+else{
+$("#matchpass1").addClass("error");
+   $("#matchpass1").text("invalid account number");
+   $("#matchpass1").removeClass("valid")
+   // f=1;
+   return false;
+  
+}
+   }
+   
+  </script>
 </head>
 
 <body>
@@ -74,9 +111,7 @@
         </a>
       </div>
       <div>
-        <ul class="nav navbar-nav">
-          <li><a href="#">About Us</a></li>
-        </ul>
+        
         <ul class="nav navbar-nav navbar-right">
           <li>
            <form method="post"
@@ -95,9 +130,14 @@
 
     </div>
   </nav>
-  <sf:form method="post" action="${pageContext.request.contextPath}/createTransaction" commandName="transactionDetails" htmlEscape="true" enctype="multipart/form-data">
+  <sf:form method="post" name="myForm" onsubmit="return validateForm()" 
+  action="${pageContext.request.contextPath}/createTransaction" commandName="transactionDetails" htmlEscape="true" enctype="multipart/form-data">
 
     <div class="container">
+    <div class="alert alert-info">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Info!</strong> You are required to upload a private key to make transactions.
+</div>
       <h1>Transfer Funds</h1>
       <h3>
         Hi
@@ -136,23 +176,26 @@
       </div>
       <div id="accounttext" style="visibility:hidden">
         Enter The Account Number:
-        <sf:input path='toOtherAccountNo' type='text' class='form-control' />
+        <sf:input name='toOtherAccountNo' path='toOtherAccountNo' type='text' class='form-control' />
+        <div id="matchpass1"></div>
 				<sf:errors path="toOtherAccountNo" Class="error"></sf:errors>
         <br>
       </div>
 
       <br> Enter the amount
       <br />
-      <sf:input type='textbox' class='form-control' path='balance' />
+      <sf:input type='textbox' name='balance' class='form-control' path='balance' />
+      <div id="matchpass"></div>
       <br>
       <br>
       <br>
       <br>
       <center>
-        <button type="submit" class="btn btn-info">Send Money</button>
-        <br>
-        <br>
         <input type="file" name="file" />
+        
+        <br>
+        <br>
+        <button type="submit" class="btn btn-info">Send Money</button>
       </center>
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<c:out value="${PKIMessage}"></c:out>

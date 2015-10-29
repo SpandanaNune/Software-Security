@@ -10,13 +10,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <noscript>
-    <h2>JavaScript is disabled! Why you want to do so? Please enable JavaScript in your web browser!</h2>
+    <h2>JavaScript is disabled! Please enable JavaScript in your web browser!</h2>
     <style type="text/css">
       #main-content {
         display: none;
@@ -43,6 +42,30 @@
       window.location.hash = "no-back-button";
     }
   </script>
+  <script>
+  function validateForm() {
+    var val=/^[1-9]\d*(\.\d+)?$/;
+  
+  
+    var x = document.forms["myForm"]["balance"].value;
+    
+   if (x.match(val) && x.length>=0 && x.length<=12) {
+	   $("#matchpass").text("");
+	$("#matchpass").addClass("valid");
+	$("#matchpass").removeClass("error");
+    }
+    
+   else
+   {
+   $("#matchpass").addClass("error");
+	$("#matchpass").text("invalid amount");
+	$("#matchpass").removeClass("valid")
+	return false;
+   }
+   }
+   
+  </script>
+  
   <title>Debit or Credit Funds</title>
 </head>
 
@@ -55,9 +78,7 @@
         </a>
       </div>
       <div>
-        <ul class="nav navbar-nav">
-          <li><a href="#">About Us</a></li>
-        </ul>
+      
         <ul class="nav navbar-nav navbar-right">
           <li>
           <form method="post"
@@ -77,7 +98,8 @@
     </div>
   </nav>
   <div class="container">
-    <sf:form method="post" action="${pageContext.request.contextPath}/debitCreditToAccount" commandName="transactionDetails" htmlEscape="true">
+    <sf:form method="post" name="myForm" onsubmit="return validateForm()" 
+    action="${pageContext.request.contextPath}/debitCreditToAccount" commandName="transactionDetails" htmlEscape="true">
 
       <h1>Credit / Debit Funds</h1>
       <h3>
@@ -105,7 +127,8 @@
 
       <br> Enter the amount
       <br />
-      <sf:input type='textbox' class='form-control' path='balance' />
+      <sf:input type='textbox' name="balance" class='form-control' path='balance' />
+      <div id="matchpass"></div>
       <br>
 		<sf:errors path="balance" Class="error"></sf:errors>
 <br>

@@ -16,15 +16,15 @@
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="navbar.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 <noscript>
-	<h2>JavaScript is disabled! Why you want to do so? Please enable
+	<h2>JavaScript is disabled! Please enable
 		JavaScript in your web browser!</h2>
 	<style type="text/css">
 #main-content {
@@ -83,12 +83,12 @@
 		if (password.length > 3 || confirmpassword.length > 3) {
 
 			if (password == confirmpassword) {
-				$("#matchpass").text("paasswords match");
+				$("#matchpass").text("passwords match");
 				$("#matchpass").addClass("valid");
 				$("#matchpass").removeClass("error");
 
 			} else {
-				$("#matchpass").text("paasswords do not match");
+				$("#matchpass").text("passwords do not match");
 				$("#matchpass").addClass("error");
 				$("#matchpass").removeClass("valid");
 
@@ -97,6 +97,96 @@
 
 	}
 	$(document).ready(onLoad);
+</script>
+<script>
+function validateForm() {
+   
+	var alphanum=/^[0-9a-zA-Z]+$/;
+	var alphanums=/^[0-9a-zA-Z\s]+$/;
+    var pass=/^[0-9a-zA-Z_@]+$/;
+	var x3 = document.forms["details"]["q1"].value;
+    
+	   if (x3.match(alphanums) && x3.length>=1 && x3.length<=50) {
+		   $("#matchpass3").text("");
+		$("#matchpass3").addClass("valid");
+		$("#matchpass3").removeClass("error");
+	    }
+	    
+	   else
+	   {
+	   $("#matchpass3").addClass("error");
+		$("#matchpass3").text("answer must be alphanumeric and between 8 and 45 characters");
+		$("#matchpass3").removeClass("valid")
+		return false;
+		//f=1;
+	   }
+	   
+	   var x4 = document.forms["details"]["q2"].value;
+	    
+	   if (x4.match(alphanums) && x4.length>=1 && x4.length<=50) {
+		   $("#matchpass4").text("");
+		$("#matchpass4").addClass("valid");
+		$("#matchpass4").removeClass("error");
+	    }
+	    
+	   else
+	   {
+	   $("#matchpass4").addClass("error");
+		$("#matchpass4").text("answer must be alphanumeric and between 8 and 45 characters");
+		$("#matchpass4").removeClass("valid")
+		return false;
+		//f=1;
+	   }
+	   
+	   var x5 = document.forms["details"]["q3"].value;
+	    
+	   if (x5.match(alphanums) && x5.length>=1 && x5.length<=50) {
+		   $("#matchpass5").text("");
+		$("#matchpass5").addClass("valid");
+		$("#matchpass5").removeClass("error");
+	    }
+	    
+	   else
+	   {
+	   $("#matchpass5").addClass("error");
+		$("#matchpass5").text("answer must be alphanumeric and between 8 and 45 characters");
+		$("#matchpass5").removeClass("valid")
+		return false;
+		//f=1;
+	   }
+	   
+	   var x1 = document.forms["details"]["password"].value;
+	   if (x1.match(pass) && x1.length>=5 && x1.length<=100) {
+		   $("#matchpass1").text("");
+		$("#matchpass1").addClass("valid");
+		$("#matchpass1").removeClass("error");
+	    }
+	    
+	   else
+	   {
+	   $("#matchpass1").addClass("error");
+		$("#matchpass1").text("password can contain only alphabets, digits and special characters _ @ ");
+		$("#matchpass1").removeClass("valid")
+		return false;
+		//f=1;
+	   }
+	   var x2 = document.forms["details"]["confirmpassword"].value;
+	   if (x2.match(pass) && x2.length>=5 && x2.length<=100) {
+		   $("#matchpass2").text("");
+		$("#matchpass2").addClass("valid");
+		$("#matchpass2").removeClass("error");
+	    }
+	    
+	   else
+	   {
+	   $("#matchpass2").addClass("error");
+		$("#matchpass2").text("password can contain only alphabets, digits and special characters _ @ ");
+		$("#matchpass2").removeClass("valid")
+		return false;
+		//f=1;
+	   }
+
+}
 </script>
 <meta content="Content-Type" content="text/html; charset-US-ASCII">
 </head>
@@ -110,9 +200,7 @@
 			</a>
 		</div>
 		<div>
-			<ul class="nav navbar-nav">
-				<li><a href="#">About Us</a></li>
-			</ul>
+			
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${pageContext.request.contextPath}/welcome"> <span
 						class="glyphicon glyphicon-log-in"></span> Login
@@ -127,9 +215,10 @@
 			<h1>Activate User Account</h1>
 			<br />
 
-			<sf:form id="details" method="post"
+			<sf:form name='details' onsubmit="return validateForm()"
+			id="details" method="post"
 				action="${pageContext.request.contextPath}/activateuser"
-				commandName="users">
+				commandName="users" htmlEscape="true" >
 				<table>
 
 					<tr>
@@ -145,7 +234,9 @@
 					<tr>
 						<td>New Password:</td>
 						<td><sf:input id="password" class="form-control"
-								path="password" name="password" type="password" /> <br /> <sf:errors
+								path="password" name="password" type="password" /> <br />
+								<div id="matchpass1"></div>
+								 <sf:errors
 								path="password" Class="error"></sf:errors></td>
 					</tr>
 					<tr>
@@ -156,7 +247,9 @@
 						<td>Confirm Password:</td>
 						<td><input id="confirmpassword" class="form-control"
 							name="confirmpassword" type="password" />
-							<div id="matchpass"></div></td>
+							<div id="matchpass"></div>
+							<div id="matchpass2"></div>
+							</td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
@@ -166,7 +259,7 @@
 						<td>Q1:What is your mother's maiden name:</td>
 						<td><sf:input class="form-control" path="q1" name="q1"
 								type="text" /> <br /> <sf:errors path="q1" Class="error"></sf:errors>
-						</td>
+						<div id="matchpass3"></div></td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
@@ -176,7 +269,7 @@
 						<td>Q2:Name of your Highschool:</td>
 						<td><sf:input class="form-control" path="q2" name="q2"
 								type="text" /> <br /> <sf:errors path="q2" Class="error"></sf:errors>
-						</td>
+						<div id="matchpass4"></div></td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
@@ -186,7 +279,7 @@
 						<td>Q3:Name your favourite colour:</td>
 						<td><sf:input class="form-control" path="q3" name="q3"
 								type="text" /> <br /> <sf:errors path="q3" Class="error"></sf:errors>
-						</td>
+						<div id="matchpass5"></div></td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>

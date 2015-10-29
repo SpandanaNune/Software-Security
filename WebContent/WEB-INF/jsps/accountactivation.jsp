@@ -67,7 +67,7 @@
       <h1>Account Activation</h1>
       <br>
       <br>
-      <sf:form method="post" action="${pageContext.request.contextPath}/accountactivation" commandName="users">
+      <sf:form method="post" action="${pageContext.request.contextPath}/accountactivation" commandName="users" htmlEscape="true" >
 
         <table>
           <tr>

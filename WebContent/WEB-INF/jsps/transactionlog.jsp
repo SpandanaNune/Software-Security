@@ -10,16 +10,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/static/css/navbar.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <title>Transaction Logs</title>
 <noscript>
-	<h2>JavaScript is disabled! Why you want to do so? Please enable
+	<h2>JavaScript is disabled! Please enable
 		JavaScript in your web browser!</h2>
 	<style type="text/css">
 #main-content {
@@ -27,7 +27,7 @@
 }
 </style>
 </noscript>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/welcome">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
 <script language="javascript">
     document.onmousedown = disableclick;
     status = "Right Click Disabled";
@@ -61,21 +61,46 @@
 
 	}
 </script>
-
+<script>
+function validateForm() {
+    var alphanum=/^[0-9a-zA-Z\s]+$/;
+    
+    var date="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$";
+    //var f=0;
+    
+    var x = document.forms["myForm"]["input"].value;
+    
+   if (x.match(alphanum) || x.match(date)) {
+	   if(x.length>=1 && x.length<=45)
+		   {
+	   $("#matchpass").text("");
+	$("#matchpass").addClass("valid");
+	$("#matchpass").removeClass("error");
+		   }
+    }
+    
+   else
+   {
+   $("#matchpass").addClass("error");
+	$("#matchpass").text("invalid entry");
+	$("#matchpass").removeClass("valid")
+	return false;
+	//f=1;
+   }
+}
+</script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="${pageContext.request.contextPath}/welcome"> <b>MTBC
+				href="${pageContext.request.contextPath}/adminhome"> <b>MTBC
 			</b>
 			</a>
 		</div>
 		<div>
-			<ul class="nav navbar-nav">
-				<li><a href="#">About Us</a></li>
-			</ul>
+			
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 					<form method="post"
@@ -98,9 +123,9 @@
 		<br>
 		<h4>Filter Logs by</h4>
 
-		<sf:form method="POST"
+		<sf:form name="myForm" onsubmit="return validateForm()" method="POST"
 			action="${pageContext.request.contextPath}/transactionlog"
-			commandName="transactionLog">
+			commandName="transactionLog" htmlEscape="true" >
 			<sf:errors path="*" cssClass="errorblock" element="div" />
 			<table class="table">
 				<tr>
@@ -139,7 +164,7 @@
 								<sf:input class="control form-control" path="input" name="input"
 									type="text" />
 								<br />
-							</div></td>
+							</div><div id="matchpass"></div></td>
 
 						<td><sf:errors path="input" Class="error"></sf:errors></td>
 					</tr>

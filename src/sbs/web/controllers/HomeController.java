@@ -40,14 +40,7 @@ public class HomeController {
 	private UserService userService;
 	private UtilityService utilityService;
 	
-	 @Autowired
-	    @Qualifier("userValidator")
-	    private Validator validator;
-
-	 @InitBinder
-	    private void initBinder(WebDataBinder binder) {
-	        binder.setValidator(validator);
-	    }
+	
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;

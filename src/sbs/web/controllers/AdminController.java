@@ -130,6 +130,8 @@ public class AdminController {
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
 			authorities.add("ROLE_NEWMANAGER");
+			model.addAttribute("roles", authorities);
+
 			return "employeecreation";
 		}
 
@@ -140,6 +142,8 @@ public class AdminController {
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
 			authorities.add("ROLE_NEWMANAGER");
+			model.addAttribute("roles", authorities);
+
 			return "employeecreation";
 		}
 
