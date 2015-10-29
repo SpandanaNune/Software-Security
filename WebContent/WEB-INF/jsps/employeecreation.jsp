@@ -80,7 +80,7 @@
   <div class="container">
     <h1>Add Employee</h1>
 
-    <sf:form method="post" action="${pageContext.request.contextPath}/employeecreation" commandName="user" htmlEscape="true">
+    <sf:form method="post" action="${pageContext.request.contextPath}/employeecreationdone" commandName="user" htmlEscape="true">
 
       <table class="formtable">
         <tr>

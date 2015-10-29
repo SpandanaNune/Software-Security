@@ -60,17 +60,7 @@ public class TransactionController {
 	public void setTransactionService(TransactionService transactionService) {
 		System.out.println("Setting TransactionService in TransactionController");
 		this.transactionService = transactionService;
-		System.out.println("Initiallizing Transaction controller");
-		List<Transaction> transactions = transactionService.getTransactions();
-		int maxVal = 0, curVal;
-		for (Transaction tran : transactions) {
-			curVal = tran.getPrimaryKey().getTransactionId();
-			if (maxVal < curVal) {
-				maxVal = curVal;
-			}
-		}
-		System.out.println("Maximum value is " + transactionIDCounter);
-		transactionIDCounter = maxVal;
+		
 	}
 
 	@Autowired
@@ -107,6 +97,19 @@ public class TransactionController {
 
 		Transaction_CompositeKey compositeKey = new Transaction_CompositeKey();
 		compositeKey.setAccountNo(accountNumber);
+		
+		//caluculating Transaction counter
+		System.out.println("Initiallizing Transaction controller");
+		List<Transaction> transactions = transactionService.getTransactions();
+		int maxVal = 0, curVal;
+		for (Transaction tran : transactions) {
+			curVal = tran.getPrimaryKey().getTransactionId();
+			if (maxVal < curVal) {
+				maxVal = curVal;
+			}
+		}
+		System.out.println("Maximum value is " + transactionIDCounter);
+		transactionIDCounter = maxVal;
 		compositeKey.setTransactionId(++transactionIDCounter);
 
 		// populate Transaction data
@@ -119,10 +122,12 @@ public class TransactionController {
 
 		// set status
 
-		// if (amount > 1000) {
-		// transaction.setCritical(true);
-		// transaction.setStatus("PENDING");
-		// }
+		 if (amount > 1000) {
+			 result.rejectValue("balance", "DuplicateKeyException.transactionDetails.balance", "You can credit or debit upto $1000");
+			 ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
+				model.addAttribute("accounts", accounts);
+				return "debitcredit";
+		  }
 
 		try {
 			System.out.println("Checking if " + compositeKey.getAccountNo() + " exists..");
@@ -133,8 +138,10 @@ public class TransactionController {
 				// deduct and update
 				if (from.getBalance() - amount < 0) {
 					// return a message that insufficient balance
+					result.rejectValue("balance", "DuplicateKeyException.transactionDetails.balance", "Insufficient balance");
 					ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
 					model.addAttribute("accounts", accounts);
+					
 					return "debitcredit";
 				}
 				from.setBalance(from.getBalance() - amount);
@@ -172,7 +179,7 @@ public class TransactionController {
 		if (fromUserAccount == toOtherUserAccount) {
 			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
 			model.addAttribute("accounts", accounts);
-			result.rejectValue("toOtherAccountNo", "DuplicateKeyException.user.username",
+			result.rejectValue("toOtherAccountNo", "DuplicateKeyException.transactionDetails.toOtherAccountNo",
 					"From and To Account should be different");
 			return "merchanttransaction";
 		}
@@ -180,6 +187,20 @@ public class TransactionController {
 		// add everything to transaction class and insert into db
 		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
 		fromCompositeKey.setAccountNo(fromUserAccount);
+		//caluculating Transaction counter
+				System.out.println("Initiallizing Transaction controller");
+				List<Transaction> transactions = transactionService.getTransactions();
+				int maxVal = 0, curVal;
+				for (Transaction tran : transactions) {
+					curVal = tran.getPrimaryKey().getTransactionId();
+					if (maxVal < curVal) {
+						maxVal = curVal;
+					}
+				}
+				System.out.println("Maximum value is " + transactionIDCounter);
+				transactionIDCounter = maxVal;
+				
+				
 		fromCompositeKey.setTransactionId(++transactionIDCounter);
 
 		// populate Transaction data
@@ -231,6 +252,8 @@ public class TransactionController {
 					// return a message that insufficient balance
 					ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
 					model.addAttribute("accounts", accounts);
+					result.rejectValue("balance", "DuplicateKeyException.transactionDetails.balance", "Insufficient balance");
+					System.out.println("Insufficient balance");
 					return "merchanttransaction";
 				}
 
@@ -283,7 +306,6 @@ public class TransactionController {
 			
 			ArrayList<Accounts> accounts = (ArrayList<Accounts>)accountService.getAccountDetails(username);
 			model.addAttribute("accounts",accounts);
-			model.addAttribute("accounts", accounts);
 			
 			// get all merchant account 
 			List<User> userList = userService.getAllMerchantAccounts();
@@ -300,6 +322,7 @@ public class TransactionController {
 			}
 			System.out.println("Merchants account count: "+toaccounts.size());
 			model.addAttribute("toaccounts", toaccounts);
+		
 			
 		}catch ( Exception e) {
 			e.printStackTrace();
@@ -324,6 +347,20 @@ public class TransactionController {
 		// add everything to transaction class and insert into db
 		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
 		fromCompositeKey.setAccountNo(fromUserAccount);
+		
+		//caluculating Transaction counter
+				System.out.println("Initiallizing Transaction controller");
+				List<Transaction> transactions = transactionService.getTransactions();
+				int maxVal = 0, curVal;
+				for (Transaction tran : transactions) {
+					curVal = tran.getPrimaryKey().getTransactionId();
+					if (maxVal < curVal) {
+						maxVal = curVal;
+					}
+				}
+				System.out.println("Maximum value is " + transactionIDCounter);
+				transactionIDCounter = maxVal;
+				
 		fromCompositeKey.setTransactionId(++transactionIDCounter);
 
 		// populate Transaction data
@@ -432,12 +469,14 @@ public class TransactionController {
 		
 		
 
-		System.out.println(fromUserAccount+" "+toMyUserAccount+" "+toOtherUserAccount+" amount:"+amount);
 		String account_type = transactionDetails.getAccount_type();
 
 		if (account_type.equalsIgnoreCase("other")) {
 			System.out.println("Setting other user " + toOtherUserAccount);
 			if(transactionDetails.getToOtherAccountNo().length()!=8){
+				ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
+				model.addAttribute("accounts", accounts);
+				
 				result.rejectValue("toOtherAccountNo", "DuplicateKeyException.transactionDetails.toOtherAccountNo",
 						"To Account is invalid");
 				System.out.println("Invalid other account number, not of length 8");
@@ -486,9 +525,11 @@ public class TransactionController {
 			String priKeyPath = util.separatorsToSystem(defaultPath + username + "/private.key");
 			final Path destination = Paths.get(priKeyPath);
 			Files.copy(filepart.getInputStream(), destination);
-			boolean resultPKI = PKIUtil.validateKeyPairs(user, "Hello World");
+			boolean resultPKI = PKIUtil.validateKeyPairs(user, transactionDetails.getBalance());
 			System.out.println("resultPKI is :" + resultPKI);
 			if (!resultPKI) {
+				ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
+				model.addAttribute("accounts", accounts);
 				model.addAttribute("PKIMessage", "Please upload your Private Key");
 				return "maketransaction";
 			}
@@ -501,6 +542,19 @@ public class TransactionController {
 		// add everything to transaction class and insert into db
 		Transaction_CompositeKey fromCompositeKey = new Transaction_CompositeKey();
 		fromCompositeKey.setAccountNo(fromUserAccount);
+		//caluculating Transaction counter
+				System.out.println("Initiallizing Transaction controller");
+				List<Transaction> transactions = transactionService.getTransactions();
+				int maxVal = 0, curVal;
+				for (Transaction tran : transactions) {
+					curVal = tran.getPrimaryKey().getTransactionId();
+					if (maxVal < curVal) {
+						maxVal = curVal;
+					}
+				}
+				System.out.println("Maximum value is " + transactionIDCounter);
+				transactionIDCounter = maxVal;
+				
 		fromCompositeKey.setTransactionId(++transactionIDCounter);
 
 		// populate Transaction data
@@ -560,8 +614,9 @@ public class TransactionController {
 					// return a message that insufficient balance
 					ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountDetails(username);
 					model.addAttribute("accounts", accounts);
+					result.rejectValue("balance", "DuplicateKeyException.transactionDetails.balance", "Insufficient balance");
 					System.out.println("Insufficient balance");
-					return "welcome";
+					return "maketransaction";
 				}
 
 				System.out.println("To Account exists, Going ahead with the transaction");

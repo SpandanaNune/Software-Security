@@ -11,7 +11,7 @@
 
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/static/css/navbar.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -29,24 +29,24 @@
 </noscript>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/welcome">
 <script language="javascript">
-    document.onmousedown = disableclick;
-    status = "Right Click Disabled";
+	document.onmousedown = disableclick;
+	status = "Right Click Disabled";
 
-    function disableclick(event) {
-      if (event.button == 2) {
-        alert(status);
-        return false;
-      }
-    }
-  </script>
+	function disableclick(event) {
+		if (event.button == 2) {
+			alert(status);
+			return false;
+		}
+	}
+</script>
 
 <script>
-    window.location.hash = "no-back-button";
-    window.location.hash = "Again-No-back-button";
-    window.onhashchange = function() {
-      window.location.hash = "no-back-button";
-    }
-  </script>
+	window.location.hash = "no-back-button";
+	window.location.hash = "Again-No-back-button";
+	window.onhashchange = function() {
+		window.location.hash = "no-back-button";
+	}
+</script>
 <script type="text/javascript">
 	function radiofn() {
 

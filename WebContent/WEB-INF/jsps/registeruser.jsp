@@ -118,7 +118,10 @@
 					<td>&nbsp;</td>
 					<td><sf:errors path="email" Class="error"></sf:errors></td>
 				</tr>
+<<<<<<< HEAD
+=======
 
+>>>>>>> 837bc3e0e74b2531bc7b9c1c9010f6eff294dd6f
 				<tr>
 					<td class="label">
 						<h4 style="color: black">Phone:</h4>
@@ -132,7 +135,6 @@
 					<td class="label">
 						<h4 style="color: black">SSN:</h4>
 					</td>
-					
 					<td><sf:input class="control form-control" path="SSN"
 							name="SSN" type="text" /></td>
 					<td>&nbsp;</td>

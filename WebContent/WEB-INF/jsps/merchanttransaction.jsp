@@ -103,7 +103,7 @@
       <br> Enter the amount
       <br />
       <sf:input type="textbox" class="form-control" path="balance" />
-		<sf:errors path="balance" class="error"></sf:errors> 
+		<sf:errors path="balance" class="error"></sf:errors> <br>
         <button type="submit" class="btn btn-info">Send Money</button>
       </center>
 

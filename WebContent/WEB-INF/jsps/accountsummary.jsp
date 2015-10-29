@@ -1,5 +1,7 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 
@@ -49,7 +51,7 @@
 		window.location.hash = "no-back-button";
 	}
 </script>
-<title>Make Payment</title>
+<title>User Sign Up Requests</title>
 </head>
 
 <body>
@@ -82,50 +84,35 @@
 
 	</div>
 	</nav>
-	<sf:form method="post"
-		action="${pageContext.request.contextPath}/makePaymentTransaction"
-		commandName="transactionDetails" htmlEscape="true"
-		enctype="multipart/form-data">
+	<div class="container">
+		<h2 style="text-align: left">Account Summary</h2>
 
-		<div class="container">
-			<h1>Make Payment</h1>
-			<h3>
-				Hi
-				<c:out value="${user.getUsername()}"></c:out>
-				!
-			</h3>
-			<br> Select Your Account <br /> <br />
-			<sf:select class="form-control" id="accountnumbers"
-				path="fromAccountNo">
-				<c:forEach var="account" items="${accounts}">
-					<option value="${account.getAccountNo()}">${account.getAccountNo()}</option>
-				</c:forEach>
-			</sf:select>
-			<br> Who do you want to send money to? <br>
+		<table class="offers table table-hover">
+			<tr>
+				<th>Account Number</th>
+				<th>Balance</th>
+				<th></th>
+				<th>Type</th>
+				
+			</tr>
 
-			<sf:select class="form-control" id="sendoptions"
-				path="toOtherAccountNo">
-				<c:forEach var="toaccount" items="${toaccounts}">
-					<option value="${toaccount.getAccountNo()}">${toaccount.getAccountNo()}
-					</option>
-				</c:forEach>
-			</sf:select>
-			<br /> <br /> <br> Enter the amount <br />
-			<sf:input type="textbox" class="form-control" path="balance" />
-			<sf:errors path="balance" Class="error"></sf:errors>
+			<c:forEach var="accounts" items="${accountdetails}" varStatus="stat">
+				<tr>
+					<td><c:out value="${accounts.getAccountNo()}"></c:out></td> ​
+					<td><c:out value="${accounts.getBalance()}"></c:out></td>
+					<td><c:if test="${accounts.isAccount_type()==true}">
+							<TD>CHECKING</TD>
+						</c:if> <c:if test="${accounts.isAccount_type()==false}">
+							<TD>SAVING</TD>
+						</c:if></td>
+				</tr>
+			</c:forEach>
+		</table>
 
-			<br>
+		<a class="btn btn-info btn-large" style="width: 300px"
+			href="${pageContext.request.contextPath}/welcome">Go to Home</a>
 
-
-		</div>
-		<br>
-		<br>
-		<center>
-			<button type="submit" class="btn btn-info">Send Money</button>
-		</center>
-		<input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}" />
-	</sf:form>
+	</div>
 </body>
 
 </html>

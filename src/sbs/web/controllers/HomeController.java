@@ -23,11 +23,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import sbs.web.models.Authorities;
 import sbs.web.models.OTP;
 import sbs.web.models.User;
 import sbs.web.models.Users;
+import sbs.web.service.AccountsService;
 import sbs.web.service.UserService;
 import sbs.web.service.UtilityService;
 import sbs.web.utilities.SendMail;
@@ -38,8 +40,10 @@ import sbs.web.utils.PKIUtil;
 public class HomeController {
 	private static final Logger logger = Logger.getLogger(HomeController.class);
 	private UserService userService;
+
 	private UtilityService utilityService;
-	
+	private AccountsService accountService;
+ 
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -50,15 +54,14 @@ public class HomeController {
 		this.utilityService = utilityService;
 	}
 
+	@Autowired
+	public void setAccountService(AccountsService accountService) {
+		this.accountService = accountService;
+	}
+
 	@RequestMapping("/")
 	public String showhome(Model model) {
 		return "home";
-	}
-
-	@RequestMapping("/homepage")
-	public String showhomepage(Model model) {
-		System.out.println("showhome");
-		return "homepage";
 	}
 
 	@RequestMapping(value = "/welcome")
@@ -67,13 +70,6 @@ public class HomeController {
 		model.addAttribute("uname", uname);
 		return "welcome";
 	}
-
-	// @RequestMapping(value = "/useractivated")
-	// public String showCompleteActivation(Model model, Principal principal) {
-	// String uname = principal.getName();
-	// model.addAttribute("uname", uname);
-	// return "useractivated";
-	// }
 
 	@RequestMapping(value = "/adminhome")
 	public String adminHome(Model model, Principal principal) {
@@ -253,12 +249,15 @@ public class HomeController {
 			return "registeruser";
 
 		}
+		
+		SendMail mailsend = new SendMail();
+		mailsend.sendAccountApproval(userObj.getEmail(),userObj.getFirstname());
 		// DELETE THIS LATER
 		return "home";
 	}
 
 	@RequestMapping(value = "/userconfirm")
-	public String showUserConfirmation(Model model,Principal principal) {
+	public String showUserConfirmation(Model model, Principal principal) {
 		Users users = new Users();
 		users.setUsername(principal.getName());
 		model.addAttribute("users", users);
@@ -267,13 +266,22 @@ public class HomeController {
 
 	@RequestMapping(value = "/activateuser", method = RequestMethod.POST)
 	public String ActivateUser(@Valid Users users, BindingResult result, Principal principal, HttpServletRequest req,
-			HttpServletResponse res, Model model) {
+			HttpServletResponse res, Model model, @RequestParam("confirmpassword") String resetpassword) {
+
 		String uname = principal.getName();
+		users.setUsername(uname);
+		model.addAttribute("uname", uname);
 		System.out.println(uname);
-		
-		 if (result.hasErrors()) {
-		 return "userconfirm";
-		 }
+
+		if (result.hasErrors()) {
+			return "userconfirm";
+		}
+		if (!resetpassword.equals(users.getPassword())) {
+			result.rejectValue("password", "DuplicateKeyException.user.email",
+					"Password and Confirm password does not match");
+			return "userconfirm";
+		}
+
 		Authorities authority = userService.getUserActivatebyUsername(uname);
 		users.setUsername(uname);
 		users.setAccountNonExpired(true);
@@ -294,13 +302,11 @@ public class HomeController {
 		userService.setAuthority(auth);
 		userService.saveOrUpdateUsers(users);
 		User user_profile = userService.getUserProfilebyField("username", uname);
-		PKIUtil pki = new PKIUtil();
-		pki.sendPrivateKey(user_profile);
+		// PKIUtil pki = new PKIUtil();
+		PKIUtil.sendPrivateKey(user_profile);
 		Authentication auth1 = SecurityContextHolder.getContext().getAuthentication();
 		if (auth1 != null) {
 			new SecurityContextLogoutHandler().logout(req, res, auth1);
-			// new PersistentTokenBasedRememberMeServices().logout(request,
-			// response, auth);
 		}
 		return "home";
 	}
@@ -351,7 +357,7 @@ public class HomeController {
 	}
 
 	public static String generatePassword() {
-		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "1234567890";
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + "1234567890";
 		final int PW_LENGTH = 8;
 		Random rnd = new SecureRandom();
 		StringBuilder pass = new StringBuilder();
