@@ -110,7 +110,6 @@ public class HomeController {
 		
 		List<User> uniqueUser;
 		uniqueUser = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
-		System.out.println("uniqueUser " + uniqueUser);
 		if (uniqueUser.size() > 0) {
 			System.out.println("Caught duplicate Username");
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
@@ -127,6 +126,7 @@ public class HomeController {
 		try{
 			verify = VerifyCaptcha.verify(gCaptchaResponse);
 		}catch(Exception e){
+			e.printStackTrace();
 			logger.error("Failed to verify captcha");
 		}
 		
@@ -147,30 +147,38 @@ public class HomeController {
 			}
 			catch(Exception e){
 				logger.error("Failure during user registration::"+e.getMessage());
+				e.printStackTrace();
 			}
 		}
-		else
+		
 			return "registeruser";
-		return "registeruser";
 	}
 
 	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
 	public String RegisterMerchant(@Valid User user, BindingResult result, Model model,  HttpServletRequest request) {
+		System.out.println(" Inside merchnat button pressed");
+		
 		String gCaptchaResponse = request.getParameter("g-recaptcha-response");
+		System.out.println("1");
 		if (result.hasErrors()) {
+			System.out.println("Finding errors, " + result.toString());
 			return "merchant";
 		}
 
+		System.out.println("2");
 		List<User> uniqueUser;
 		uniqueUser = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		if (uniqueUser.size() > 0) {
+			System.out.println("Duplicate username");
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
 			return "merchant";
 
 		}
 
+		System.out.println("3");
 		uniqueUser = (userService.getUserProfileByField("email", user.getEmail()));
 		if (uniqueUser.size() > 0) {
+			System.out.println("Duplicate Email");
 			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
 			return "merchant";
 		}
@@ -179,8 +187,9 @@ public class HomeController {
 			verify = VerifyCaptcha.verify(gCaptchaResponse);
 		}catch(Exception e){
 			logger.error("Failed to verify captcha");
+			e.printStackTrace();
 		}
-		
+		System.out.println("4");
 		if (verify) {
 			try{
 		
@@ -201,10 +210,9 @@ public class HomeController {
 			}
 			catch(Exception e){
 				logger.error("Failure during merchant registration::"+e.getMessage());
+				e.printStackTrace();
 			}
 		}
-		else
-			return "merchant";
 		return "merchant";
 	}
 
@@ -375,6 +383,7 @@ public class HomeController {
 			System.out.println("Sending email");
 			SendMail sendMail = new SendMail();
 			sendMail.sendOTP(otpObj);
+			System.out.println("Email sent");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);

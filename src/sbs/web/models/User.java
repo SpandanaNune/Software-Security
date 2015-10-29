@@ -28,8 +28,8 @@ public class User {
 
 	@Pattern(regexp = "^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$", message = "Invalid Date of Birth format")
 	private String dob;
-
-	@Pattern(regexp = "^[0-9]{9}$", message = "SSN should be a number and of 9 digits.")
+	
+	@Pattern(regexp="^[0-9]{9}$", message="Should contains 9 digits")
 	private String SSN;
 
 	@Pattern(regexp = "^[0-9]{10}$", message = "Phone number should be of 10 digits.")

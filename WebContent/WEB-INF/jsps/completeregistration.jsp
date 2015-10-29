@@ -90,7 +90,9 @@
               &nbsp;
             </td>
             <td>
-              <input class="control form-control" name="otpValue" type="text" />
+              <input id="otp" class="control form-control" name="otpValue" type="text" />&nbsp;
+              <input class="form-control" value="${otpstatus}"
+							name="otpstatus" type="text" readonly style="color:red"/>
             </td>
           </tr>
         </table>

@@ -116,7 +116,6 @@ public class SendMail {
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
 //				"moneytreebanking4@gmail.com", "moneytreebanking5@gmail.com" };
-
 //		final String username = "moneytreebanking";// change accordingly
 //		final String password = "mtbc1234";// change accordingly
 		Properties props = new Properties();
