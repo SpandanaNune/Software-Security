@@ -44,7 +44,7 @@
       window.location.hash = "no-back-button";
     }
   </script>
-  <title>Edit User</title>
+  <title>Edit Merchant</title>
 </head>
 
 <body>
@@ -62,7 +62,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-           <form method="post"
+             <form method="post"
 						action="${pageContext.request.contextPath}/logout">
 
 						<input class="btn btn-none" value="Logout" type="submit"
@@ -71,7 +71,6 @@
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 					</form>
-
           </li>
         </ul>
       </div>
@@ -82,10 +81,9 @@
     <h1>Edit User Details</h1>
     <br />
     <br /> ​
-    <sf:form method="post" action="${pageContext.request.contextPath}/updatebtn_employee" commandName="user">
-   
+    <sf:form method="post" action="${pageContext.request.contextPath}/updatebtnmerchant" commandName="user">
+​
       <table>
-      
        <tr>
       <td class="label">
             <h4 style="color: black">UserName:</h4>
@@ -99,26 +97,15 @@
 
         <tr>
           <td class="label">
-            <h4 style="color: black">FirstName:</h4>
+            <h4 style="color: black">Company Name:</h4>
           </td>
           <td>
             <sf:input class="control form-control" path="firstname" name="firstname" type="text" />
             <br />
             <sf:errors path="firstname" Class="error"></sf:errors>
           </td>
-
         </tr>
-        <tr>
-          <td class="label">
-            <h4 style="color: black">LastName:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="lastname" name="lastname" type="text" />
-            <br />
-            <sf:errors path="lastname" Class="error"></sf:errors>
-          </td>
-        </tr>
-
+        
         <tr>
           <td class="label">
             <h4 style="color: black">Phone:</h4>
@@ -141,6 +128,7 @@
             <sf:errors path="Addr1" Class="error"></sf:errors>
           </td>
         </tr>
+        ​
         <tr>
           <td class="label">
             <h4 style="color: black">Address Line 2:

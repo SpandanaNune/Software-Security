@@ -1,14 +1,24 @@
 package sbs.web.models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class TransactionDetails {
 
-	private long fromAccountNo;
-	private long toMyAccountNo;
-	private long toOtherAccountNo;
-	private double balance;
-	private String account_type;
-	private String transaction_type;
+	@Pattern(regexp="^[0-9]{8}$", message="Invalid Account Number")
+	private String fromAccountNo;
+//	@Pattern(regexp="^[0-9]*$", message="Invalid Account Number")
+	private String toMyAccountNo;
+	@Pattern(regexp="^[0-9]", message="Invalid Account Number")
+	private String toOtherAccountNo;
 	
+	@Pattern(regexp="^[0-9]+\\.*[0-9]{2}$+", message="Invalid amount number")
+	private String balance;
+	
+	private String account_type;
+	
+	private String transaction_type;
 	
 	public String getTransaction_type() {
 		return transaction_type;
@@ -16,29 +26,29 @@ public class TransactionDetails {
 	public void setTransaction_type(String transaction_type) {
 		this.transaction_type = transaction_type;
 	}
-	public long getFromAccountNo() {
+	public String getFromAccountNo() {
 		return fromAccountNo;
 	}
-	public void setFromAccountNo(long fromAccountNo) {
+	public void setFromAccountNo(String fromAccountNo) {
 		this.fromAccountNo = fromAccountNo;
 	}
 	
-	public long getToMyAccountNo() {
+	public String getToMyAccountNo() {
 		return toMyAccountNo;
 	}
-	public void setToMyAccountNo(long toMyAccountNo) {
+	public void setToMyAccountNo(String toMyAccountNo) {
 		this.toMyAccountNo = toMyAccountNo;
 	}
-	public long getToOtherAccountNo() {
+	public String getToOtherAccountNo() {
 		return toOtherAccountNo;
 	}
-	public void setToOtherAccountNo(long toOtherAccountNo) {
+	public void setToOtherAccountNo(String toOtherAccountNo) {
 		this.toOtherAccountNo = toOtherAccountNo;
 	}
-	public double getBalance() {
+	public String getBalance() {
 		return balance;
 	}
-	public void setBalance(double balance) {
+	public void setBalance(String balance) {
 		this.balance = balance;
 	}
 	public String getAccount_type() {

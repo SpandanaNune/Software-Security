@@ -25,7 +25,7 @@
       }
     </style>
   </noscript>
-  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/navbar.css">
   <script language="javascript">
     document.onmousedown = disableclick;
     status = "Right Click Disabled";
@@ -53,7 +53,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/welcome">
           <b>MTBC </b>
         </a>
       </div>
@@ -63,8 +63,16 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#">
-              <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            <form method="post"
+						action="${pageContext.request.contextPath}/logout">
+
+						<input class="btn btn-none" value="Logout" type="submit"
+							style="background-color: #006f87; height: 50px; color: white;" />
+
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form>
+
           </li>
         </ul>
       </div>
@@ -78,129 +86,109 @@
       ​
     
       <table>
- <tr>
-      <td class="label">
-            <h4 style="color: black">UserName:</h4>
-          </td>
-          <td>
-      <sf:input class="control form-control" path="username" name="username" type="text" readonly="true"/>
-       <br />
-      <sf:errors path="username" Class="error"></sf:errors>
-</td>
-</tr>
-        <tr>
-          <td class="label">
-            <h4 style="color: black">FirstName:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="firstname" name="firstname" type="text" />
-            <br />
-            <sf:errors path="firstname" Class="error"></sf:errors>
-          </td>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">UserName:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="username"
+							name="username" type="text" readonly="true" /> <br /> <sf:errors
+							path="username" Class="error"></sf:errors></td>
+				</tr>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">FirstName:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="firstname"
+							name="firstname" type="text" /> <br /> <sf:errors
+							path="firstname" Class="error"></sf:errors></td>
 
-        </tr>
-        <tr>
-          <td class="label">
-            <h4 style="color: black">LastName:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="lastname" name="lastname" type="text" />
-            <br />
-            <sf:errors path="lastname" Class="error"></sf:errors>
-          </td>
-        </tr>
+				</tr>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">LastName:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="lastname"
+							name="lastname" type="text" /> <br /> <sf:errors
+							path="lastname" Class="error"></sf:errors></td>
+				</tr>
 
-        <tr>
-          <td class="label">
-            <h4 style="color: black">Phone:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="phone" name="phone" type="text" />
-            <br />
-            <sf:errors path="phone" Class="error"></sf:errors>
-          </td>
-        </tr>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">Phone:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="phone"
+							name="phone" type="text" /> <br /> <sf:errors path="phone"
+							Class="error"></sf:errors></td>
+				</tr>
 
-        <tr>
-          <td class="label">
-            <h4 style="color: black">Address Line 1:
-            </h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="Addr1" name="Addr1" type="text" />
-            <br />
-            <sf:errors path="Addr1" Class="error"></sf:errors>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            <h4 style="color: black">Address Line 2:
-            </h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="Addr2" name="Addr2" type="text" />
-            <br />
-            <sf:errors path="Addr2" Class="error"></sf:errors>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            <h4 style="color: black">City:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="City" name="City" type="text" />
-            <br />
-            <sf:errors path="City" Class="error"></sf:errors>
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            <h4 style="color: black">State:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="State" name="State" type="text" />
-            <br />
-            <sf:errors path="State" Class="error"></sf:errors>
-          </td>
-        </tr>
-        ​
-        <tr>
-          <td class="label">
-            <h4 style="color: black">ZIP Code:</h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="Zip" name="Zip" type="text" />
-            <br />
-            <sf:errors path="Zip" Class="error"></sf:errors>
-          </td>
-        </tr>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">Address Line 1:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="Addr1"
+							name="Addr1" type="text" /> <br /> <sf:errors path="Addr1"
+							Class="error"></sf:errors></td>
+				</tr>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">Address Line 2:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="Addr2"
+							name="Addr2" type="text" /> <br /> <sf:errors path="Addr2"
+							Class="error"></sf:errors></td>
+				</tr>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">City:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="City"
+							name="City" type="text" /> <br /> <sf:errors path="City"
+							Class="error"></sf:errors></td>
+				</tr>
+				<tr>
+					<td class="label">
+						<h4 style="color: black">State:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="State"
+							name="State" type="text" /> <br /> <sf:errors path="State"
+							Class="error"></sf:errors></td>
+				</tr>
+				​
+				<tr>
+					<td class="label">
+						<h4 style="color: black">ZIP Code:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="Zip"
+							name="Zip" type="text" /> <br /> <sf:errors path="Zip"
+							Class="error"></sf:errors></td>
+				</tr>
 
-        <tr>
-          <td class="label">
-            <h4 style="color: black">SSN: </h4>
-          </td>
-          <td>
-            <sf:input class="control form-control" path="SSN" name="SSN" type="text" />
-          </td>
-        </tr>
-      </table>
-      <br />
-      <br> ​
+				<tr>
+					<td class="label">
+						<h4 style="color: black">SSN:</h4>
+					</td>
+					<td><sf:input class="control form-control" path="SSN"
+							name="SSN" type="text" /></td>
+				</tr>
+			</table>
+			<br />
+			<br> ​
       <br>
-      <input type="file" name="file" />
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-      <center>
-        <input class="control btn btn-info" value="Update" type="submit" />
-        <br />
-        <br>
+			<input type="file" name="file" />
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+			<center>
+				<input class="control btn btn-info" value="Update" type="submit" />
+				<br /> <br>
 
-        <sf:errors path="SSN" Class="error"></sf:errors>
+				<sf:errors path="SSN" Class="error"></sf:errors>
 
-      </center>
+			</center>
       ​
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-    </sf:form>
-  </div>
+      <input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+		</sf:form>
+	</div>
 </body>
 
 </html>

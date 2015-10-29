@@ -21,8 +21,6 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/registeruser"
 			access="permitAll" />
-		<security:intercept-url pattern="/login"
-			access="permitAll" />
 		<security:intercept-url pattern="/customerrorpage"
 			access="permitAll" />
 		<security:intercept-url pattern="/merchant"
@@ -39,12 +37,16 @@
 
 		<security:intercept-url pattern="/welcome"
 			access="hasAnyRole('ROLE_NEW,ROLE_USER,ROLE_NEWMANAGER,ROLE_MANAGER,ROLE_NEWMERCHANT,ROLE_MERCHANT,ROLE_EMPLOYEE,ROLE_NEWEMPLOYEE')" />
-		<security:intercept-url pattern="/userconfirm"
-			access="hasAnyRole('ROLE_NEW,ROLE_NEWMERCHANT,ROLE_NEWMANAGER,ROLE_NEWEMPLOYEE')" />
+		<!-- <security:intercept-url pattern="/userconfirm" access="hasAnyRole('ROLE_NEW,ROLE_NEWMERCHANT,ROLE_NEWMANAGER,ROLE_NEWEMPLOYEE')" 
+			/> -->
 		<security:intercept-url pattern="/activateuser"
 			access="hasAnyRole('ROLE_NEW,ROLE_NEWMERCHANT,ROLE_NEWMANAGER,ROLE_NEWEMPLOYEE')" />
 		<security:intercept-url pattern="/useractivated"
 			access="hasAnyRole('ROLE_USER,ROLE_MERCHANT,ROLE_MANAGER,ROLE_EMPLOYEE')" />
+		<security:intercept-url pattern="/transactionhistory"
+			access="hasAnyRole('ROLE_USER,ROLE_MERCHANT')" />
+		<security:intercept-url pattern="/emailTransactions"
+			access="hasAnyRole('ROLE_USER,ROLE_MERCHANT')" />
 
 		<security:intercept-url pattern="/usersignuprequest"
 			access="hasRole('ROLE_MANAGER')" />
@@ -56,6 +58,8 @@
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/editmanagerprofile"
 			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/editmanagerprofiledone"
+			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/declinebtn"
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/acceptbtn"
@@ -66,7 +70,11 @@
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/deleteuser"
 			access="hasRole('ROLE_MANAGER')" />
-		<security:intercept-url pattern="/editmanagerprofiledone"
+		<security:intercept-url pattern="/editbtnmerchant"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/updatebtnmerchant"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/deletemerchant"
 			access="hasRole('ROLE_MANAGER')" />
 
 		<security:intercept-url pattern="viewedituserdetails_employee"
@@ -84,7 +92,40 @@
 
 
 
+		<security:intercept-url pattern="/openTransaction"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/createTransaction"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/completeTransaction"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/openDebitCreditTransaction"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/debitCreditToAccount"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/openMakePayment"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/makePaymentTransaction"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/edituserprofile"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/edituserprofiledone"
+			access="hasRole('ROLE_USER')" />
+
+
+		<security:intercept-url pattern="/openMerchantTransaction"
+			access="hasRole('ROLE_MERCHANT')" />
+		<security:intercept-url pattern="/createMerchnatTransaction"
+			access="hasRole('ROLE_MERCHANT')" />
+		<security:intercept-url pattern="/editmerchantprofile"
+			access="hasRole('ROLE_MERCHANT')" />
+		<security:intercept-url pattern="/editmerchantprofiledone"
+			access="hasRole('ROLE_MERCHANT')" />
+
+
+
 		<security:intercept-url pattern="/adminhome"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/employeecreation"
 			access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/getinternalusers"
 			access="hasRole('ROLE_ADMIN')" />
@@ -94,8 +135,7 @@
 			access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/deleteemployee"
 			access="hasRole('ROLE_ADMIN')" />
-		<security:intercept-url pattern="/employeecreation"
-			access="hasRole('ROLE_ADMIN')" />
+
 		<security:intercept-url pattern="/pii"
 			access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/acceptpii"
@@ -149,4 +189,5 @@
 	<bean id="passwordEncoder"
 		class="org.springframework.security.crypto.password.StandardPasswordEncoder">
 	</bean>
+
 </beans>

@@ -187,6 +187,12 @@ public class UserService {
 		return usersDao.getAllActiveMerchants();
 	}
 	
+	public List<Users> getAllExternalCustomersByFieldBool(String field, boolean value) {
+		return usersDao.getAllExternalCustomersByFieldBool(field, value);	
+	}
+	public List<Users> getAllExternalMerchantsByFieldBool(String field, boolean value) {
+		return usersDao.getAllExternalMerchantsByFieldBool(field, value);	
+	}
 	public List<Users> getAllExternalUsersByFieldBool(String field, boolean value) {
 		return usersDao.getAllExternalUsersByFieldBool(field, value);	
 	}

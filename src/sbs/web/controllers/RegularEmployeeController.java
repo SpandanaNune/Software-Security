@@ -46,8 +46,8 @@ public class RegularEmployeeController {
 	}
 
 	@RequestMapping("/viewedituserdetails_employee")
-	public String viewEditUserDetailsByEmployee(Model model,Principal principal) {
-		
+	public String viewEditUserDetailsByEmployee(Model model, Principal principal) {
+
 		ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
 		Set<String> userlist = new HashSet<String>();
 		for (Accounts account : accounts) {
@@ -55,7 +55,6 @@ public class RegularEmployeeController {
 			if (user != null)
 				userlist.add(user.getUsername());
 		}
-		
 
 		List<User> userProfileList = new ArrayList<User>();
 		for (String userName : userlist) {
@@ -75,8 +74,8 @@ public class RegularEmployeeController {
 	}
 
 	@RequestMapping("/editemployeeprofiledone")
-	public String editEmployeeProfileDone(@Valid User eUser, BindingResult result, Model model,Principal principal) {
-		if(result.hasErrors())
+	public String editEmployeeProfileDone(@Valid User eUser, BindingResult result, Model model, Principal principal) {
+		if (result.hasErrors())
 			return "editemployeeprofile";
 		User user = userService.getUserregisterbyUsername(eUser.getUsername());
 		eUser.setSSN(user.getSSN());
@@ -96,25 +95,25 @@ public class RegularEmployeeController {
 	}
 
 	@RequestMapping(value = "/updatebtn_employee", method = RequestMethod.POST)
-	public String updateActiveUserDetails(@Valid User user, BindingResult result, Model model,Principal principal) {
+	public String updateActiveUserDetails(@Valid User user, BindingResult result, Model model, Principal principal) {
 
 		if (result.hasErrors())
 			return "edituser_employee";
 		else {
-			
+
 			User dbUser = userService.getUserregisterbyUsername(user.getUsername());
 			user.setSSN(dbUser.getSSN());
 			user.setDob(dbUser.getDob());
 			user.setEmail(dbUser.getEmail());
 			userService.createUser(user);
-			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService.getAccountsForBanker(principal.getName());
+			ArrayList<Accounts> accounts = (ArrayList<Accounts>) accountService
+					.getAccountsForBanker(principal.getName());
 			Set<String> userlist = new HashSet<String>();
 			for (Accounts account : accounts) {
 				Users user1 = userService.getUserByFieldBool("enabled", true, account.getUsername());
 				if (user1 != null)
 					userlist.add(user1.getUsername());
 			}
-			
 
 			List<User> userProfileList = new ArrayList<User>();
 			for (String userName : userlist) {

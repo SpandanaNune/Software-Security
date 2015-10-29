@@ -29,7 +29,7 @@ public class User {
 	@Pattern(regexp="^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$", message="Incorrect Date of Birth")
 	private String dob;
 	
-	@Pattern(regexp="^[0-9]{9}$", message="Incorrect SSN")
+	@Pattern(regexp="^[0-9]{9}$", message="Should contains 9 digits")
 	private String SSN;
 	
 	@Pattern(regexp="^[0-9]{10}$", message="Incorrect Phone Number")
@@ -49,7 +49,6 @@ public class User {
 	private String State;
 	
 	//@Column(name = "zip")
-	@NotNull
 	@Pattern(regexp="^[0-9]{5}$", message="Incorrect Zip Code")
 	private String Zip;
 

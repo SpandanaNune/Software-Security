@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import sbs.web.models.PII;
 import sbs.web.models.User;
 import sbs.web.models.Users;
 import sbs.web.service.UserService;
+import sbs.web.utilities.Compressor;
 import sbs.web.utilities.SendMail;
 
 @Controller
@@ -28,6 +30,22 @@ public class AdminController {
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+	
+	@RequestMapping("/systemlogs")
+	public String viewSystemLogs(Model model,Principal principal) {
+		Compressor comp = new Compressor();
+		String outputFile = FilenameUtils.separatorsToSystem(System.getProperty("catalina.home") + "/temp/logs_" + System.currentTimeMillis() + ".zip");
+		String sourceFolder = FilenameUtils.separatorsToSystem(System.getProperty("catalina.home") + "/logs");
+		System.out.println(outputFile);
+		System.out.println(sourceFolder);
+
+		comp.compressFiles(outputFile, sourceFolder);
+		User user = userService.getUserregisterbyUsername(principal.getName());
+		SendMail.sendlogs(user, outputFile);
+		
+		System.out.println("Compression Done");
+		return "adminhome";
 	}
 
 	@RequestMapping("/getinternalusers")
@@ -54,9 +72,9 @@ public class AdminController {
 
 	@RequestMapping("/employeeupdationdone")
 	public String employeeUpdate(@Valid User eUser, BindingResult result) {
-		if(result.hasErrors())
+		if (result.hasErrors())
 			return "employeeUpdation";
-		
+
 		User user = userService.getUserregisterbyUsername(eUser.getUsername());
 		eUser.setSSN(user.getSSN());
 		eUser.setEmail(user.getEmail());
@@ -90,31 +108,28 @@ public class AdminController {
 		return "vieweditinternalusers";
 
 	}
-	
 
 	@RequestMapping(value = "/employeecreation")
-	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model,Principal principal) {
-		if(result.hasErrors())
-		{
+	public String createEmployee(HttpServletRequest rqst, @Valid User user, BindingResult result, Model model,
+			Principal principal) {
+		if (result.hasErrors()) {
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
 			authorities.add("ROLE_NEWMANAGER");
 			model.addAttribute("roles", authorities);
 			return "employeecreation";
 		}
-		
+
+		if (user != null && user.getUsername() != null) {
 		List<User> uniqueUser1;
-		uniqueUser1 = (userService.getUserProfileByField("username", user.getUsername()));
+		uniqueUser1 = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		System.out.println("uniqueUser " + uniqueUser1);
 		if (uniqueUser1.size() > 0) {
 			System.out.println("Caught duplicate Username");
 			result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-			
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
 			authorities.add("ROLE_NEWMANAGER");
-			model.addAttribute("roles", authorities);
-			
 			return "employeecreation";
 		}
 
@@ -122,64 +137,60 @@ public class AdminController {
 		if (uniqueUser1.size() > 0) {
 			System.out.println("Caught duplicate Email");
 			result.rejectValue("email", "DuplicateKeyException.user.email", "Email already exists.");
-			
 			List<String> authorities = new ArrayList<>();
 			authorities.add("ROLE_NEWEMPLOYEE");
 			authorities.add("ROLE_NEWMANAGER");
-			model.addAttribute("roles", authorities);
-			
 			return "employeecreation";
 		}
+
 		
-		if(user != null && user.getUsername() != null) {
 			String role = rqst.getParameter("role");
 			System.out.println(user);
-			User uniqueUser = (userService.getUserregisterbyUsername(user.getUsername()));
-			
-			if (uniqueUser == null) {
-				System.out.println(user);
-//				user.setIsnewuser(true);
-				userService.createUser(user);
 
-				
-				Users users = new Users();
-				users.setUsername(user.getUsername());
-				String tempPassword = UtilityController.generatePassword();
-				System.out.println(tempPassword);
+			// User uniqueUser =
+			// (userService.getUserregisterbyUsername(user.getUsername()));
+			// if (uniqueUser == null) {
+			// System.out.println(user);
+			// user.setIsnewuser(true);
 
-				SendMail sendmail = new SendMail();
-				sendmail.sendTempPassword(user.getEmail(), tempPassword, user.getFirstname());
-				
-				users.setPassword(tempPassword);
-				users.setEnabled(true);
-				users.setAccountNonExpired(true);
-				users.setAccountNonLocked(true);
-				users.setCredentialsNonExpired(true);
-				users.setEmail(user.getEmail());
-				users.setSiteKeyID(1);
-				users.setQ1("xxxxx");
-				users.setQ2("xxxxx");
-				users.setQ3("xxxxx");
-				System.out.println(users);
+			Users users = new Users();
+			users.setUsername(user.getUsername());
+			String tempPassword = UtilityController.generatePassword();
+			System.out.println(tempPassword);
 
-				userService.saveOrUpdateUsers(users);
-				
-				Authorities auth = new Authorities();
-				auth.setUsername(user.getUsername());
-				auth.setAuthority(role);
-				userService.setAuthority(auth);
-			}
-//			} else {
-//				System.out.println("Caught duplicate Username");
-//				result.rejectValue("username", "DuplicateKeyException.user.username", "Username already exists.");
-//			}
+			users.setPassword(tempPassword);
+			users.setEnabled(true);
+			users.setAccountNonExpired(true);
+			users.setAccountNonLocked(true);
+			users.setCredentialsNonExpired(true);
+			users.setEmail(user.getEmail());
+			users.setSiteKeyID(1);
+			users.setQ1("xxxxx");
+			users.setQ2("xxxxx");
+			users.setQ3("xxxxx");
+			System.out.println(users);
+
+			Authorities auth = new Authorities();
+			auth.setUsername(user.getUsername());
+			auth.setAuthority(role);
+			userService.createUser(user);
+			userService.saveOrUpdateUsers(users);
+			userService.setAuthority(auth);
+
+			SendMail sendmail = new SendMail();
+			sendmail.sendTempPassword(user.getEmail(), tempPassword, user.getFirstname());
+			return "adminhome";
+
 		}
+		
+
 		List<String> authorities = new ArrayList<>();
 		authorities.add("ROLE_NEWEMPLOYEE");
 		authorities.add("ROLE_NEWMANAGER");
 		model.addAttribute("roles", authorities);
-		model.addAttribute("uname",principal.getName());
-		return "adminhome";
+		model.addAttribute("uname", principal.getName());
+		return "employeecreation";
+
 	}
 
 	@RequestMapping(value = "/pii")
@@ -197,6 +208,7 @@ public class AdminController {
 			user.setSSN(pii.getNewSSN());
 			userService.updateUser(user);
 			userService.approvePII(pii.getUserName());
+			SendMail.sendPIIConfirm(user.getEmail(),user.getFirstname());
 		} else {
 			// error SSN not matched
 		}
@@ -214,7 +226,7 @@ public class AdminController {
 	}
 
 	@RequestMapping("/editadminprofile")
-	public String editManagerProfile(Model model,Principal principal) {
+	public String editManagerProfile(Model model, Principal principal) {
 		String uname = principal.getName();
 		User user = userService.getUserregisterbyUsername(uname);
 		model.addAttribute("user", user);
@@ -223,7 +235,7 @@ public class AdminController {
 
 	@RequestMapping("/editadminprofiledone")
 	public String editManagerProfileDone(@Valid User eUser, BindingResult result, Model model) {
-		if(result.hasErrors())
+		if (result.hasErrors())
 			return "editadminprofile";
 		User user = userService.getUserregisterbyUsername(eUser.getUsername());
 		eUser.setSSN(user.getSSN());
@@ -233,11 +245,9 @@ public class AdminController {
 		userService.createUser(eUser);
 		return "adminhome";
 	}
-	
-	private boolean check_if_authorised_to_delete(String myRole, String userRole)
-	{
-		if ("ROLE_ADMIN".equals(myRole))
-		{
+
+	private boolean check_if_authorised_to_delete(String myRole, String userRole) {
+		if ("ROLE_ADMIN".equals(myRole)) {
 			if ("ROLE_ADMIN".equals(userRole) || "ROLE_USER".equals(userRole) || "ROLE_MERCHANT".equals(userRole))
 				return false;
 			else
@@ -247,3 +257,4 @@ public class AdminController {
 	}
 
 }
+
