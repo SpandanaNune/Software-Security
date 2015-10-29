@@ -136,11 +136,18 @@ public class HomeController {
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEW");
-	
+
+				logger.error("Before creating user"+user);
 				userService.createUser(user);
+				logger.error("After creating user"+user);
+				logger.error("Before creating auth"+auth);
+
 				userService.setAuthority(auth);
+				logger.error("After Creating auth"+auth);
+				logger.error("Failed to verify captcha");
 	
 				sendOTPMail(user.getFirstname(), user.getEmail());
+				logger.error("Failed to verify captcha");
 	
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
@@ -234,6 +241,8 @@ public class HomeController {
 			userObj.setIsnewuser(true);
 			System.out.println(userObj.toString());
 			userService.createUser(userObj);
+			SendMail mailsend = new SendMail();
+			mailsend.sendAccountApproval(userObj.getEmail(),userObj.getFirstname());
 			return "home";
 		} else if (otpStatus.equalsIgnoreCase("attempts")) {
 			// Too many attempts. Refresh and request OTP again
@@ -249,8 +258,6 @@ public class HomeController {
 
 		}
 		
-		SendMail mailsend = new SendMail();
-		mailsend.sendAccountApproval(userObj.getEmail(),userObj.getFirstname());
 		// DELETE THIS LATER
 		return "home";
 	}
