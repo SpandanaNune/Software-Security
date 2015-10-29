@@ -144,7 +144,6 @@ public class HomeController {
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEW");
-
 				logger.error("Before creating user"+user);
 				userService.createUser(user);
 				logger.error("After creating user"+user);
@@ -156,7 +155,6 @@ public class HomeController {
 	
 				sendOTPMail(user.getFirstname(), user.getEmail());
 				logger.error("Failed to verify captcha");
-	
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
 			}

@@ -430,5 +430,4 @@ function validateForm() {
 		</sf:form>
 	</div>
 </body>
-
 </html>
