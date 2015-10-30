@@ -213,6 +213,10 @@ function validateForm() {
 				</c:if>
 				<table>
 					<tr>
+						<td class="label">
+							<h4 style="color: black">Username:</h4>
+						</td>
+						<td>&nbsp;</td>
 						<td>
 							<sf:input class="control" path="username" name="username" type="text" readonly ="true" />
 							<br />

@@ -145,15 +145,19 @@ public class HomeController {
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEW");
-				logger.error("User object before persisting " + user);
+
+				logger.info("User object before persisting " + user);
 				userService.createUser(user);
-				logger.error("User object after persisting " + user);
-				logger.error("Auth object before persisting " + auth);
+				
+				logger.info("User object after persisting " + user);
+				logger.info("Auth object before persisting " + auth);
 				userService.setAuthority(auth);
-				logger.error("Auth object after persisting " + auth);
+				
+				logger.info("Auth object after persisting " + auth);
 				logger.info("Attempting to send email");
+
 				sendOTPMail(user.getFirstname(), user.getEmail());
-				logger.info("Email sent successfully");
+				logger.info("Email sent");
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
 			} catch (Exception e) {
@@ -245,6 +249,8 @@ public class HomeController {
 			userObj.setIsnewuser(true);
 			System.out.println(userObj.toString());
 			userService.createUser(userObj);
+			SendMail mailsend = new SendMail();
+			mailsend.sendAccountApproval(userObj.getEmail(), userObj.getFirstname());
 			return "home";
 		} else if (otpStatus.equalsIgnoreCase("attempts")) {
 			// Too many attempts. Refresh and request OTP again
@@ -260,8 +266,7 @@ public class HomeController {
 
 		}
 
-		SendMail mailsend = new SendMail();
-		mailsend.sendAccountApproval(userObj.getEmail(), userObj.getFirstname());
+
 		// DELETE THIS LATER
 		return "home";
 	}

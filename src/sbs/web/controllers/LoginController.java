@@ -88,10 +88,11 @@ public class LoginController {
 		}
 		User user_profile = userlist.get(0);
 		Users dbuser = userService.getUserbyUsername(users.getUsername());
-		boolean ans1 = dbuser.getQ1().equals(q1) && !q1.isEmpty();
-		boolean ans2 = dbuser.getQ2().equals(q2) && !q2.isEmpty();
-		boolean ans3 = dbuser.getQ3().equals(q3) && !q3.isEmpty();
-		boolean pass = password.equals(password1) && !password.isEmpty() && !password1.isEmpty();
+		boolean ans1 = dbuser.getQ1().equals(q1) && !q1.isEmpty() && (q1.length()<45);
+		boolean ans2 = dbuser.getQ2().equals(q2) && !q2.isEmpty() && (q2.length()<45);
+		boolean ans3 = dbuser.getQ3().equals(q3) && !q3.isEmpty() && (q3.length()<45);
+		boolean pass = password.equals(password1) && !password.isEmpty() && !password1.isEmpty() && (password.length()<100)
+				&& (password.length()>8);
 		System.out.println("Erro"+ans1+ans2+ans3+pass);
 		if ( pass && ans1 && ans2 && ans3){
 			System.out.println("I am here");

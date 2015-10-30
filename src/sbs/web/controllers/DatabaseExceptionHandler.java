@@ -13,7 +13,8 @@ public class DatabaseExceptionHandler {
 	public String handleDatabaseException(DataAccessException exception) {
 		exception.printStackTrace();
 		logger.error("Failure :" + exception.getMessage());
-		return "error";
+		return "customerrorpage";
+
 	}
 
 }

@@ -57,7 +57,7 @@ function validateForm() {
     else
     {
     $("#matchpass").addClass("error");
- 	$("#matchpass").text("username must be alphanumeric and between 8 and 45 characters");
+ 	$("#matchpass").text("Incorrect OTP");
  	$("#matchpass").removeClass("valid")
  	return false;
  	//f=1;
@@ -98,8 +98,6 @@ function validateForm() {
       <center>
         <h1>Confirm Transaction</h1>
         <br />
-        <c:out value="${email}"></c:out>
-        <c:out value="${transactionid}"></c:out>
         <sf:form name="myForm" onsubmit="return validateForm()" 
         method="post" action="${pageContext.request.contextPath}/completetransaction" htmlEscape="true" >
           <table>

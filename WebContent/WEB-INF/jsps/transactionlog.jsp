@@ -52,12 +52,11 @@
 
 		if (document.getElementById('radioaccount').checked) {
 			document.getElementById('radiolabel').innerHTML = 'Account No :';
-		} else if (document.getElementById('radiodate').checked) {
-
-			document.getElementById('radiolabel').innerHTML = 'Date :';
-		} else if (document.getElementById('radioname').checked) {
+		}  else if (document.getElementById('radioname').checked) {
 			document.getElementById('radiolabel').innerHTML = 'Name :';
 		}
+		document.getElementById("inputtext").value = "";
+
 
 	}
 </script>
@@ -119,6 +118,10 @@ function validateForm() {
 	</div>
 	</nav>
 	<div class="container">
+	<div class="alert alert-info">
+   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+   <strong>Info!</strong> Based on your selection, you will have to enter the corresponding details in the text field.
+ </div>
 		<h1>Transaction Log</h1>
 		<br>
 		<h4>Filter Logs by</h4>
@@ -136,12 +139,7 @@ function validateForm() {
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
-					<td align="center"><label for="date">By Date</label> <sf:radiobutton
-							class="radio" id="radiodate" path="logFilter" value="date"
-							name="Filter" onchange="radiofn()" /></td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
+					
 					<td align="center"><label for="name">By Name</label> <sf:radiobutton
 							path="logFilter" class="radio" id="radioname" value="name"
 							name="Filter" onchange="radiofn()" /></td>
@@ -162,7 +160,7 @@ function validateForm() {
 					<tr>
 						<td align="center"><div id="radiotext">
 								<sf:input class="control form-control" path="input" name="input"
-									type="text" />
+									type="text" id="inputtext"/>
 								<br />
 							</div><div id="matchpass"></div></td>
 

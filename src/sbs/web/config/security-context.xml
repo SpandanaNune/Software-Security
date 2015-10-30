@@ -19,7 +19,7 @@
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-<security:intercept-url pattern="/about"
+		<security:intercept-url pattern="/about"
 			access="permitAll" />
 		<security:intercept-url pattern="/registeruser"
 			access="permitAll" />
@@ -37,8 +37,23 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/static/**"
 			access="permitAll" />
+		<security:intercept-url pattern="/resetpassword"
+			access="permitAll" />
+		<security:intercept-url pattern="/resetpasswordbtn"
+			access="permitAll" />
+		<security:intercept-url pattern="/forgotpass"
+			access="permitAll" />
+		<security:intercept-url pattern="/forgotPassEmailSuccess"
+			access="permitAll" />
 
-		
+
+
+
+
+
+
+
+
 		<security:intercept-url pattern="/welcome"
 			access="hasAnyRole('ROLE_NEW,ROLE_USER,ROLE_NEWMANAGER,ROLE_MANAGER,ROLE_NEWMERCHANT,ROLE_MERCHANT,ROLE_EMPLOYEE,ROLE_NEWEMPLOYEE')" />
 		<security:intercept-url pattern="/userconfirm"
@@ -84,17 +99,16 @@
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/deletemerchant"
 			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/editmanagerprofile"
+			access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/editmanagerprofiledone"
+			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/approvetransaction"
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/accepttransactionbtn"
 			access="hasRole('ROLE_MANAGER')" />
 		<security:intercept-url pattern="/deletetransactionbtn"
 			access="hasRole('ROLE_MANAGER')" />
-		<security:intercept-url pattern="/editmanagerprofile"
-			access="hasRole('ROLE_MANAGER')" />
-		<security:intercept-url pattern="/editmanagerprofiledone"
-			access="hasRole('ROLE_MANAGER')" />
-
 
 
 		<security:intercept-url pattern="viewedituserdetails_employee"
@@ -119,7 +133,7 @@
 			access="hasRole('ROLE_USER')" />
 		<security:intercept-url pattern="/createTransaction"
 			access="hasRole('ROLE_USER')" />
-		<security:intercept-url pattern="/completeTransaction"
+		<security:intercept-url pattern="/completetransaction"
 			access="hasRole('ROLE_USER')" />
 		<security:intercept-url pattern="/openDebitCreditTransaction"
 			access="hasRole('ROLE_USER')" />
@@ -146,9 +160,9 @@
 
 		<security:intercept-url pattern="/adminhome"
 			access="hasRole('ROLE_ADMIN')" />
-		<security:intercept-url pattern="/employeecreation"
+		<security:intercept-url pattern="/systemlogs"
 			access="hasRole('ROLE_ADMIN')" />
-		<security:intercept-url pattern="/employeecreationdone"
+		<security:intercept-url pattern="/employeecreation"
 			access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/getinternalusers"
 			access="hasRole('ROLE_ADMIN')" />

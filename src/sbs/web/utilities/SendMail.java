@@ -27,7 +27,8 @@ public class SendMail {
 
 	private static final Logger logger = Logger.getLogger(SendMail.class);
 	private static final String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
-			"moneytreebanking4@gmail.com", "moneytreebanking5@gmail.com" };
+			"moneytreebanking4@gmail.com", "moneytreebanking5@gmail.com", "moneytreebanking6@gmail.com", "moneytreebanking8@gmail.com",
+			"moneytreebanking9@gmail.com"};
 
 	private static final String username = "moneytreebanking";// change accordingly
 	private static final String password = "factlab12345";// change accordingly
@@ -38,6 +39,13 @@ public class SendMail {
 		Date date = new Date();
 		// Recipient's email ID needs to be mentioned.
 		String to = user.getEmail();
+		Random rand = new Random();
+
+		int n = rand.nextInt(6) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
@@ -55,16 +63,10 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
 		try {
 
 			Message message = new MimeMessage(session);
@@ -111,7 +113,13 @@ public class SendMail {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = user.getEmail();
-		
+		Random rand = new Random();
+
+		int n = rand.nextInt(6) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
@@ -128,16 +136,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		try {
 
 			Message message = new MimeMessage(session);
@@ -183,6 +191,12 @@ public class SendMail {
 		// get current date time with Date()
 		Date date = new Date();
 
+		Random rand = new Random();
+
+		int n = rand.nextInt(6) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
 
 		// Recipient's email ID needs to be mentioned.
 		String to = otpObj.getMailID();
@@ -203,16 +217,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		System.out.println(randomMail);
 		try {
 
@@ -243,6 +257,14 @@ public class SendMail {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = user.getEmail();
+		
+		Random rand = new Random();
+
+		int n = rand.nextInt(6) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
@@ -260,16 +282,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		System.out.println(randomMail);
 		try {
 
@@ -316,6 +338,12 @@ public class SendMail {
 		// get current date time with Date()
 		Date date = new Date();
 
+		Random rand = new Random();
+
+		int n = rand.nextInt(7) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
 
 		// Recipient's email ID needs to be mentioned.
 		String to = user.getEmail();
@@ -334,16 +362,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		System.out.println(randomMail);
 		try {
 
@@ -381,6 +409,13 @@ public class SendMail {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = email;
+		Random rand = new Random();
+
+		int n = rand.nextInt(7) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
@@ -398,16 +433,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		System.out.println(randomMail);
 		try {
 
@@ -436,6 +471,14 @@ public class SendMail {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = email;
+		
+		Random rand = new Random();
+
+		int n = rand.nextInt(7) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
@@ -453,16 +496,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		try {
 
 			Message message = new MimeMessage(session);
@@ -488,6 +531,13 @@ public class SendMail {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		// get current date time with Date()
 		Date date = new Date();
+		Random rand = new Random();
+
+		int n = rand.nextInt(7) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Recipient's email ID needs to be mentioned.
 		String to = otpObj.getMailID();
@@ -499,7 +549,7 @@ public class SendMail {
 //		final String username = "moneytreebanking";// change accordingly
 //		final String password = "mtbc1234";// change accordingly
 		Properties props = new Properties();
-
+		
 		props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -508,16 +558,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(4) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(4) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		System.out.println(randomMail);
 		try {
 
@@ -547,6 +597,14 @@ public class SendMail {
 		Date date = new Date();
 		// Recipient's email ID needs to be mentioned.
 		String to = email;
+		
+		Random rand = new Random();
+
+		int n = rand.nextInt(7) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
@@ -564,16 +622,16 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		logger.info(randomMail);
 		try {
 
@@ -582,7 +640,7 @@ public class SendMail {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject("Welcome To Money Tree Banking Corporation " + fname+" "+dateFormat.format(date));
 			message.setText("Dear " + fname + "," + "\n\n We are pleased to have you with MTBC bank. "
-					+ "You have successfully registered with MTBC . Your account is undergoing necessary processing. You will receive another email"
+					+ "You have successfully registered with MTBC . Your account is undergoing necessary processing. You will receive another email "
 					+"with details to setup your account."
 					+ "\n\nSincerely,\nMoney Tree Banking Corporation \n 'Grow your money here'");
 			logger.info("Sending message");
@@ -603,6 +661,13 @@ public class SendMail {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = email;
+		Random rand = new Random();
+
+		int n = rand.nextInt(7) + 1;
+		// 5 is the maximum and the 1 is our minimum
+
+		final String randomMail = from[n - 1];
+
 
 		// Sender's email ID needs to be mentioned
 //		String[] from = { "moneytreebanking@gmail.com", "moneytreebanking2@gmail.com", "moneytreebanking3@gmail.com",
@@ -619,15 +684,15 @@ public class SendMail {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(randomMail, password);
 			}
 		});
 
-		Random rand = new Random();
-		int n = rand.nextInt(2) + 1;
-		// 5 is the maximum and the 1 is our minimum
-
-		String randomMail = from[n - 1];
+//		Random rand = new Random();
+//		int n = rand.nextInt(2) + 1;
+//		// 5 is the maximum and the 1 is our minimum
+//
+//		String randomMail = from[n - 1];
 		logger.info(randomMail);
 		try {
 
