@@ -1,3 +1,8 @@
+/*
+ * Referred code for email on 
+ * http://www.mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
+ * 
+ */
 package sbs.web.utilities;
 
 import java.io.IOException;

@@ -1,3 +1,6 @@
+/*
+ * Using Google Recaptcha and validating it with the back-end google web-services 
+ */
 package sbs.web.utilities;
 
 import java.io.BufferedReader;
