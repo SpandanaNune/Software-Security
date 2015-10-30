@@ -62,6 +62,7 @@ function validateForm() {
  	return false;
  	//f=1;
     }
+    document.getElementById("button").disabled=true;
 }
 </script>
 
@@ -122,7 +123,7 @@ function validateForm() {
         </table>
         <br>
         <br>
-        <input class="control btn btn-info" value="Verify" type="submit" />
+        <input id="button" class="control btn btn-info" value="Verify" type="submit" />
 
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

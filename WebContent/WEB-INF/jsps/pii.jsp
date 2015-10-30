@@ -106,7 +106,7 @@
           <td>
             <form method="post" action="${pageContext.request.contextPath}/acceptpii">
               <input type="hidden" name="Accept" value="${pii.getUserName()}" />
-              <input class="control btn btn-success" value="Accept" type="submit" />
+              <input class="control btn btn-success" value="Accept" type="submit"  onClick ="this.form.submit(); this.disabled=true;"/>
               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
             </form>

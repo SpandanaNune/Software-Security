@@ -241,7 +241,7 @@ function validateForm() {
 	   return false;
 	  
    }
-      
+           document.getElementById("button").disabled=true;
         	  
 }
 </script>
@@ -428,7 +428,7 @@ function validateForm() {
       <br>
       <br>
       <center>
-        <input class="control btn btn-info" value="Create" type="submit" />
+        <input id="button" class="control btn btn-info" value="Create" type="submit" />
       </center>
 
     </sf:form>
