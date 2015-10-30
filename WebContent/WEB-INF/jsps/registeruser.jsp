@@ -248,7 +248,7 @@ function validateForm() {
 	  
    }
       
-        	  
+      document.getElementById("button").disabled=true;
 }
 </script>
 <title>Welcome</title>
@@ -422,7 +422,7 @@ function validateForm() {
 			</table>
 			<br>
 			<center>
-				<input class="control btn btn-info" value="Register" type="submit" />
+				<input id="button" class="control btn btn-info" value="Register" type="submit" />
 			</center>
 			<br> ​
       <input type="hidden" name="${_csrf.parameterName}"

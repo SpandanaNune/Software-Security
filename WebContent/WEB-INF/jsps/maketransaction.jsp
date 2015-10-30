@@ -88,6 +88,8 @@
 			return false;
 		}
 
+		document.getElementById("button").disabled=true;
+		
 	}
 </script>
 </head>
@@ -192,7 +194,7 @@
 					<c:out value="${PKIMessage}"></c:out>
 				</p>
 				<br> <br>
-				<button type="submit" class="btn btn-info">Send Money</button>
+				<button  id ="button" type="submit" class="btn btn-info">Send Money</button>
 			</center>
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />

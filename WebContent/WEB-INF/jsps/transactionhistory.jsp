@@ -27,12 +27,23 @@
   <script language="javascript">
     document.onmousedown = disableclick;
     status = "Right Click Disabled";
-
+	var count=0;
     function disableclick(event) {
       if (event.button == 2) {
         alert(status);
         return false;
       }
+    }
+    function disableMe()
+    {
+    	alert("Email is being sent!! Please wait to be redirected to the next page!!");
+    	if(count ==0)
+    		{
+    		count =1;
+    		return true;
+    		}
+    	else 
+    		return false;
     }
   </script>
 
@@ -44,12 +55,7 @@
     }
   </script>
   <title>Transaction History</title>
-  <script language="javaScript">
-    function showAlert() {
-
-      alert('File Download Complete');
-    }
-  </script>
+  
 </head>
 
 <body>
@@ -121,7 +127,7 @@
 	 	 <button class="btn btn-primary btn-large" type="submit" onClick="showAlert()">E-Mail</button> -->
 
     </sf:form>
-    <a class="btn btn-info btn-primary btn-large" href="${pageContext.request.contextPath}/emailTransactions" type="submit"> Email </a>
+    <a class="btn btn-info btn-primary btn-large" href="${pageContext.request.contextPath}/emailTransactions" onclick="return disableMe();" type="submit"> Email </a>
   </div>
 </body>
 

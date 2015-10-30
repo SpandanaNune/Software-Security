@@ -118,7 +118,7 @@
           <td>
             <form method="post" action="${pageContext.request.contextPath}/deleteemployee">
               <input type="hidden" name="Decline" value="${user.getUsername()}" />
-              <input class="control btn btn-danger" value="Delete" type="submit" />
+              <input class="control btn btn-danger" value="Delete" type="submit"  onClick ="this.form.submit(); this.disabled=true;"/>
               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
           </td>

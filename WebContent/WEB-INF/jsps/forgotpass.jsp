@@ -63,6 +63,8 @@ function validateForm() {
 	return false;
 	//f=1;
    }
+    document.getElementById("button").disabled=true;
+}
    </script>
   <title>Forgot Password</title>
 </head>
@@ -139,7 +141,7 @@ function validateForm() {
 				<br>
 				<br>
 				<br>
-				<input class="control btn btn-info" value="Send Link" type="submit" />
+				<input id="button" class="control btn btn-info" value="Send Link" type="submit" />
 				<br>
       </sf:form>
       <br>
