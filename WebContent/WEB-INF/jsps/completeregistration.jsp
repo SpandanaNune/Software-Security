@@ -57,7 +57,7 @@ function validateForm() {
     else
     {
     $("#matchpass").addClass("error");
- 	$("#matchpass").text("username must be alphanumeric and between 8 and 45 characters");
+ 	$("#matchpass").text("OTP value should not be empty");
  	$("#matchpass").removeClass("valid")
  	return false;
  	//f=1;

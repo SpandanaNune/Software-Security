@@ -44,6 +44,7 @@ public class ManagerController {
 			model.addAttribute("user", user);
 		} catch (Exception e) {
 			logger.error("Error Fetching new users from the db");
+			logger.error("Failure :" + e.getMessage());
 		}
 		return "usersignuprequest";
 	}
@@ -257,10 +258,15 @@ public class ManagerController {
 			System.out.println(newAccount1);
 			System.out.println(newAccount2);
 	
-			userService.createUser(user);
-			userService.saveOrUpdateUsers(users);
-			userService.addNewAccount(newAccount1);
-			userService.addNewAccount(newAccount2);
+			try{
+				userService.createUser(user);
+				userService.saveOrUpdateUsers(users);
+				userService.addNewAccount(newAccount1);
+				userService.addNewAccount(newAccount2);
+			}catch(Exception e){
+				logger.error("Failure :" + e.getMessage());
+			}
+			
 	
 			List<User> user_list = userService.getAllNewRoleUsers();
 			List<User> updateduser = new ArrayList<User>();

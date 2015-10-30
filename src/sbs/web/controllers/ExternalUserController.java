@@ -139,7 +139,7 @@ public class ExternalUserController {
 						return "editmerchantprofile";
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					logger.error("Failure :" + e.getMessage());
 					logger.error("Failed to validate PKI");
 				}
 				
@@ -195,8 +195,8 @@ public class ExternalUserController {
 						return "edituserprofile";
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					logger.error("Failed to validate PKI");
+					logger.error("Failure :" + e.getMessage());
 				}
 				
 				PII pii = new PII();

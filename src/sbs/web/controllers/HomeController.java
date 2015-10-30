@@ -44,7 +44,7 @@ public class HomeController {
 	private UtilityService utilityService;
 
 	private AccountsService accountService;
- 
+
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -78,10 +78,10 @@ public class HomeController {
 		model.addAttribute("uname", uname);
 		return "adminhome";
 	}
-	
+
 	@RequestMapping(value = "/about")
 	public String aboutUs(Model model, Principal principal) {
-		
+
 		return "about";
 	}
 
@@ -115,7 +115,7 @@ public class HomeController {
 		if (result.hasErrors()) {
 			return "registeruser";
 		}
-		
+
 		List<User> uniqueUser;
 		uniqueUser = (userService.getUserProfileByField("username", user.getUsername().toLowerCase()));
 		if (uniqueUser.size() > 0) {
@@ -131,44 +131,44 @@ public class HomeController {
 			return "registeruser";
 		}
 		boolean verify = false;
-		try{
+		try {
 			verify = VerifyCaptcha.verify(gCaptchaResponse);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("Error:" + e.getMessage());
 			logger.error("Failed to verify captcha");
 		}
-		
+
 		if (verify) {
-			try{
+			try {
 				user.setIsmerchant(false);
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEW");
-				logger.error("User object before persisting "+user);
+				logger.error("User object before persisting " + user);
 				userService.createUser(user);
-				logger.error("User object after persisting "+user);
-				logger.error("Auth object before persisting "+auth);
+				logger.error("User object after persisting " + user);
+				logger.error("Auth object before persisting " + auth);
 				userService.setAuthority(auth);
-				logger.error("Auth object after persisting "+auth);
+				logger.error("Auth object after persisting " + auth);
 				logger.info("Attempting to send email");
 				sendOTPMail(user.getFirstname(), user.getEmail());
 				logger.info("Email sent successfully");
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
-			}
-			catch(Exception e){
-				logger.error("Failure during user registration::"+e.getMessage());
+			} catch (Exception e) {
+				logger.error("Failure during user registration::" + e.getMessage());
 				e.printStackTrace();
 			}
 		}
-		
-			return "registeruser";
+
+		return "registeruser";
 	}
 
 	@RequestMapping(value = "/merchantregisterbtn", method = RequestMethod.POST)
-	public String RegisterMerchant(@Valid User user, BindingResult result, Model model,  HttpServletRequest request) {
+	public String RegisterMerchant(@Valid User user, BindingResult result, Model model, HttpServletRequest request) {
 		System.out.println(" Inside merchnat button pressed");
-		
+
 		String gCaptchaResponse = request.getParameter("g-recaptcha-response");
 		System.out.println("1");
 		if (result.hasErrors()) {
@@ -194,33 +194,33 @@ public class HomeController {
 			return "merchant";
 		}
 		boolean verify = false;
-		try{
+		try {
 			verify = VerifyCaptcha.verify(gCaptchaResponse);
-		}catch(Exception e){
+		} catch (Exception e) {
 			logger.error("Failed to verify captcha");
+			logger.error("Error:" + e.getMessage());
 			e.printStackTrace();
 		}
 		System.out.println("4");
 		if (verify) {
-			try{
-		
+			try {
+
 				user.setIsmerchant(true);
 				user.setLastname("Merchant");
-		
+
 				Authorities auth = new Authorities();
 				auth.setUsername(user.getUsername());
 				auth.setAuthority("ROLE_NEWMERCHANT");
-		
+
 				userService.createUser(user);
 				userService.setAuthority(auth);
-		
+
 				sendOTPMail(user.getFirstname(), user.getEmail());
-		
+
 				model.addAttribute("mail", user.getEmail());
 				return "completeregistration";
-			}
-			catch(Exception e){
-				logger.error("Failure during merchant registration::"+e.getMessage());
+			} catch (Exception e) {
+				logger.error("Failure during merchant registration::" + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -259,9 +259,9 @@ public class HomeController {
 			return "registeruser";
 
 		}
-		
+
 		SendMail mailsend = new SendMail();
-		mailsend.sendAccountApproval(userObj.getEmail(),userObj.getFirstname());
+		mailsend.sendAccountApproval(userObj.getEmail(), userObj.getFirstname());
 		// DELETE THIS LATER
 		return "home";
 	}
@@ -309,15 +309,21 @@ public class HomeController {
 			auth.setAuthority("ROLE_EMPLOYEE");
 		} else
 			auth.setAuthority("ROLE_USER");
-		userService.setAuthority(auth);
-		userService.saveOrUpdateUsers(users);
-		User user_profile = userService.getUserProfilebyField("username", uname);
-		// PKIUtil pki = new PKIUtil();
-		PKIUtil.sendPrivateKey(user_profile);
-		Authentication auth1 = SecurityContextHolder.getContext().getAuthentication();
-		if (auth1 != null) {
-			new SecurityContextLogoutHandler().logout(req, res, auth1);
+		try {
+			userService.setAuthority(auth);
+			userService.saveOrUpdateUsers(users);
+			User user_profile = userService.getUserProfilebyField("username", uname);
+			// PKIUtil pki = new PKIUtil();
+			PKIUtil.sendPrivateKey(user_profile);
+			Authentication auth1 = SecurityContextHolder.getContext().getAuthentication();
+			if (auth1 != null) {
+				new SecurityContextLogoutHandler().logout(req, res, auth1);
+			}
+		} catch (Exception e) {
+			logger.error("Failure :" + e.getMessage());
+			e.printStackTrace();
 		}
+
 		return "home";
 	}
 
@@ -360,6 +366,7 @@ public class HomeController {
 			}
 		} catch (Exception e) {
 			System.out.println("Printing stack trace");
+			logger.error("Error:" + e.getMessage());
 			e.printStackTrace();
 		}
 		// return error page
@@ -369,15 +376,13 @@ public class HomeController {
 	public static String generatePassword() {
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + "1234567890";
 		final int PW_LENGTH = 8;
-		
+
 		Random rnd = new SecureRandom();
 		StringBuilder pass = new StringBuilder();
 		for (int i = 0; i < PW_LENGTH; i++)
 			pass.append(chars.charAt(rnd.nextInt(chars.length())));
 		return pass.toString();
 	}
-	
-	
 
 	void sendOTPMail(String firstName, String mail) {
 
@@ -400,7 +405,7 @@ public class HomeController {
 			System.out.println("Email sent");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e);
+			logger.error("Failure "+e.getMessage());
 		}
 	}
 

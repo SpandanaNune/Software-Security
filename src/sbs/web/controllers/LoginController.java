@@ -72,6 +72,7 @@ public class LoginController {
 		}
 		catch(Exception e){
 			logger.error("Invalid URL for token not associated with an account");
+			logger.error("Failure :" + e.getMessage());
 		}
 		return "redirect:/accessdenied";
 	}

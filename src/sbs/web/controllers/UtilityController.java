@@ -3,6 +3,7 @@ package sbs.web.controllers;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,8 @@ import sbs.web.utilities.SendMail;
 public class UtilityController {
 	private UtilityService utilityService;
 
+	private static final Logger logger = Logger.getLogger(UtilityController.class);
+	
 	@Autowired
 	public void setUtilityService(UtilityService utilityService) {
 		this.utilityService = utilityService;
@@ -66,6 +69,7 @@ public class UtilityController {
 			SendMail sendMail = new SendMail();
 			sendMail.sendOTP(otpObj);
 		} catch (Exception e) {
+			logger.error("Failure :" + e.getMessage());
 			System.out.println(e);
 		}
 		model.addAttribute("user", new User());
@@ -115,6 +119,7 @@ public class UtilityController {
 
 		} catch (Exception e) {
 			System.out.println("Printing stack trace");
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		}
 

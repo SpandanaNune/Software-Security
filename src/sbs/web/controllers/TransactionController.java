@@ -19,6 +19,7 @@ import javax.servlet.http.Part;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,7 @@ public class TransactionController {
 	AccountsService accountService;
 	UtilityService utilityService;
 	private UserService userService;
+	private static final Logger logger = Logger.getLogger(TransactionController.class);
 
 	private static String defaultPath = System.getProperty("catalina.home") + "/users_keys/";
 
@@ -151,6 +153,7 @@ public class TransactionController {
 			transactionService.saveTransaction(transaction);
 			accountService.updateAccount(from);
 		} catch (Exception e) {
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		}
 		return "welcome";
@@ -184,6 +187,7 @@ public class TransactionController {
 			result.rejectValue("toOtherAccountNo", "DuplicateKeyException.transactionDetails.balance",
 					"Account number should be numeric");
 			System.out.println("Invalid other account number, not of length 8");
+			logger.error("Failure :" + e.getMessage());
 			return "merchanttransaction";
 		}
 		
@@ -299,6 +303,7 @@ public class TransactionController {
 			// model.addAttribute("transactions", transactions);
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("Failure :" + e.getMessage());
 		}
 		return "welcome";
 
@@ -338,6 +343,7 @@ public class TransactionController {
 		
 			
 		}catch ( Exception e) {
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -449,6 +455,7 @@ public class TransactionController {
 			}
 
 		} catch (Exception e) {
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		}
 		return "welcome";
@@ -480,6 +487,7 @@ public class TransactionController {
 				result.rejectValue("toOtherAccountNo", "DuplicateKeyException.transactionDetails.balance",
 						"Account number should be numeric");
 				System.out.println("Invalid other account number, not of length 8");
+				logger.error("Failure :" + e.getMessage());
 				return "maketransaction";
 			}
 			 
@@ -556,8 +564,8 @@ public class TransactionController {
 				return "maketransaction";
 			}
 		} catch (ServletException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			logger.error("Failure :" + e1.getMessage());
 		}
 		//////////
 		// transactionDetails
@@ -674,6 +682,7 @@ public class TransactionController {
 			}
 
 		} catch (Exception e) {
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		}
 		return "welcome";
@@ -795,12 +804,13 @@ public class TransactionController {
 			}
 
 		} catch (FileNotFoundException | DocumentException e) {
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -860,7 +870,7 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/deletetransactionbtn")
-	public String DeleteTransactionByManager(Model model, @RequestParam("Accept") int transactionId) {
+	public String DeleteTransactionByManager(Model model, @RequestParam("Decline") int transactionId) {
 		List<Transaction> tList = transactionService.getTransaction(transactionId);
 		for (Transaction t : tList) {
 			t.setStatus("DECLINED");
@@ -941,7 +951,6 @@ public class TransactionController {
 
 		model.addAttribute("transactions", transactions);
 		return "bankers";
-
 	}
 
 	 
@@ -988,6 +997,7 @@ public class TransactionController {
 			SendMail sendMail = new SendMail();
 			sendMail.sendTransactionOTP(otpObj);
 		} catch (Exception e) {
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 			System.out.println(e);
 		}
@@ -1031,6 +1041,7 @@ public class TransactionController {
 			}
 		} catch (Exception e) {
 			System.out.println("Printing stack trace");
+			logger.error("Failure :" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
