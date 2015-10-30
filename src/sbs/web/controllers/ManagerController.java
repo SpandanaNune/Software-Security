@@ -435,11 +435,12 @@ public class ManagerController {
 				edited_user_auth.getAuthority());
 		if (canDelete) {
 			Users users = userService.getUsersByField("username", username).get(0);
+			User user_profile = userService.getUserProfilebyField("username",username);
 
 			users.setEnabled(false);
 			userService.saveOrUpdateUsers(users);
 			SendMail sendmail = new SendMail();
-			sendmail.sendBlockAccount(users.getEmail(),users.getUsername());
+			sendmail.sendBlockAccount(user_profile.getEmail(),users.getUsername());
 
 			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
 			// true);
@@ -466,11 +467,11 @@ public class ManagerController {
 				edited_user_auth.getAuthority());
 		if (canDelete) {
 			Users users = userService.getUsersByField("username", username).get(0);
-
+			User user_profile = userService.getUserProfilebyField("username",username);
 			users.setEnabled(false);
 			userService.saveOrUpdateUsers(users);
 			SendMail sendmail = new SendMail();
-			sendmail.sendBlockAccount(users.getEmail(),users.getUsername());
+			sendmail.sendBlockAccount(user_profile.getEmail(),users.getUsername());
 
 			// List<Users> userlist = userService.getUsersByFieldBool("enabled",
 			// true);
